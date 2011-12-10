@@ -44,6 +44,11 @@
 				$device_theme = get_option('device_theme');
 				?>
                 <!-- This is the html page that displays on the plugin settings page -->
+                <style type="text/css">
+					#dts_settings_page_wrapper {
+						margin: 15px 0 0 15px ;
+					}
+				</style>
                 <div id="dts_settings_page_wrapper">
                 	<h3>Select your device-specific themes below:</h3>
                     <form method="post" action="options.php">
