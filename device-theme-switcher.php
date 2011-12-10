@@ -11,6 +11,8 @@
 	
 	//$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
 	
-	//Generate and output the plugin settings page
+	//Include our external devicer switcher display file and class
 	include('views/admin-plugin-display.php');
+		//Now we can initilize our Device Switcher
+		$dts = new device_theme_switcher() ;
 ?>
