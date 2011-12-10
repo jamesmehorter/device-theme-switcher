@@ -50,14 +50,17 @@
 					}
 				</style>
                 <div id="dts_settings_page_wrapper">
-                	<h3>Select your device-specific themes below:</h3>
                     <form method="post" action="options.php">
                     	<?php settings_fields('dts_settings'); ?>
                     	<table>
                         	<tr>
+                            	<td colspan="2">
+                                	<h3>Select your device-specific themes below</h3>
+                                </td>
+                            </tr><tr>
                             	<td>
-			                    	<label for="device_theme[handheld]"><?php _e("Handheld Theme:") ?></label>
-                                </td><td>
+			                    	<label for="device_theme[handheld]"><?php _e("Handheld Theme") ?></label>
+                                </td><td align="right">
                                     <select name="device_theme[handheld]">
                                         <?php foreach ($this->themeList as $key => $theme) : ?>
                                             <option name="<?php echo $theme ?>" <?php selected($theme, $device_theme['handheld']) ?>><?php echo $theme ?></option>
@@ -66,8 +69,8 @@
 								</td>						
                         	</tr><tr>
                             	<td>
-			                       	<label for="device_theme[tablet]"><?php _e("Tablet Theme:") ?></label>
-                               	</td><td>
+			                       	<label for="device_theme[tablet]"><?php _e("Tablet Theme") ?></label>
+                               	</td><td align="right">
                                     <select name="device_theme[tablet]">
                                         <?php foreach ($this->themeList as $key => $theme) : ?>
                                             <option name="<?php echo $theme ?>" <?php selected($theme, $device_theme['tablet']) ?>><?php echo $theme ?></option>
