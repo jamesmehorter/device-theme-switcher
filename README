@@ -1,1 +1,0 @@
-Device Theme Switcher for WordPress
