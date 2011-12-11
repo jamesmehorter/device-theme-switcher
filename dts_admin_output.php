@@ -1,13 +1,10 @@
 <?php
-	//Gather data that we'll use on the plugin settings page
-	
+	// ------------------------------------------------------------------------------
+	// ADMIN SETTINGS PAGE  - included view device_theme_switcher::generate_admin_settings_page
+	// ------------------------------------------------------------------------------
 	$themeList = array_keys(get_themes());
 	natcasesort($themeList);
 	$device_theme = get_option('dts_device_themes');
-	
-	print_r($device_theme);
-	
-	
 ?>
 <!-- This is the html page that displays on the plugin settings page -->
 <style type="text/css">
@@ -25,21 +22,21 @@
                 </td>
             </tr><tr>
                 <td>
-                    <label for="device_theme[handheld]"><?php _e("Handheld Theme") ?></label>
+                    <label for="dts_device_themes[handheld]"><?php _e("Handheld Theme") ?></label>
                 </td><td align="right">
-                    <select name="device_theme[handheld]">
+                    <select name="dts_device_themes[handheld]">
                         <?php foreach ($themeList as $key => $theme) : ?>
-                            <option name="<?php echo $theme ?>" <?php selected($theme, $device_theme['handheld']) ?>><?php echo $theme ?></option>
+                            <option value="<?php echo $theme ?>" <?php selected($theme, $device_theme['handheld']) ?>><?php echo $theme ?></option>
                         <?php endforeach ?>
                     </select>
                 </td>						
             </tr><tr>
                 <td>
-                    <label for="device_theme[tablet]"><?php _e("Tablet Theme") ?></label>
+                    <label for="dts_device_themes[tablet]"><?php _e("Tablet Theme") ?></label>
                 </td><td align="right">
-                    <select name="device_theme[tablet]">
+                    <select name="dts_device_themes[tablet]">
                         <?php foreach ($themeList as $key => $theme) : ?>
-                            <option name="<?php echo $theme ?>" <?php selected($theme, $device_theme['tablet']) ?>><?php echo $theme ?></option>
+                            <option value="<?php echo $theme ?>" <?php selected($theme, $device_theme['tablet']) ?>><?php echo $theme ?></option>
                         <?php endforeach ?>
                     </select>
                 </td>

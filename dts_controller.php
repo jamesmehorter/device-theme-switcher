@@ -63,9 +63,8 @@
 		// ------------------------------------------------------------------------------
 		// CALLBACK FUNCTION SPECIFIED IN: add_options_page()
 		// ------------------------------------------------------------------------------
-		//Generate and output the plugin settings page
 		public function generate_admin_settings_page() {
-			print_r($_POST);
+			//Include an external php file containing output for the admin settings page
 			include('dts_admin_output.php'); 
 		} //END member function generate_admin_settings_page
 		
