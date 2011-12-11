@@ -8,10 +8,6 @@
 		Author URI: http://www.jamesmehorter.com
 	*/
 	
-	
-	//$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
-	
-	
 	// ------------------------------------------------------------------------
 	// REGISTER HOOKS & CALLBACK FUNCTIONS:                                    
 	// ------------------------------------------------------------------------
@@ -20,12 +16,10 @@
 	add_action('admin_init', array('device_theme_switcher', 'init') );
 	add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
 	
-	
 	// ------------------------------------------------------------------------
 	// DEVICE THEME SWITCHER CONTROLLER CLASS                                    
 	// ------------------------------------------------------------------------
 	class device_theme_switcher {
-		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_init', array('device_theme_switcher', 'init') );
 		// ------------------------------------------------------------------------------
@@ -39,8 +33,12 @@
 		// ------------------------------------------------------------------------------
 		//Set plugin default settings
 		public function add_defaults () {
+			$default_values = array(
+				'handheld' => '',
+				'tablet' => ''
+			);
+			update_option('dts_device_themes', $arr);
 		}//END member function add_defaults
-		
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
@@ -50,7 +48,6 @@
 			add_options_page( __('Device Theme Switcher'), __('Device Themes'), 10, basename(__FILE__), array('device_theme_switcher', 'generate_admin_settings_page'));
 		}//END member function admin_menu
 		
-		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: register_uninstall_hook(__FILE__, array('device_theme_switcher', 'remove'));
 		// ------------------------------------------------------------------------------
@@ -58,7 +55,6 @@
 			//Remove the plugin and it's settings
 			delete_option('dts_device_themes');
 		}//END member function remove
-		
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK FUNCTION SPECIFIED IN: add_options_page()
@@ -68,9 +64,15 @@
 			include('dts_admin_output.php'); 
 		} //END member function generate_admin_settings_page
 		
+		
+		public function deliver_theme_to_viewer () {
+			//Determine which type of device is viewing the website
+			
+			//$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
+			
+			//If the device is a handheld or tablet
+				//if the user has defined alternative themes for the devices
+					//Deliver the cooresponding theme
+		}
 	} //END class definition for the device_theme_switcher
-	
-	
-	//Create an object of type device_theme_switcher for executing the plugin
-	//$dts = new device_theme_switcher() ;
 ?>
