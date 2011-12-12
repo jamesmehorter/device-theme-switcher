@@ -23,18 +23,21 @@
 	include('mdetect.php');
 	$uagent_info = new uagent_info;
 	
-	//Detect if the device is a handheld, most likely a smart phone
-	if ($uagent_info->DetectTierIphone()) : 
-		add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
-		add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
-	endif ;
-
-	//Detect if the device is a tablets
-	if ($uagent_info->DetectTierTablet()) : 
-		add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_template'));
-		add_filter('template', array('device_theme_switcher', 'deliver_tablet_template'));
-	endif ;
-
+	
+	if (!is_admin()):
+		//Detect if the device is a handheld, most likely a smart phone
+		if ($uagent_info->DetectTierIphone()) : 
+			add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
+			add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
+		endif ;
+	
+		//Detect if the device is a tablets
+		if ($uagent_info->DetectTierTablet()) : 
+			add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_stylesheet'));
+			add_filter('template', array('device_theme_switcher', 'deliver_tablet_template'));
+		endif ;	
+	endif;
+	
 	
 	// ------------------------------------------------------------------------
 	// DEVICE THEME SWITCHER CONTROLLER CLASS                                    
@@ -85,10 +88,10 @@
 		} //END member function generate_admin_settings_page
 		
 		// ------------------------------------------------------------------------------
-		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
-		//									add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
+		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
+		//								add_filter('template', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
 		// ------------------------------------------------------------------------------
-		public function deliver_handheld_template(){
+		public function deliver_handheld_stylesheet(){
 			$device_theme = get_option('dts_device_themes');
 			$themeList = get_themes();
 			foreach ($themeList as $theme) :
@@ -99,15 +102,58 @@
 		} //END member function deliver_handheld_template
 		
 		// ------------------------------------------------------------------------------
+		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
+		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
+		// ------------------------------------------------------------------------------
+		public function deliver_handheld_template(){
+			$device_theme = get_option('dts_device_themes');
+			$themeList = get_themes();
+			foreach ($themeList as $theme) :
+				if ($theme['Name'] == $device_theme['handheld']) :
+					//For the template file name, we need to check if the theme being set is a child theme
+					//If it is a child theme, then we need to grab the parent theme and pass that instead 
+					$theme_data = get_theme_data("wp-content/themes/{$theme['Stylesheet']}/style.css");
+					if (isset($theme_data) && $theme_data['Template'] != "") :
+						return $theme_data['Template'];
+					else :
+						return $theme['Stylesheet'];
+					endif ;
+				endif;
+			endforeach;
+		} //END member function deliver_tablet_template
+		
+		
+		// ------------------------------------------------------------------------------
+		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_stylesheet'));
+		//								add_filter('template', array('device_theme_switcher', 'deliver_tablet_stylesheet'));
+		// ------------------------------------------------------------------------------
+		public function deliver_tablet_stylesheet(){
+			$device_theme = get_option('dts_device_themes');
+			$themeList = get_themes();
+			foreach ($themeList as $theme) :
+				if ($theme['Name'] == $device_theme['tablet']) :
+					return $theme['Stylesheet'];
+				endif;
+			endforeach;
+		} //END member function deliver_tablet_template
+		
+		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_template'));
-		//									add_filter('template', array('device_theme_switcher', 'deliver_tablet_template'));
+		//								 add_filter('template', array('device_theme_switcher', 'deliver_tablet_template'));
 		// ------------------------------------------------------------------------------
 		public function deliver_tablet_template(){
 			$device_theme = get_option('dts_device_themes');
 			$themeList = get_themes();
 			foreach ($themeList as $theme) :
 				if ($theme['Name'] == $device_theme['tablet']) :
-					return $theme['Stylesheet'];
+					//For the template file name, we need to check if the theme being set is a child theme
+					//If it is a child theme, then we need to grab the parent theme and pass that instead 
+					$theme_data = get_theme_data("wp-content/themes/{$theme['Stylesheet']}/style.css");
+					if (isset($theme_data) && $theme_data['Template'] != "") :
+						return $theme_data['Template'];
+					else :
+						return $theme['Stylesheet'];
+					endif ;
 				endif;
 			endforeach;
 		} //END member function deliver_tablet_template
