@@ -17,6 +17,26 @@
 	add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
 	
 	// ------------------------------------------------------------------------
+	// DEVICE READING & ALTERNATE THEME OUTPUT
+	// ------------------------------------------------------------------------
+	//Include the MobileESP code library for acertaining device user agents
+	include('mdetect.php');
+	$uagent_info = new uagent_info;
+	
+	//Detect if the device is a handheld, most likely a smart phone
+	if ($uagent_info->DetectTierIphone()) : 
+		add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
+		add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
+	endif ;
+
+	//Detect if the device is a tablets
+	if ($uagent_info->DetectTierTablet()) : 
+		add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_template'));
+		add_filter('template', array('device_theme_switcher', 'deliver_tablet_template'));
+	endif ;
+
+	
+	// ------------------------------------------------------------------------
 	// DEVICE THEME SWITCHER CONTROLLER CLASS                                    
 	// ------------------------------------------------------------------------
 	class device_theme_switcher {
@@ -57,22 +77,39 @@
 		}//END member function remove
 		
 		// ------------------------------------------------------------------------------
-		// CALLBACK FUNCTION SPECIFIED IN: add_options_page()
+		// CALLBACK MEMBER FUNCTION SPECIFIED IN: add_options_page()
 		// ------------------------------------------------------------------------------
 		public function generate_admin_settings_page() {
 			//Include an external php file containing output for the admin settings page
 			include('dts_admin_output.php'); 
 		} //END member function generate_admin_settings_page
 		
+		// ------------------------------------------------------------------------------
+		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
+		//									add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
+		// ------------------------------------------------------------------------------
+		public function deliver_handheld_template(){
+			$device_theme = get_option('dts_device_themes');
+			$themeList = get_themes();
+			foreach ($themeList as $theme) :
+				if ($theme['Name'] == $device_theme['handheld']) :
+					return $theme['Stylesheet'];
+				endif;
+			endforeach;
+		} //END member function deliver_handheld_template
 		
-		public function deliver_theme_to_viewer () {
-			//Determine which type of device is viewing the website
-			
-			//$isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
-			
-			//If the device is a handheld or tablet
-				//if the user has defined alternative themes for the devices
-					//Deliver the cooresponding theme
-		}
+		// ------------------------------------------------------------------------------
+		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_template'));
+		//									add_filter('template', array('device_theme_switcher', 'deliver_tablet_template'));
+		// ------------------------------------------------------------------------------
+		public function deliver_tablet_template(){
+			$device_theme = get_option('dts_device_themes');
+			$themeList = get_themes();
+			foreach ($themeList as $theme) :
+				if ($theme['Name'] == $device_theme['tablet']) :
+					return $theme['Stylesheet'];
+				endif;
+			endforeach;
+		} //END member function deliver_tablet_template
 	} //END class definition for the device_theme_switcher
 ?>
