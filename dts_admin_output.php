@@ -2,9 +2,11 @@
 	// ------------------------------------------------------------------------------
 	// ADMIN SETTINGS PAGE  - included view device_theme_switcher::generate_admin_settings_page
 	// ------------------------------------------------------------------------------
-	$themeList = array_keys(get_themes());
-	natcasesort($themeList);
-	$device_theme = get_option('dts_device_themes');
+	$installed_themes = array_keys(get_themes());
+	natcasesort($installed_themes);
+	
+	$dts_handheld_theme = get_option('dts_handheld_theme');
+	$dts_tablet_theme 	= get_option('dts_tablet_theme');
 ?>
 <!-- This is the html page that displays on the plugin settings page -->
 <style type="text/css">
@@ -13,8 +15,7 @@
     }
 </style>
 <div id="dts_settings_page_wrapper">
-    <form method="post" action="options.php">
-        <?php settings_fields('dts_settings'); ?>
+    <form method="post" action="<?php echo $_SERVER['HTTP_REFERRER'] ?>">
         <table>
             <tr>
                 <td colspan="2">
@@ -22,21 +23,21 @@
                 </td>
             </tr><tr>
                 <td>
-                    <label for="dts_device_themes[handheld]"><?php _e("Handheld Theme") ?></label>
+                    <label for="dts_handheld_theme"><?php _e("Handheld Theme") ?></label>
                 </td><td align="right">
-                    <select name="dts_device_themes[handheld]">
-                        <?php foreach ($themeList as $key => $theme) : ?>
-                            <option value="<?php echo $theme ?>" <?php selected($theme, $device_theme['handheld']) ?>><?php echo $theme ?></option>
+                    <select name="dts_handheld_theme">
+                        <?php foreach ($installed_themes as $key => $theme) : ?>
+                            <option value="<?php echo $theme ?>" <?php selected($theme, $dts_handheld_theme) ?>><?php echo $theme ?></option>
                         <?php endforeach ?>
                     </select>
                 </td>						
             </tr><tr>
                 <td>
-                    <label for="dts_device_themes[tablet]"><?php _e("Tablet Theme") ?></label>
+                    <label for="dts_tablet_theme"><?php _e("Tablet Theme") ?></label>
                 </td><td align="right">
-                    <select name="dts_device_themes[tablet]">
-                        <?php foreach ($themeList as $key => $theme) : ?>
-                            <option value="<?php echo $theme ?>" <?php selected($theme, $device_theme['tablet']) ?>><?php echo $theme ?></option>
+                    <select name="dts_tablet_theme">
+                        <?php foreach ($installed_themes as $key => $theme) : ?>
+                            <option value="<?php echo $theme ?>" <?php selected($theme, $dts_tablet_theme) ?>><?php echo $theme ?></option>
                         <?php endforeach ?>
                     </select>
                 </td>
