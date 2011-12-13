@@ -10,8 +10,11 @@
 ?>
 <!-- This is the html page that displays on the plugin settings page -->
 <style type="text/css">
+	.updated.dts {
+		margin-top: 15px ;
+	}
     #dts_settings_page_wrapper {
-        margin: 15px 0 0 15px ;
+        margin: 10px 0 0 15px ;
     }
 </style>
 <div id="dts_settings_page_wrapper">
@@ -44,6 +47,7 @@
             </tr>
                 <td colspan="2" align="right">
                     <br /><br />
+                    <input type="hidden" name="dts_settings_update" value="true" />
                     <input type="submit" value="<?php _e("Save Device Themes") ?>" />
                 </td>
             </tr>

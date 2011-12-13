@@ -34,7 +34,7 @@
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_init', array('device_theme_switcher', 'init') );
 		// ------------------------------------------------------------------------------
-		function __construct() {
+		public function __construct() {
 			//Process saving the admin settings if the user has clicked 'Save Device Themes'
 			$this->update();
 			//Grab our plugin settings
@@ -48,7 +48,7 @@
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
 		// ------------------------------------------------------------------------------
-		function admin_menu () {
+		public function admin_menu () {
 			//Create the admin menu page
 			add_submenu_page('themes.php',  __('Device Theme Switcher'), __('Device Themes'), 'manage_options', 'device-themes', array('device_theme_switcher', 'generate_admin_settings_page'));
 		}//END member function admin_menu
@@ -56,7 +56,7 @@
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: register_uninstall_hook(__FILE__, array('device_theme_switcher', 'remove'));
 		// ------------------------------------------------------------------------------
-		function remove () {
+		public function remove () {
 			//Remove the plugin and it's settings
 			delete_option('dts_handheld_theme');
 			delete_option('dts_tablet_theme');
@@ -66,8 +66,8 @@
 		// ------------------------------------------------------------------------------
 		// CALLED MEMBER FUNCTION FOR: if ($_POST) : $dts->update; ...
 		// ------------------------------------------------------------------------------
-		function update () {
-			if ($_POST) :
+		public function update () {
+			if ($_POST['dts_settings_update'] == "true") :
 				update_option('dts_handheld_theme', $_POST['dts_handheld_theme']);
 				update_option('dts_tablet_theme', $_POST['dts_tablet_theme']);
 				add_action('admin_notices', array($this, 'admin_update_notice'));
@@ -77,15 +77,15 @@
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_notices', array($dts, 'dts_admin_notice'));
 		// ------------------------------------------------------------------------------
-		function admin_update_notice(){
+		public function admin_update_notice(){
 			//Print a message to the admin window letting the user know thier settings have been saved
-			echo '<div class="updated"><p>Settings saved.</p></div>';
+			echo '<div class="dts updated"><p>Settings saved.</p></div>';
 		}//END member function admin_update_notice
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION SPECIFIED IN: add_options_page()
 		// ------------------------------------------------------------------------------
-		function generate_admin_settings_page() {
+		public function generate_admin_settings_page() {
 			//Include an external php file containing output for the admin settings page
 			include('dts_admin_output.php'); 
 		} //END member function generate_admin_settings_page
@@ -93,18 +93,25 @@
 		// ------------------------------------------------------------------------
 		// DEVICE READING & ALTERNATE THEME OUTPUT
 		// ------------------------------------------------------------------------
-		function deliver_theme_to_device () {
+		public function deliver_theme_to_device () {
 			//Detect if the device is a smartphone handheld
 			global $uagent_info;
 			
+			//Check if user sessions have been previously enabled
+			//If they have not, lets go ahead and turn sessions on so we can store the visitors template preference (screen or mobile)		
+			if (!session_id()) session_start();
+
 			//Check if the user has requested the full version of the website 'screen' or if they are requesting the device theme 'device'
 			//By setting an option to this value we can let users browse the default theme & switch back to the device version at any time
-			if ($_GET['dts_device'] == 'screen') : update_option('dts_device', 'screen'); endif;
-			if ($_GET['dts_device'] == 'device') : update_option('dts_device', 'device'); endif;
+			if ($_GET['dts_device'] == 'screen') : $_SESSION['dts_device'] = 'screen'; endif;
+			if ($_GET['dts_device'] == 'device') : $_SESSION['dts_device'] = 'device'; endif;
+			
+			//print_r($_SESSION);
 			
 			//Check if the user has implicitly requested the full version (default theme in 'Appearance > Themes')
 			//If they have not, go ahead and display the device themes set in the plugin admin page
-			if (get_option('dts_device') != "screen") :
+			//if (get_option('dts_device') != "screen") :
+			if ($_SESSION['dts_device'] != "screen") :
 				if ($uagent_info->DetectTierIphone()) : 
 					add_filter('stylesheet', array($this, 'deliver_handheld_stylesheet'));
 					add_filter('template', array($this, 'deliver_handheld_template'));
@@ -117,11 +124,32 @@
 			endif;
 		}//END member function deliver_theme_to_device
 		
+		
+		// ------------------------------------------------------------------------
+		// THEME DEVICE LINK SWITCH - For switching between mobile and screen themes
+		//							  Within your theme you can call this method like so: 
+		//							  device_theme_switcher::generate_link_to_full_website()
+		//							  OR
+		//							  device_theme_switcher::generate_link_back_to_mobile()
+		// ------------------------------------------------------------------------
+		public static function generate_link_to_full_website () {
+			?>
+	            <a href="<?php bloginfo('url') ?>?dts_device=screen" title="View Full Website" id="dts-full-website-link">View the Full Website</a>
+            <?php
+		}//END member function generate_link_to_full_website
+
+		public static function generate_link_back_to_mobile () {
+			?>
+              	<a href="<?php bloginfo('url') ?>?dts_device=device" title="View Mobile Website" id="dts-back-to-mobile-link">Return to the Mobile Website</a>
+            <?php
+		}//END member function generate_link_back_to_mobile
+		
+		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
 		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
 		// ------------------------------------------------------------------------------
-		function deliver_handheld_stylesheet(){
+		public function deliver_handheld_stylesheet(){
 			foreach ($this->installed_themes as $theme) :
 				if ($theme['Name'] == $this->handheld_theme) :
 					return $theme['Stylesheet'];
@@ -133,7 +161,7 @@
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
 		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
 		// ------------------------------------------------------------------------------
-		function deliver_handheld_template(){
+		public function deliver_handheld_template(){
 			foreach ($this->installed_themes as $theme) :
 				if ($theme['Name'] == $this->handheld_theme) :
 					//For the template file name, we need to check if the theme being set is a child theme
@@ -152,7 +180,7 @@
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_stylesheet'));
 		//								 add_filter('template', array('device_theme_switcher', 'deliver_tablet_stylesheet'));
 		// ------------------------------------------------------------------------------
-		function deliver_tablet_stylesheet(){
+		public function deliver_tablet_stylesheet(){
 			foreach ($this->installed_themes as $theme) :
 				if ($theme['Name'] == $this->tablet_theme) :
 					return $theme['Stylesheet'];
@@ -164,7 +192,7 @@
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_tablet_template'));
 		//								 add_filter('template', array('device_theme_switcher', 'deliver_tablet_template'));
 		// ------------------------------------------------------------------------------
-		function deliver_tablet_template(){
+		public function deliver_tablet_template(){
 			foreach ($this->installed_themes as $theme) :
 				if ($theme['Name'] == $this->tablet_theme) :
 					//For the template file name, we need to check if the theme being set is a child theme
