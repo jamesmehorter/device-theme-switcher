@@ -22,7 +22,6 @@
 	// ------------------------------------------------------------------------
 	//Include the MobileESP code library for acertaining device user agents
 	include('mdetect.php');
-	$uagent_info = new uagent_info;
 	
 	//Instantiate a new object of type device_theme_switcher to setup our plugin controller
 	$dts = new device_theme_switcher;
@@ -41,7 +40,7 @@
 			$this->handheld_theme = get_option('dts_handheld_theme');
 			$this->tablet_theme = get_option('dts_tablet_theme');
 			$this->installed_themes = get_themes();
-			
+			//This value will be used to differentiate which device is requesting the websit
 			$this->device = "";
 			//Deliver the user's chosen theme to the device requesting the page
 			$this->deliver_theme_to_device();
@@ -96,23 +95,20 @@
 		// DEVICE READING & ALTERNATE THEME OUTPUT
 		// ------------------------------------------------------------------------
 		public function deliver_theme_to_device () {
-			//Detect if the device is a smartphone handheld
-			global $uagent_info;
-			
 			//Check if user sessions have been previously enabled
 			//If they have not, lets go ahead and turn sessions on so we can store the visitors template preference (screen or mobile)		
-			if (!session_id()) session_start();
+			if (!session_id()) : session_start(); endif;
 
 			//Check if the user has requested the full version of the website 'screen' or if they are requesting the device theme 'device'
 			//By setting an option to this value we can let users browse the default theme & switch back to the device version at any time
 			if ($_GET['dts_device'] == 'screen') : $_SESSION['dts_device'] = 'screen'; endif;
 			if ($_GET['dts_device'] == 'device') : $_SESSION['dts_device'] = 'device'; endif;
 			
-			//print_r($_SESSION);
+			//Detect if the device is a smartphone handheld
+			$uagent_info = new uagent_info;
 			
 			//Check if the user has implicitly requested the full version (default theme in 'Appearance > Themes')
 			//If they have not, go ahead and display the device themes set in the plugin admin page
-			//if (get_option('dts_device') != "screen") :
 			if ($_SESSION['dts_device'] != "screen") :
 				if ($uagent_info->DetectTierIphone()) : 
 					$this->device = $this->handheld_theme;
@@ -168,13 +164,13 @@
 		// ------------------------------------------------------------------------
 		public static function generate_link_to_full_website () {
 			?>
-	            <a href="<?php bloginfo('url') ?>?dts_device=screen" title="View Full Website" class="dts-link to-full-website">View the Full Website</a>
+	        <a href="<?php bloginfo('url') ?>?dts_device=screen" title="View Full Website" class="dts-link to-full-website">View the Full Website</a>
             <?php
 		}//END member function generate_link_to_full_website
 
 		public static function generate_link_back_to_mobile () {
 			?>
-              	<a href="<?php bloginfo('url') ?>?dts_device=device" title="View Mobile Website" class="dts-link back-to-mobile">Return to the Mobile Website</a>
+            <a href="<?php bloginfo('url') ?>?dts_device=device" title="View Mobile Website" class="dts-link back-to-mobile">Return to the Mobile Website</a>
             <?php
 		}//END member function generate_link_back_to_mobile
 	} //END class definition for the device_theme_switcher
