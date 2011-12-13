@@ -108,7 +108,7 @@
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
-		//								add_filter('template', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
+		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
 		// ------------------------------------------------------------------------------
 		function deliver_handheld_stylesheet(){
 			foreach ($this->installed_themes as $theme) :
