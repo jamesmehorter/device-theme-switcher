@@ -95,15 +95,26 @@
 		function deliver_theme_to_device () {
 			//Detect if the device is a smartphone handheld
 			global $uagent_info;
-			if ($uagent_info->DetectTierIphone()) : 
-				add_filter('stylesheet', array($this, 'deliver_handheld_stylesheet'));
-				add_filter('template', array($this, 'deliver_handheld_template'));
-			endif ;
-			//Detect if the device is a tablets
-			if ($uagent_info->DetectTierTablet()) : 
-				add_filter('stylesheet', array($this, 'deliver_tablet_stylesheet'));
-				add_filter('template', array($this, 'deliver_tablet_template'));
-			endif ;	
+
+			print_r($_SESSION);
+			
+			//Check if the user has requested the full version of the website
+			if ($_GET['dts_device'] == 'screen') :
+				//Set a session variable so we can provide once-handheld-users an option back to the mobile version of the website
+				$_SESSION['dts_device'] = 'screen';
+			endif;
+			
+			if ($_SESSION['dts_device'] != "screen") :
+				if ($uagent_info->DetectTierIphone()) : 
+					add_filter('stylesheet', array($this, 'deliver_handheld_stylesheet'));
+					add_filter('template', array($this, 'deliver_handheld_template'));
+				endif ;
+				//Detect if the device is a tablets
+				if ($uagent_info->DetectTierTablet()) : 
+					add_filter('stylesheet', array($this, 'deliver_tablet_stylesheet'));
+					add_filter('template', array($this, 'deliver_tablet_template'));
+				endif ;	
+			endif;
 		}//END member function deliver_theme_to_device
 		
 		// ------------------------------------------------------------------------------
