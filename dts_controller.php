@@ -4,7 +4,7 @@
 		Plugin URI: http://www.picadesign.com.com
 		Description: Plugin that allows you to set a separate theme for handheld and tablet devices
 		Author: James Mehorter @ Pica Design
-		Version: 0.1
+		Version: 1.0
 		Author URI: http://www.jamesmehorter.com
 	*/
 	
@@ -60,6 +60,7 @@
 			//Remove the plugin and it's settings
 			delete_option('dts_handheld_theme');
 			delete_option('dts_tablet_theme');
+			delete_option('dts_device');
 		}//END member function remove
 		
 		// ------------------------------------------------------------------------------
@@ -95,16 +96,15 @@
 		function deliver_theme_to_device () {
 			//Detect if the device is a smartphone handheld
 			global $uagent_info;
-
-			print_r($_SESSION);
 			
-			//Check if the user has requested the full version of the website
-			if ($_GET['dts_device'] == 'screen') :
-				//Set a session variable so we can provide once-handheld-users an option back to the mobile version of the website
-				$_SESSION['dts_device'] = 'screen';
-			endif;
+			//Check if the user has requested the full version of the website 'screen' or if they are requesting the device theme 'device'
+			//By setting an option to this value we can let users browse the default theme & switch back to the device version at any time
+			if ($_GET['dts_device'] == 'screen') : update_option('dts_device', 'screen'); endif;
+			if ($_GET['dts_device'] == 'device') : update_option('dts_device', 'device'); endif;
 			
-			if ($_SESSION['dts_device'] != "screen") :
+			//Check if the user has implicitly requested the full version (default theme in 'Appearance > Themes')
+			//If they have not, go ahead and display the device themes set in the plugin admin page
+			if (get_option('dts_device') != "screen") :
 				if ($uagent_info->DetectTierIphone()) : 
 					add_filter('stylesheet', array($this, 'deliver_handheld_stylesheet'));
 					add_filter('template', array($this, 'deliver_handheld_template'));
