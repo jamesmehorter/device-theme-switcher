@@ -169,9 +169,9 @@
 		}//END member function generate_link_to_full_website
 
 		public static function generate_link_back_to_mobile () {
-			?>
-            <a href="<?php bloginfo('url') ?>?dts_device=device" title="View Mobile Website" class="dts-link back-to-mobile">Return to the Mobile Website</a>
-            <?php
+			if ($_SESSION['dts_device'] == 'screen') : ?>
+				<a href="<?php bloginfo('url') ?>?dts_device=device" title="View Mobile Website" class="dts-link back-to-mobile">Return to the Mobile Website</a>
+			<?php endif;
 		}//END member function generate_link_back_to_mobile
 	} //END class definition for the device_theme_switcher
 ?>

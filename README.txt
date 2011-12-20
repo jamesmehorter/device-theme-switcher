@@ -10,7 +10,7 @@ For theme developers / admins:
 	+ This plugin saves the users chosen theme in a wp option, so the user can browse around the full website prior to clicking 'Return to mobile website'. You can use theme link anywhere in your themes.
 
 //Place the following anywhere in your handheld and tablet themes
-<?php device_theme_switcher::generate_to_full_website_link() ?>
+<?php device_theme_switcher::generate_link_to_full_website() ?>
 
 //Place the following anywhere in your default/active website theme (Appearance > Themes)
-<?php device_theme_switcher::generate_back_to_mobile_link() ?>
+<?php device_theme_switcher::generate_link_back_to_mobile() ?>
