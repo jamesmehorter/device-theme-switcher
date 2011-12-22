@@ -68,10 +68,12 @@
 		// CALLED MEMBER FUNCTION FOR: if ($_POST) : $dts->update; ...
 		// ------------------------------------------------------------------------------
 		public function update () {
-			if ($_POST['dts_settings_update'] == "true") :
-				update_option('dts_handheld_theme', $_POST['dts_handheld_theme']);
-				update_option('dts_tablet_theme', $_POST['dts_tablet_theme']);
-				add_action('admin_notices', array($this, 'admin_update_notice'));
+			if (!empty($_POST)) :
+				if ($_POST['dts_settings_update'] == "true") :
+					update_option('dts_handheld_theme', $_POST['dts_handheld_theme']);
+					update_option('dts_tablet_theme', $_POST['dts_tablet_theme']);
+					add_action('admin_notices', array($this, 'admin_update_notice'));
+				endif;
 			endif;
 		}//END member function update
 		
@@ -101,14 +103,16 @@
 
 			//Check if the user has requested the full version of the website 'screen' or if they are requesting the device theme 'device'
 			//By setting an option to this value we can let users browse the default theme & switch back to the device version at any time
-			if ($_GET['dts_device'] == 'screen') : $_SESSION['dts_device'] = 'screen'; endif;
-			if ($_GET['dts_device'] == 'device') : $_SESSION['dts_device'] = 'device'; endif;
-			
+			if (!empty($_GET)) :
+				if ($_GET['dts_device'] == 'screen') : $_SESSION['dts_device'] = 'screen'; endif;
+				if ($_GET['dts_device'] == 'device') : $_SESSION['dts_device'] = 'device'; endif;
+			endif;			
 			//Detect if the device is a smartphone handheld
 			$uagent_info = new uagent_info;
 			
 			//Check if the user has implicitly requested the full version (default theme in 'Appearance > Themes')
 			//If they have not, go ahead and display the device themes set in the plugin admin page
+			
 			if ($_SESSION['dts_device'] != "screen") :
 				if ($uagent_info->DetectTierIphone()) : 
 					$this->device = $this->handheld_theme;
