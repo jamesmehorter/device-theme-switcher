@@ -9,6 +9,8 @@ Author URI: http://www.jamesmehorter.com
 
 Based on the concepts provided by Jonas Vorwerk's (http://www.jonasvorwerk.com/) Mobile heme switcher plugin, and Jeremy Arntz's (http://www.jeremyarntz.com/) Mobile Theme Switcher plugin. 
 
+This plugin uses the MobileESP code library created by Anthony Hand. http://code.google.com/p/mobileesp/
+
 Copyright (C) 2011 James Mehorter
 
 This library is free software; you can redistribute it and/or
