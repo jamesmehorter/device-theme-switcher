@@ -7,6 +7,25 @@ Tested up to WordPress 3.3
 Plugin URI: https://github.com/jamesmehorter/device-theme-switcher
 Author URI: http://www.jamesmehorter.com
 
+Based on the concepts provided by Jonas Vorwerk's (http://www.jonasvorwerk.com/) Mobile heme switcher plugin, and Jeremy Arntz's (http://www.jeremyarntz.com/) Mobile Theme Switcher plugin. 
+
+Copyright (C) 2011 James Mehorter
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the
+Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+Boston, MA  02110-1301, USA.
+
 === Plugin Description ===
 
 This plugin allows you to set a separate theme for handheld and tablet devices
