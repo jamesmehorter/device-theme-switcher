@@ -2,7 +2,7 @@
 	/** 
 		Plugin Name: Device Theme Switcher
 		Plugin URI: http://www.picadesign.com.com
-		Description: This plugin allows you to set a separate theme for handheld and tablet devices
+		Description: This plugin allows you to set a separate theme for handheld and tablet devices under Appearance > Device Themes
 		Author: James Mehorter @ Pica Design
 		Version: 1.0
 		Author URI: http://www.jamesmehorter.com
