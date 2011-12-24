@@ -43,10 +43,10 @@ To display a link for users to "Return to the mobile website" place the followin
 With this plugin you can place links in your themes to allow users to switch between your screen theme and device themes via a "View Full Website" anchor tag. You can also use a link in your screen theme to return the user to the device theme via a 'Return to Mobile Website' anchor tag. This plugin saves the users chosen theme in a PHP Session, so the user can browse around your website prior to clicking 'Return to mobile website'. You can use the theme links anywhere in your themes, like in header.php or footer.php. The achor tags that output both have a class 'dts-link' so you can style it. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile' website has an additional class of 'back-to-mobile'. E.g: 
 
 .dts-link {
-	font-size: 1.5em ;
+    font-size: 1.5em ;
 }
-	.dts-link.to-full-website {
-    	color: red ;
+    .dts-link.to-full-website {
+        color: red ;
     }
     .dts-link.to-full-website {
     	color: blue ;
