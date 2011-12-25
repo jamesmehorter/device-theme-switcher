@@ -24,6 +24,9 @@
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
 	
+	//Instantiate a new object of type device_theme_switcher to setup our plugin controller
+	//$dts = new Device_Theme_Switcher;
+	
 	// ------------------------------------------------------------------------
 	// REGISTER HOOKS & CALLBACK FUNCTIONS:                                    
 	// ------------------------------------------------------------------------
@@ -36,8 +39,11 @@
 	//Check if we need to save any form data that was submitted
 	add_action('load-appearance_page_device-themes', array('Device_Theme_Switcher', 'load'));
 	
-	//Instantiate a new object of type device_theme_switcher to setup our plugin controller
-	$dts = new Device_Theme_Switcher;
+	add_filter('template', array('Device_Theme_Switcher', 'deliver_template'));
+	add_filter('stylesheet', array('Device_Theme_Switcher', 'deliver_stylesheet'));
+	
+	
+	
 	
 	// ------------------------------------------------------------------------
 	// DEVICE THEME SWITCHER CONTROLLER CLASS                                    
@@ -55,8 +61,12 @@
 			//This value will be used to differentiate which device is requesting the website
 			$this->device = "";
 			
+			//Session reset - FOR DEBUGGING ONLY!!
+			//session_start();
+			//$_SESSION['dts_device'] = '';
+			
 			//Deliver the user's chosen theme to the device requesting the page
-			$this->deliver_theme_to_device();
+			//$this->deliver_theme_to_device();
 		}//END member function init
 		
 		// ------------------------------------------------------------------------------
@@ -112,7 +122,24 @@
 		// ------------------------------------------------------------------------
 		// DEVICE READING & ALTERNATE THEME OUTPUT
 		// ------------------------------------------------------------------------
-		public function deliver_theme_to_device () {
+		public function detect_device_and_set_flag () {
+			//Include the MobileESP code library for acertaining device user agents
+			include_once('mdetect.php');
+			
+			//Setup the MobileESP Class
+			$uagent_info = new uagent_info;
+			
+			//Detect if the device is a handheld
+			if ($uagent_info->DetectTierIphone()) : 
+				$this->device = $this->handheld_theme;
+			endif ;
+			//Detect if the device is a tablets
+			if ($uagent_info->DetectTierTablet()) : 
+				$this->device = $this->tablet_theme;
+			endif ;	
+		}//END member function deliver_theme_to_device
+		
+		public function can_deliver_theme () {
 			//Open $_SESSION for use, but only if session_start() has not been called already 
 			if (!isset($_SESSION)) : session_start() ; endif; 
 			
@@ -134,57 +161,72 @@
 			//Check if the user has implicitly requested the full version (default theme in 'Appearance > Themes')
 			//If they have not, go ahead and display the device themes set in the plugin admin page
 			if ($_SESSION['dts_device'] == '' || $_SESSION['dts_device'] == 'device') :
-				//Include the MobileESP code library for acertaining device user agents
-				include('mdetect.php');
-				
-				//Setup the MobileESP Class
-				$uagent_info = new uagent_info;
-				
-				//Detect if the device is a handheld
-				if ($uagent_info->DetectTierIphone()) : 
-					$this->device = $this->handheld_theme;
-					add_filter('stylesheet', array($this, 'deliver_stylesheet'));
-					add_filter('template', array($this, 'deliver_template'));
-				endif ;
-				//Detect if the device is a tablets
-				if ($uagent_info->DetectTierTablet()) : 
-					$this->device = $this->tablet_theme;
-					add_filter('stylesheet', array($this, 'deliver_stylesheet'));
-					add_filter('template', array($this, 'deliver_template'));
-				endif ;	
+				return true;
 			endif;
-		}//END member function deliver_theme_to_device
-		
-		// ------------------------------------------------------------------------------
-		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
-		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
-		// ------------------------------------------------------------------------------
-		public function deliver_stylesheet(){
-			foreach ($this->installed_themes as $theme) :
-				if ($theme['Name'] == $this->device) :
-					return $theme['Stylesheet'];
-				endif;
-			endforeach;
-		} //END member function deliver_stylesheet
+			
+			//Default is false
+			return false;
+		}
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
 		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
 		// ------------------------------------------------------------------------------
 		public function deliver_template(){
-			foreach ($this->installed_themes as $theme) :
-				if ($theme['Name'] == $this->device) :
-					//For the template file name, we need to check if the theme being set is a child theme
-					//If it is a child theme, then we need to grab the parent theme and pass that instead 
-					$theme_data = get_theme_data("wp-content/themes/{$theme['Stylesheet']}/style.css");
-					if (isset($theme_data) && $theme_data['Template'] != "") :
-						return $theme_data['Template'];
-					else :
-						return $theme['Stylesheet'];
-					endif ;
+			//Instantiate a new object of type device_theme_switcher to setup our plugin controller
+			$dts = new Device_Theme_Switcher;
+			
+			//This is not returning anything when coming a non device!
+			//Since it's a filter it must, by default, return the active theme
+			if ($dts->can_deliver_theme()) :
+				$dts->detect_device_and_set_flag();
+				if ($dts->device != "") :
+					//echo $dts->device;
+					foreach ($dts->installed_themes as $theme) :
+						if ($theme['Name'] == $dts->device) :
+							//For the template file name, we need to check if the theme being set is a child theme
+							//If it is a child theme, then we need to grab the parent theme and pass that instead 
+							$theme_data = get_theme_data("wp-content/themes/{$theme['Stylesheet']}/style.css");
+							if (isset($theme_data) && $theme_data['Template'] != "") :
+								return $theme_data['Template'];
+							else :
+								return $theme['Stylesheet'];
+							endif ;
+						endif;
+					endforeach;
+				else :
+					return get_option('template');
 				endif;
-			endforeach;
+			else :
+				return get_option('template');
+			endif;
 		} //END member function deliver_template
+		
+		// ------------------------------------------------------------------------------
+		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
+		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
+		// ------------------------------------------------------------------------------
+		public function deliver_stylesheet(){
+			//Instantiate a new object of type device_theme_switcher to setup our plugin controller
+			$dts = new Device_Theme_Switcher;
+			
+			if ($dts->can_deliver_theme()) :
+				$dts->detect_device_and_set_flag();
+				if ($dts->device != "") :
+					foreach ($dts->installed_themes as $theme) :
+						if ($theme['Name'] == $dts->device) :
+							return $theme['Stylesheet'];
+						endif;
+					endforeach;
+				else :
+					return get_option('stylesheet'); 
+				endif;
+			else :
+				return get_option('stylesheet');
+			endif;			
+		} //END member function deliver_stylesheet
+		
+		
 		
 		// ------------------------------------------------------------------------
 		// THEME DEVICE LINK SWITCH - For switching between mobile and screen themes
