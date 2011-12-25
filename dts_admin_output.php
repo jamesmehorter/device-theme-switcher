@@ -18,7 +18,7 @@
     }
 </style>
 <div id="dts_settings_page_wrapper">
-    <form method="post" action="<?php echo $_SERVER['HTTP_REFERRER'] ?>">
+    <form method="post" action="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes">
         <table>
             <tr>
                 <td colspan="2">

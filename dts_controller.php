@@ -99,23 +99,31 @@
 		// DEVICE READING & ALTERNATE THEME OUTPUT
 		// ------------------------------------------------------------------------
 		public function deliver_theme_to_device () {
-			//Check if user sessions have been previously enabled
-			//If they have not, lets go ahead and turn sessions on so we can store the visitors template preference (screen or mobile)		
-			if (!session_id()) : session_start(); endif;
-
+			//Open $_SESSION for use
+			session_start();
+			
+			//Check if the user has a session yet
+			if (session_id() == "") :  
+				//If they do not, we can safely assume they are a new visitor and we need to init the 'dts_deviice' variable
+				$_SESSION['dts_device'] = '';
+			endif;
+			
 			//Check if the user has requested the full version of the website 'screen' or if they are requesting the device theme 'device'
 			//By setting an option to this value we can let users browse the default theme & switch back to the device version at any time
-			if (!empty($_GET)) :
-				if ($_GET['dts_device'] == 'screen') : $_SESSION['dts_device'] = 'screen'; endif;
-				if ($_GET['dts_device'] == 'device') : $_SESSION['dts_device'] = 'device'; endif;
+			if (isset($_GET)) :
+				if (isset($_GET['dts_device'])) :
+					if ($_GET['dts_device'] == 'screen') : $_SESSION['dts_device'] = 'screen'; endif;
+					if ($_GET['dts_device'] == 'device') : $_SESSION['dts_device'] = 'device'; endif;
+				endif;
 			endif;			
-			//Detect if the device is a smartphone handheld
-			$uagent_info = new uagent_info;
 			
 			//Check if the user has implicitly requested the full version (default theme in 'Appearance > Themes')
 			//If they have not, go ahead and display the device themes set in the plugin admin page
-			
-			if ($_SESSION['dts_device'] != "screen") :
+			if ($_SESSION['dts_device'] == '' || $_SESSION['dts_device'] == 'device') :
+				//Setup the MobileESP Class
+				$uagent_info = new uagent_info;
+				
+				//Detect if the device is a handheld
 				if ($uagent_info->DetectTierIphone()) : 
 					$this->device = $this->handheld_theme;
 					add_filter('stylesheet', array($this, 'deliver_stylesheet'));
