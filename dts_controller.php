@@ -32,6 +32,8 @@
 	//Set a member function of the plugin tp run upon plugin deactivation, to remove any plugin values that have been stored in the db
 	register_uninstall_hook(__FILE__, array('Device_Theme_Switcher', 'remove'));
 	
+	add_action('activity_box_end', array('Device_Theme_Switcher', 'right_now'));
+	
 	//Create our plugin admin page under the 'Appearance' menu
 	add_action('admin_menu', array('Device_Theme_Switcher', 'admin_menu'));
 

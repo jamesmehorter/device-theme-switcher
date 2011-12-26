@@ -196,5 +196,14 @@
 				<a href="<?php bloginfo('url') ?>?dts_device=device" title="<?php echo $link_text ?>" class="dts-link back-to-mobile"><?php echo $link_text ?></a>
 			<?php endif;
 		}//END member function generate_link_back_to_mobile
+		
+		public function right_now () {
+			?>
+            <br />
+            Handheld Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_handheld_theme') ?></strong></a> 
+            <br />
+            Tablet Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_tablet_theme') ?></strong></a>
+            <?php
+		}
 	} //END class definition for the device_theme_switcher
 ?>
