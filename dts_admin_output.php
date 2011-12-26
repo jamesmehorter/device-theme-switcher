@@ -30,7 +30,7 @@
                 </td><td align="right">
                     <select name="dts_handheld_theme">
                         <?php foreach ($installed_themes as $key => $theme) : ?>
-                            <option value="<?php echo $theme ?>" <?php selected($theme, $dts_handheld_theme) ?>><?php echo $theme ?></option>
+                            <option value="<?php echo $theme ?>" <?php selected($theme, $dts_handheld_theme) ?>><?php echo $theme ?> &nbsp; </option>
                         <?php endforeach ?>
                     </select>
                 </td>						
@@ -40,7 +40,7 @@
                 </td><td align="right">
                     <select name="dts_tablet_theme">
                         <?php foreach ($installed_themes as $key => $theme) : ?>
-                            <option value="<?php echo $theme ?>" <?php selected($theme, $dts_tablet_theme) ?>><?php echo $theme ?></option>
+                            <option value="<?php echo $theme ?>" <?php selected($theme, $dts_tablet_theme) ?>><?php echo $theme ?>&nbsp; &nbsp;</option>
                         <?php endforeach ?>
                     </select>
                 </td>
