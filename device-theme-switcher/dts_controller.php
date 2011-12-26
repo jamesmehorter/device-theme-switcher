@@ -23,13 +23,10 @@
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
-	
-	//Instantiate a new object of type device_theme_switcher to setup our plugin controller
-	//$dts = new Device_Theme_Switcher;
-	
 	// ------------------------------------------------------------------------
 	// REGISTER HOOKS & CALLBACK FUNCTIONS:                                    
 	// ------------------------------------------------------------------------
+	
 	register_activation_hook(__FILE__, array('Device_Theme_Switcher', 'add_defaults'));
 	register_uninstall_hook(__FILE__, array('Device_Theme_Switcher', 'remove'));
 	
@@ -39,14 +36,15 @@
 	//Check if we need to save any form data that was submitted
 	add_action('load-appearance_page_device-themes', array('Device_Theme_Switcher', 'load'));
 	
-	add_filter('template', array('Device_Theme_Switcher', 'deliver_template'));
-	add_filter('stylesheet', array('Device_Theme_Switcher', 'deliver_stylesheet'));
-	
-	
-	
-	
+	//We only want to tap into the theme filters if a frontend page is being requested
+	if (!is_admin()) :
+		add_filter('template', array('Device_Theme_Switcher', 'deliver_template'));
+		add_filter('stylesheet', array('Device_Theme_Switcher', 'deliver_stylesheet'));
+	endif;	
+
 	// ------------------------------------------------------------------------
-	// DEVICE THEME SWITCHER CONTROLLER CLASS                                    
+	// DEVICE THEME SWITCHER CONTROLLER CLASS 
+	//		+ This class is instantiated within itself by the deliver_template() and deliver_stylesheet() functions
 	// ------------------------------------------------------------------------
 	class Device_Theme_Switcher {
 		// ------------------------------------------------------------------------------
@@ -57,17 +55,13 @@
 			$this->handheld_theme = get_option('dts_handheld_theme');
 			$this->tablet_theme = get_option('dts_tablet_theme');
 			$this->installed_themes = get_themes();
-			
 			//This value will be used to differentiate which device is requesting the website
 			$this->device = "";
-			
-			//Session reset - FOR DEBUGGING ONLY!!
-			//session_start();
-			//$_SESSION['dts_device'] = '';
-			
-			//Deliver the user's chosen theme to the device requesting the page
-			//$this->deliver_theme_to_device();
 		}//END member function init
+		
+		public function add_defaults() {
+			//No defaults are loaded 
+		}
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
@@ -144,8 +138,9 @@
 			if (!isset($_SESSION)) : session_start() ; endif; 
 			
 			//Check if the user has a session yet
-			if (session_id() == "") :  
-				//If they do not, we can safely assume they are a new visitor and we need to init the 'dts_deviice' variable
+			//Also check if the user does not have dts_device index in their session yet
+			//In either case, create a session index to store the users theme preference
+			if (session_id() == "" || !isset($_SESSION['dts_device'])) :  
 				$_SESSION['dts_device'] = '';
 			endif;
 			
@@ -225,8 +220,6 @@
 				return get_option('stylesheet');
 			endif;			
 		} //END member function deliver_stylesheet
-		
-		
 		
 		// ------------------------------------------------------------------------
 		// THEME DEVICE LINK SWITCH - For switching between mobile and screen themes
