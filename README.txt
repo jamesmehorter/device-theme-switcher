@@ -4,11 +4,11 @@ Plugin Name: Device Theme Switcher
 Author: jamesmehorter
 Author URI: http://www.jamesmehorter.com
 Plugin URI: https://github.com/jamesmehorter/device-theme-switcher
-Version: 1.0
+Version: 1.1
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, Tablet Theme, Different Themes, Device Theme
 Requires at least: 3.0
 Tested up to: 3.3
-Stable tag: 1.0
+Stable tag: 1.1
 
 Set a theme for handhelds and a theme for tablets
 
