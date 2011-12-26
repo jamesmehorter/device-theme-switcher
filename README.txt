@@ -35,10 +35,10 @@ Copyright (C) 2011 James Mehorter
 == Usage ==
 
 To display a link for users to "View the full website" place the following anywhere in your handheld and tablet themes.
-`<?php device_theme_switcher::generate_link_to_full_website() ?>`
+`<?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_to_full_website(); endif; ?>`
 
 To display a link for users to "Return to the mobile website" place the following anywhere in your default/active website theme.
-`<?php device_theme_switcher::generate_link_back_to_mobile() ?>`
+`<?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_back_to_mobile(); endif; ?>`
 
 The users chosen theme is stored in a PHP Session, so the user can browse around your website prior to clicking 'Return to mobile website'. You can use the theme links anywhere in your themes, like in header.php or footer.php. 
 
@@ -54,3 +54,9 @@ The achor tags that output both have a CSS class: 'dts-link'. The 'View Full Web
     .dts-link.to-full-website {
     	color: blue ;
     }`
+
+== Changelog ==
+
+Version 1.1 - Bug fixes, Efficency improvements, and New Features.
+
+Version 1.0 - First Public Stable Release
