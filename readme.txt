@@ -30,8 +30,9 @@ Device Theme Switcher is especially helpful if you're a theme developer and want
 
 == Frequently Asked Questions ==
 
-Q: How do I display a link in my handheld theme for users to "View Full Website"? 
-A: This plugin creates two widgets for doing just that! Or you can use the template tags below.
+**How do I display a link in my handheld theme for users to "View Full Website"?**
+
+This plugin creates two widgets for doing just that! Or you can use the template tags below.
 
 To display a link for users to "View the full website" place the following anywhere in your handheld and tablet themes.
 `<?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_to_full_website(); endif; ?>`
@@ -41,8 +42,9 @@ To display a link for users to "Return to the mobile website" place the followin
 
 The users chosen theme is stored in a PHP Session, so the user can browse around your website prior to clicking 'Return to mobile website'. You can use the theme links anywhere in your themes, like in header.php or footer.php. 
 
-Q: How do I style the widget or template tag output??
-A: Device Theme Switcher really just echo's an html anchor tag. Both links have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile' so you can style the link differently if you want
+**How do I style the widget or template tag output??**
+
+Device Theme Switcher really just echo's an html anchor tag. Both links have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile' so you can style the link differently if you want
 
 *Styling Example*
 `.dts-link {
