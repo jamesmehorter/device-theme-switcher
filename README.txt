@@ -57,6 +57,13 @@ The achor tags that output both have a CSS class: 'dts-link'. The 'View Full Web
 
 == Changelog ==
 
-Version 1.1 - Bug fixes, Efficency improvements, and New Features.
-
-Version 1.0 - First Public Stable Release
+*Version 1.2 
+	*Added the handheld and tablet theme choices to the WordPress Dashboard Right Now panel
+	*Update both GitHub and WordPress readme files to be better styled and versed
+	*Added two wigets for users to put in their themes
+	*Coding and efficiency improvments
+*Version 1.1
+	*Bug fixes
+    *Efficency improvements
+*Version 1.0
+	*First Public Stable Release
