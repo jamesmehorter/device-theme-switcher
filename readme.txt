@@ -1,5 +1,4 @@
 === Plugin Name ===
-
 Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
 Donate Link: http://www.jamesmehorter.com/donate/
@@ -14,7 +13,7 @@ Set a theme for handhelds and a theme for tablets
 
 Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > Device Themes', where you can set one theme for handheld devices, and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'.
 
-Device Theme Switcher is especially helpful if you're a theme developer and want to provide a consitant, but different look on these popular device sizes. WordPress child themes are supported, so you can easily create 3 versions of your theme, with just a few overrides. For instance, you may want your page-home.php show a big slideshow to normal computer visitors, to pull a smaller set of thumbnail images for handheld visitors, and also load a touch-friendly jQuery script for tablet users to navigate your image gallery - so you're not just stuck with @media-query()
+Device Theme Switcher is especially helpful if you're a theme developer and want to provide a consitant, but different look on these popular device sizes. WordPress child themes are supported, so you can easily create 3 versions of your theme, with just a few overrides. For instance, you may want your page-home.php to show a large slideshow to normal computer visitors, to pull a smaller set of thumbnail images for handheld visitors, and also load a touch-friendly jQuery script for tablet users to navigate your image gallery - so you're not just stuck with @media queries.
 
 'Handheld' devices include iPod, iPhone, Android, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include everything from iPad and Android tablets to the Kindle Fire and other large-screen hand helds.
 
@@ -30,7 +29,7 @@ Device Theme Switcher is especially helpful if you're a theme developer and want
 
 == Frequently Asked Questions ==
 
-**How do I display a link in my handheld theme for users to "View Full Website"?**
+= How do I display a link in my handheld theme for users to "View Full Website"? =
 
 This plugin creates two widgets for doing just that! Or you can use the template tags below.
 
@@ -42,7 +41,7 @@ To display a link for users to "Return to the mobile website" place the followin
 
 The users chosen theme is stored in a PHP Session, so the user can browse around your website prior to clicking 'Return to mobile website'. You can use the theme links anywhere in your themes, like in header.php or footer.php. 
 
-**How do I style the widget or template tag output??**
+= How do I style the widget or template tag output?? =
 
 Device Theme Switcher really just echo's an html anchor tag. Both links have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile' so you can style the link differently if you want
 
@@ -59,16 +58,18 @@ Device Theme Switcher really just echo's an html anchor tag. Both links have a C
 
 == Changelog ==
 
-Version 1.2 
-	Added the handheld and tablet theme choices to the WordPress Dashboard Right Now panel
-	Update both GitHub and WordPress readme files to be better styled and versed
-	Added two wigets for users to put in their themes
-	Coding and efficiency improvments
-Version 1.1
-	Bug fixes
-    Efficency improvements
-Version 1.0
-	First Public Stable Release
+= Version 1.2 =
+* Added the handheld and tablet theme choices to the WordPress Dashboard Right Now panel
+* Update both GitHub and WordPress readme files to be better styled and versed
+* Added two wigets for users to put in their themes
+* Coding and efficiency improvments
+
+= Version 1.1 =
+* Bug fixes
+* Efficency improvements
+    
+= Version 1.0 =
+* First Public Stable Release
     
 == Upgrade Notice ==
 
