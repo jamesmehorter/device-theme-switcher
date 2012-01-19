@@ -17,6 +17,8 @@ Device Theme Switcher is especially helpful if you're a theme developer and want
 
 'Handheld' devices include iPod, iPhone, Android, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include everything from iPad and Android tablets to the Kindle Fire and other large-screen hand helds.
 
+Please let us know if you have any questions or find any bugs. You can contact us by posting a new topic on the forum on the right of this page. If you like our plugin please vote it up!
+
 == Screenshots ==
 
 1. View of the Device Theme Switcher Window and options. 

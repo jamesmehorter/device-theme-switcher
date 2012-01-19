@@ -92,7 +92,7 @@
 		
 		public function can_deliver_theme () {
 			//Open $_SESSION for use, but only if session_start() has not been called already 
-			if (!isset($_SESSION)) : session_start() ; endif; 
+			if (!isset($_SESSION)) : @session_start() ; endif; 
 			
 			//Check if the user has a session yet
 			//Also check if the user does not have dts_device index in their session yet

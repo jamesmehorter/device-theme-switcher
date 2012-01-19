@@ -18,7 +18,7 @@
     }
 </style>
 <div id="dts_settings_page_wrapper">
-    <form method="post" action="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes">
+    <form method="post" action="<?php echo admin_url() ?>themes.php?page=device-themes">
         <table>
             <tr>
                 <td colspan="2">
