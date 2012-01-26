@@ -1,7 +1,15 @@
 <?php
 
 /* *******************************************
-// Copyright 2010-2011, Anthony Hand
+// Copyright 2010-2012, Anthony Hand
+//
+// File version date: January 21, 2012
+//		Update: 
+//		- Added the constructor method per new features in PHP 5.0: __construct(). 
+//		- Moved Windows Phone 7 to the iPhone Tier. WP7.5's IE 9-based browser is good enough now.  
+//		- Added a new variable for 2 versions of the new BlackBerry Bold Touch (9900 and 9930): deviceBBBoldTouch. 
+//		- Updated DetectBlackBerryTouch() to support the 2 versions of the new BlackBerry Bold Touch (9900 and 9930). 
+//		- Updated DetectKindle() to focus on eInk devices only. The Kindle Fire should be detected as a regular Android device.
 //
 // File version date: August 22, 2011
 //		Update: 
@@ -17,14 +25,6 @@
 //		- Updated DetectAndroidPhone() and DetectAndroidTablet() to properly detect devices running Opera Mobile.
 //		- Created 2 new methods: DetectOperaAndroidPhone() and DetectOperaAndroidTablet(). 
 //		- Updated DetectTierIphone(). Removed the call to DetectMaemoTablet(), an obsolete mobile OS.
-//
-// File version date: July 15, 2011
-//		Update: 
-//		- Refactored the variable called maemoTablet. Its new name is the more generic deviceTablet.
-//		- Created the variable deviceWebOShp for HP's line of WebOS devices starting with the TouchPad tablet.
-//		- Created the DetectWebOSTablet() method for HP's line of WebOS tablets starting with the TouchPad tablet.
-//		- Updated the DetectTierTablet() method to also search for WebOS tablets. 
-//		- Updated the DetectMaemoTablet() method to disambiguate against WebOS tablets which share some signature traits. 
 //
 //
 // LICENSE INFORMATION
@@ -109,7 +109,8 @@ class uagent_info
    var $deviceBB = 'blackberry';   
    var $vndRIM = 'vnd.rim'; //Detectable when BB devices emulate IE or Firefox
    var $deviceBBStorm = 'blackberry95';  //Storm 1 and 2
-   var $deviceBBBold = 'blackberry97'; //Bold
+   var $deviceBBBold = 'blackberry97'; //Bold 97x0 (non-touch)
+   var $deviceBBBoldTouch = 'blackberry 99'; //Bold 99x0 (touchscreen)
    var $deviceBBTour = 'blackberry96'; //Tour
    var $deviceBBCurve = 'blackberry89'; //Curve2
    var $deviceBBTorch = 'blackberry 98'; //Torch
@@ -176,7 +177,15 @@ class uagent_info
 
 
    //**************************
-   //The constructor. Initializes several default variables.
+   //The constructor. Allows the latest PHP (5.0+) to locate a constructor object and initialize the object.
+   function __construct()
+   {
+		$this->uagent_info();
+   }
+
+
+   //**************************
+   //The object initializer. Initializes several default variables.
    function uagent_info()
    { 
 		$this->useragent = isset($_SERVER['HTTP_USER_AGENT'])?strtolower($_SERVER['HTTP_USER_AGENT']):'';
@@ -486,11 +495,12 @@ class uagent_info
 
    //**************************
    // Detects if the current browser is a BlackBerry Touch phone
-   //    device, such as the Storm or Torch. Excludes the Playbook.
+   //    device, such as the Storm, Torch, and Bold Touch. Excludes the Playbook.
    function DetectBlackBerryTouch()
    {
        if ((stripos($this->useragent, $this->deviceBBStorm) > -1) ||
-		(stripos($this->useragent, $this->deviceBBTorch) > -1))
+		(stripos($this->useragent, $this->deviceBBTorch) > -1) ||
+		(stripos($this->useragent, $this->deviceBBBoldTouch) > -1))
          return $this->true; 
        else
          return $this->false; 
@@ -500,10 +510,10 @@ class uagent_info
    // Detects if the current browser is a BlackBerry OS 5 device AND
    //    has a more capable recent browser. Excludes the Playbook.
    //    Examples, Storm, Bold, Tour, Curve2
-   //    Excludes the new BlackBerry OS 6 browser!!
+   //    Excludes the new BlackBerry OS 6 and 7 browser!!
    function DetectBlackBerryHigh()
    {
-      //Disambiguate for BlackBerry OS 6 (WebKit) browser
+      //Disambiguate for BlackBerry OS 6 or 7 (WebKit) browser
       if ($this->DetectBlackBerryWebKit() == $this->true)
          return $this->false; 
       if ($this->DetectBlackBerry() == $this->true)
@@ -694,10 +704,12 @@ class uagent_info
    }
    
    //**************************
-   // Detects if the current device is an Amazon Kindle.
+   // Detects if the current device is an Amazon Kindle (eInk devices only).
+   // Note: For the Kindle Fire, use the normal Android methods. 
    function DetectKindle()
    {
-      if (stripos($this->useragent, $this->deviceKindle) > -1)
+      if (stripos($this->useragent, $this->deviceKindle) > -1 &&
+          DetectAndroid() == $this->false)
          return $this->true; 
       else
          return $this->false; 
@@ -910,7 +922,7 @@ class uagent_info
    // The quick way to detect for a tier of devices.
    //   This method detects for devices which can 
    //   display iPhone-optimized web content.
-   //   Includes iPhone, iPod Touch, Android, WebOS, etc.
+   //   Includes iPhone, iPod Touch, Android, Windows Phone 7, WebOS, etc.
    function DetectTierIphone()
    {
       if (($this->isIphone == $this->true) ||
@@ -919,6 +931,8 @@ class uagent_info
    
       if (($this->DetectBlackBerryWebKit() == $this->true) &&
 		($this->DetectBlackBerryTouch() == $this->true))
+         return $this->true; 
+      if ($this->DetectWindowsPhone7() == $this->true)
          return $this->true; 
       if ($this->DetectPalmWebOS() == $this->true) 
          return $this->true; 
@@ -951,9 +965,7 @@ class uagent_info
         if ($this->DetectBlackBerryHigh() == $this->true)
            return $this->true;
         
-        //WP7's IE-7-based browser isn't good enough for iPhone Tier. 
-        if ($this->DetectWindowsPhone7() == $this->true)
-           return $this->true; 
+        //Older Windows 'Mobile' isn't good enough for iPhone Tier. 
         if ($this->DetectWindowsMobile() == $this->true)
            return $this->true;
         if (stripos($this->useragent, $this->engineTelecaQ) > -1)

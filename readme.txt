@@ -5,7 +5,7 @@ Donate Link: http://www.jamesmehorter.com/donate/
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, Tablet Theme, Different Themes, Device Theme
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.3
+Stable tag: 1.4
 
 Set a theme for handhelds and a theme for tablets
 
@@ -17,7 +17,7 @@ Device Theme Switcher is especially helpful if you're a theme developer and want
 
 'Handheld' devices include iPod, iPhone, Android, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include everything from iPad and Android tablets to the Kindle Fire and other large-screen hand helds.
 
-Please let us know if you have any questions or find any bugs. You can contact us by posting a new topic on the forum on the right of this page. If you like our plugin please vote it up!
+**Please let us know if you have any questions or find any bugs. You can contact us by posting a new topic on the forum on the right of this page. If you like our plugin please vote it up!**
 
 == Screenshots ==
 
@@ -59,6 +59,14 @@ Device Theme Switcher really just echo's an html anchor tag. Both links have a C
     }`
 
 == Changelog ==
+
+= Version 1.4 =
+* Updated to the latest version of the MobileESP library which now detects some newer phones like the BlackBerry Bold Touch (9900 and 9930)
+
+= Version 1.3 =
+* Changed the admin page to submit to admin_url() for those who have changed /wp-admin/ 
+* Added a warning suppresor to session_start() in case another plugin has already called it
+* Updated language in the WordPress readme file
 
 = Version 1.2 =
 * Added the handheld and tablet theme choices to the WordPress Dashboard Right Now panel
