@@ -15,7 +15,7 @@ Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > 
 
 Device Theme Switcher is especially helpful if you're a theme developer and want to provide a consitant, but different look on these popular device sizes. WordPress child themes are supported, so you can easily create 3 versions of your theme, with just a few overrides. For instance, you may want your page-home.php to show a large slideshow to normal computer visitors, to pull a smaller set of thumbnail images for handheld visitors, and also load a touch-friendly jQuery script for tablet users to navigate your image gallery - so you're not just stuck with @media queries.
 
-'Handheld' devices include Android, Blackberry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include everything from iPad and Android tablets to the Kindle Fire and other large-screen hand helds.
+'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include everything from iPad and Android tablets to the Kindle Fire and other large-screen hand helds.
 
 **Please let us know if you have any questions or find any bugs. You can contact us by posting a new topic on the forum on the right of this page. If you like our plugin please vote it up!**
 
