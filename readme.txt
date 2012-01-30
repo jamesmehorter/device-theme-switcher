@@ -5,7 +5,7 @@ Donate Link: http://www.jamesmehorter.com/donate/
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, Tablet Theme, Different Themes, Device Theme
 Requires at least: 3.0
 Tested up to: 3.3.1
-Stable tag: 1.4
+Stable tag: 1.5
 
 Set a theme for handhelds and a theme for tablets
 
@@ -59,6 +59,9 @@ Device Theme Switcher really just echo's an html anchor tag. Both links have a C
     }`
 
 == Changelog ==
+
+= Version 1.5 =
+* Modified the way themes are deliveried so the process is more stable for users with odd WordPress setups, by detecting where their theme folders are located instead of assuming wp-content/themes
 
 = Version 1.4 =
 * Updated to the latest version of the MobileESP library which now detects some newer phones like the BlackBerry Bold Touch (9900 and 9930)

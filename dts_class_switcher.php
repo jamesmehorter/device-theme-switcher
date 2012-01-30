@@ -138,7 +138,8 @@
 						if ($theme['Name'] == $dts->device) :
 							//For the template file name, we need to check if the theme being set is a child theme
 							//If it is a child theme, then we need to grab the parent theme and pass that instead 
-							$theme_data = get_theme_data("wp-content/themes/{$theme['Stylesheet']}/style.css");
+							$theme_data = get_theme_data( get_theme_root() . '/' . $theme['Stylesheet'] . '/style.css' );
+							
 							if (isset($theme_data) && $theme_data['Template'] != "") :
 								return $theme_data['Template'];
 							else :
