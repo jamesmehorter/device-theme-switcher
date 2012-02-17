@@ -11,16 +11,9 @@
 			//Grab our plugin settings
 			$this->handheld_theme = get_option('dts_handheld_theme');
 			$this->tablet_theme = get_option('dts_tablet_theme');
-			
-			//We only want to hold onto a few pieces of data for each theme
-			foreach (get_themes() as $key => $theme) :
-				$this->installed_themes[$key]['Name'] = $theme['Name'];
-				$this->installed_themes[$key]['Stylesheet'] = $theme['Stylesheet'];
-				$this->installed_themes[$key]['Template'] = $theme['Template'];
-			endforeach;
-			
+			$this->installed_themes = get_themes();
 			//This value will be used to differentiate which device is requesting the website
-			$this->device = "";
+			$this->device_theme = "";
 		}//END member function init
 		
 		public function add_defaults() {
@@ -79,8 +72,6 @@
 		
 		// ------------------------------------------------------------------------
 		// DEVICE READING & ALTERNATE THEME OUTPUT
-		//		+ Detect if a handheld or tablet is requesting the website
-		//		+ If one is set a respective flag within the class which will be checked for when delivering the theme
 		// ------------------------------------------------------------------------
 		public function detect_device_and_set_flag () {
 			//Include the MobileESP code library for acertaining device user agents
@@ -91,11 +82,11 @@
 			
 			//Detect if the device is a handheld
 			if ($uagent_info->DetectTierIphone()) : 
-				$this->device = $this->handheld_theme;
+				$this->device_theme = $this->handheld_theme;
 			endif ;
 			//Detect if the device is a tablets
 			if ($uagent_info->DetectTierTablet()) : 
-				$this->device = $this->tablet_theme;
+				$this->device_theme = $this->tablet_theme;
 			endif ;	
 		}//END member function deliver_theme_to_device
 		
@@ -141,14 +132,10 @@
 			//Since it's a filter it must, by default, return the active theme
 			if ($dts->can_deliver_theme()) :
 				$dts->detect_device_and_set_flag();
-				
-				var_dump($dts);
-				echo "<br />\n\n<br />";
-				//We don't want to explicitly check $dts->device for 'device' as it ma
-				if ($dts->device != "") :
-					//echo $dts->device;
+				if ($dts->device_theme != "") :
+					//echo $dts->device_theme;
 					foreach ($dts->installed_themes as $theme) :
-						if ($theme['Name'] == $dts->device) :
+						if ($theme['Name'] == $dts->device_theme) :
 							//For the template file name, we need to check if the theme being set is a child theme
 							//If it is a child theme, then we need to grab the parent theme and pass that instead 
 							$theme_data = get_theme_data( get_theme_root() . '/' . $theme['Stylesheet'] . '/style.css' );
@@ -178,9 +165,9 @@
 			
 			if ($dts->can_deliver_theme()) :
 				$dts->detect_device_and_set_flag();
-				if ($dts->device != "") :
+				if ($dts->device_theme != "") :
 					foreach ($dts->installed_themes as $theme) :
-						if ($theme['Name'] == $dts->device) :
+						if ($theme['Name'] == $dts->device_theme) :
 							return $theme['Stylesheet'];
 						endif;
 					endforeach;
@@ -200,9 +187,9 @@
 		//							  device_theme_switcher::generate_link_back_to_mobile()
 		// ------------------------------------------------------------------------
 		public static function generate_link_to_full_website ($link_text = "View Full Website") {
-			if ($_SESSION['dts_device'] == 'device') : ?>
+			?>
 	        <a href="<?php bloginfo('url') ?>?dts_device=screen" title="<?php echo $link_text ?>" class="dts-link to-full-website"><?php echo $link_text ?></a>
-            <?php endif;
+            <?php
 		}//END member function generate_link_to_full_website
 
 		public static function generate_link_back_to_mobile ($link_text = "Return to Mobile Website") {
