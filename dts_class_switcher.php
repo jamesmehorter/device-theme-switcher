@@ -90,7 +90,7 @@
 			endif ;	
 		}//END member function deliver_theme_to_device
 		
-		public function can_deliver_theme () {
+		public function deliver_alternate_device_theme () {
 			//Open $_SESSION for use, but only if session_start() has not been called already 
 			if (!isset($_SESSION)) : @session_start() ; endif; 
 			
@@ -130,7 +130,7 @@
 			
 			//This is not returning anything when coming a non device!
 			//Since it's a filter it must, by default, return the active theme
-			if ($dts->can_deliver_theme()) :
+			if ($dts->deliver_alternate_device_theme()) :
 				$dts->detect_device_and_set_flag();
 				if ($dts->device_theme != "") :
 					//echo $dts->device_theme;
@@ -163,7 +163,7 @@
 			//Instantiate a new object of type device_theme_switcher to setup our plugin controller
 			$dts = new Device_Theme_Switcher;
 			
-			if ($dts->can_deliver_theme()) :
+			if ($dts->deliver_alternate_device_theme()) :
 				$dts->detect_device_and_set_flag();
 				if ($dts->device_theme != "") :
 					foreach ($dts->installed_themes as $theme) :
@@ -186,18 +186,27 @@
 		//							  OR
 		//							  device_theme_switcher::generate_link_back_to_mobile()
 		// ------------------------------------------------------------------------
-		public static function generate_link_to_full_website ($link_text = "View Full Website") {
+		public function generate_link_to_full_website ($link_text = "View Full Website") {
+			//Instantiate a new object of type device_theme_switcher to setup our plugin controller
+			$dts = new Device_Theme_Switcher;
+			$dts->detect_device_and_set_flag();
+			$dts->deliver_alternate_device_theme();
+			if ($dts->device_theme != "" && $_SESSION['dts_device'] != 'screen') :
 			?>
 	        <a href="<?php bloginfo('url') ?>?dts_device=screen" title="<?php echo $link_text ?>" class="dts-link to-full-website"><?php echo $link_text ?></a>
             <?php
+			endif;
 		}//END member function generate_link_to_full_website
-
+		
+		//Generate a link back to the mobile website
 		public static function generate_link_back_to_mobile ($link_text = "Return to Mobile Website") {
 			if ($_SESSION['dts_device'] == 'screen') : ?>
 				<a href="<?php bloginfo('url') ?>?dts_device=device" title="<?php echo $link_text ?>" class="dts-link back-to-mobile"><?php echo $link_text ?></a>
 			<?php endif;
 		}//END member function generate_link_back_to_mobile
 		
+		//Display some output in the WP Admin Dashboard 'Right Now' section
+		//		+ Show what device these have been selected below what default theme is active
 		public function right_now () {
 			?>
             <br />
