@@ -11,7 +11,15 @@
 			//Grab our plugin settings
 			$this->handheld_theme = get_option('dts_handheld_theme');
 			$this->tablet_theme = get_option('dts_tablet_theme');
-			$this->installed_themes = get_themes();
+			$this->low_support_theme = get_option('dts_low_support_theme');
+			
+			//wp_get_themes was introduced in WordPress v3.4 - this check ensures we're backwards compatible
+			if (function_exists('wp_get_themes')) : 
+				$this->installed_themes = wp_get_themes();
+			else :
+				$this->installed_themes = get_themes();
+			endif;
+
 			//This value will be used to differentiate which device is requesting the website
 			$this->device_theme = "";
 		}//END member function init
@@ -35,6 +43,7 @@
 			//Remove the plugin and it's settings
 			delete_option('dts_handheld_theme');
 			delete_option('dts_tablet_theme');
+			delete_option('dts_low_support_theme');
 			delete_option('dts_device');
 		}//END member function remove
 		
@@ -48,6 +57,7 @@
 					if ($_POST['dts_settings_update'] == "true") :
 						update_option('dts_handheld_theme', $_POST['dts_handheld_theme']);
 						update_option('dts_tablet_theme', $_POST['dts_tablet_theme']);
+						update_option('dts_low_support_theme', $_POST['dts_low_support_theme']);
 						add_action('admin_notices', array('Device_Theme_Switcher', 'admin_update_notice'));
 					endif;
 				endif;
@@ -81,12 +91,18 @@
 			$uagent_info = new uagent_info;
 			
 			//Detect if the device is a handheld
-			if ($uagent_info->DetectTierIphone()) : 
+			if ($uagent_info->DetectTierIphone() || $uagent_info->DetectBlackBerry() || $uagent_info->DetectTierRichCss()) : 
 				$this->device_theme = $this->handheld_theme;
 			endif ;
+			
 			//Detect if the device is a tablets
 			if ($uagent_info->DetectTierTablet()) : 
 				$this->device_theme = $this->tablet_theme;
+			endif ;	
+
+			//Detect if the device is a tablets
+			if ($uagent_info->DetectBlackBerryLow() || $uagent_info->DetectTierOtherPhones()) : 
+				$this->device_theme = $this->low_support_theme;
 			endif ;	
 		}//END member function deliver_theme_to_device
 		
@@ -138,8 +154,18 @@
 						if ($theme['Name'] == $dts->device_theme) :
 							//For the template file name, we need to check if the theme being set is a child theme
 							//If it is a child theme, then we need to grab the parent theme and pass that instead 
-							$theme_data = get_theme_data( get_theme_root() . '/' . $theme['Stylesheet'] . '/style.css' );
 							
+							/*
+
+								CHECK FOR wp_get_theme() if not exists use get_the_data() 
+								wp_get_theme was introduced in WordPress 3.4, this ensures we're backwards compatible
+							*/
+							if (function_exists('wp_get_theme')) : 
+								$theme_data = wp_get_theme( $theme['Stylesheet'] );
+							else : 
+								$theme_data = get_theme_data( get_theme_root() . '/' . $theme['Stylesheet'] . '/style.css' );
+							endif;
+
 							if (isset($theme_data) && $theme_data['Template'] != "") :
 								return $theme_data['Template'];
 							else :

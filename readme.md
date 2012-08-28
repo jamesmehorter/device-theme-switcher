@@ -8,7 +8,7 @@ Install the plugin from either the [WordPress Plugin Repository](http://wordpres
 
 ## But I want a <em>'View Full Website'</em> link! 
 
-There are 2 widgets created by this plugin for just that! Check under Appearance > Widgets, and make sure you have a sidebar registered. 
+This plugin creates two widgets for doing just that! Or you can use the template tags below. NOTE: If you plan to use the widgets OR a menu specifically for one theme (i.e. a menu that only shows in your handheld theme) you must register the sidebar and/or menu in both your handheld and computer themes. This is because when delivering a handheld theme, behind-the-scenes WordPress still thinks your computer theme is active, so the sidebar / menus must exist in both themes. 
 
 ## Uh, template functions? 
 
@@ -40,6 +40,28 @@ _Styling Example_
         }
 
 ## Changelog 
+
+* _Version 1.7_
+    * Updated the plugin to provide backwards compatible support for WordPress < v3.4 (Pre the new Themes API)
+    * Added a 3rd theme selection option for older/non-compliant devices, so theme authors can also supply a text-only version to those devices if they like. 
+    * Revised some language in the plugin readme file
+
+* _Version 1.6_
+    * Updated the plugin to use the new Theme API within WordPress 3.4
+    * Updated MobileESP Library to the latest verion (April 23, 2012) which adds support for BlackBerry Curve Touch, e-Ink Kindle, and Kindle Fire in Silk mode. And fixed many other bugs. 
+    * Updated the Device Theme Switcher widgets so they only display to the devices they should, e.g. The 'View Full Website' widget will only display in the handheld theme. 
+    * Revised readme language and added a WordPress Plugin Repository banner graphic. 
+
+* _Version 1.5_
+    * Modified the way themes are deliveried so the process is more stable for users with odd WordPress setups, by detecting where their theme folders are located instead of assuming wp-content/themes
+
+* _Version 1.4_
+    * Updated to the latest version of the MobileESP library which now detects some newer phones like the BlackBerry Bold Touch (9900 and 9930)
+
+* _Version 1.3_
+    * Changed the admin page to submit to admin_url() for those who have changed /wp-admin/ 
+    * Added a warning suppresor to session_start() in case another plugin has already called it
+    * Updated language in the WordPress readme file
 
 * _Version 1.2_
 	* Added the handheld and tablet theme choices to the WordPress Dashboard Right Now panel

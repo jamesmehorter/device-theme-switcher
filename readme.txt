@@ -4,28 +4,27 @@ Contributors: jamesmehorter
 Donate Link: http://www.jamesmehorter.com/donate/
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, Tablet Theme, Different Themes, Device Theme
 Requires at least: 3.0
-Tested up to: 3.3.1
-Stable tag: 1.5
+Tested up to: 3.4.1
+Stable tag: 1.7
 
 Set a theme for handhelds and a theme for tablets
 
 == Description ==
 
-Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > Device Themes', where you can set one theme for handheld devices, and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'.
+Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > Device Themes', where you can set one theme for handheld devices, and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. This plugin is esspecially helpful if you're a theme developer that wants to create 3 tailored verions of your theme. WordPress child themes are supported. 
 
-Device Theme Switcher is especially helpful if you're a theme developer and want to provide a consitant, but different look on these popular device sizes. WordPress child themes are supported, so you can easily create 3 versions of your theme, with just a few overrides. For instance, you may want your page-home.php to show a large slideshow to normal computer visitors, to pull a smaller set of thumbnail images for handheld visitors, and also load a touch-friendly jQuery script for tablet users to navigate your image gallery - so you're not just stuck with @media queries.
+'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds.
 
-'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include everything from iPad and Android tablets to the Kindle Fire and other large-screen hand helds.
-
-**Please let us know if you have any questions or find any bugs. You can contact us by posting a new topic on the forum on the right of this page. If you like our plugin please vote it up!**
+**Please let us know if you have any questions or find any bugs. You can contact us by posting a new topic to the support forum on the right of this page. If you like our plugin please vote it up!**
 
 == Screenshots ==
 
 1. View of the Device Theme Switcher Window and options. 
+2. View of the two widgets in action.
 
 == Installation ==
 
-1) Download the latest version of the plugin from WordPress Plugins or from our github hosted repository (https://github.com/jamesmehorter/device-theme-switcher). Please note, the github version may contain beta code. Install the plugin like any other; download the zip, install in your WordPress admin > Plugins > Add new > 'Upload' section. Once installed and activated you'll have a new menu under Appearance titled 'Device Themes'.
+1) Download and active. After activation you'll have a new menu under 'Appearance' titled 'Device Themes'.
 
 2) Set your normal website theme as you usually do in 'Appearance > Themes'. Then set your handheld and tablet themes under the new 'Appearnace > Device Themes' page. Using WordPress child themes is supported.
 
@@ -33,7 +32,7 @@ Device Theme Switcher is especially helpful if you're a theme developer and want
 
 = How do I display a link in my handheld theme for users to "View Full Website"? =
 
-This plugin creates two widgets for doing just that! Or you can use the template tags below.
+This plugin creates two widgets for doing just that! Or you can use the template tags below. NOTE: If you plan to use the widgets OR a menu specifically for one theme (i.e. a menu that only shows in your handheld theme) you must register the sidebar and/or menu in both your handheld and computer themes. This is because when delivering a handheld theme, behind-the-scenes WordPress still thinks your computer theme is active, so the sidebar / menus must exist in both themes. 
 
 To display a link for users to "View the full website" place the following anywhere in your handheld and tablet themes.
 `<?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_to_full_website(); endif; ?>`
@@ -59,6 +58,16 @@ Device Theme Switcher really just echo's an html anchor tag. Both links have a C
     }`
 
 == Changelog ==
+
+= Version 1.7 =
+* Updated the plugin to provide backwards compatible support for WordPress < v3.4 (Pre the new Themes API)
+* Added a 3rd theme selection option for older/non-compliant devices, so theme authors can also supply a text-only version to those devices if they like. 
+
+= Version 1.6 =
+* Updated the plugin to use the new Theme API within WordPress 3.4
+* Updated MobileESP Library to the latest verion (April 23, 2012) which adds support for BlackBerry Curve Touch, e-Ink Kindle, and Kindle Fire in Silk mode. And fixed many other bugs. 
+* Updated the Device Theme Switcher widgets so they only display to the devices they should, e.g. The 'View Full Website' widget will only display in the handheld theme. 
+* Revised readme language and added a WordPress Plugin Repository banner graphic. 
 
 = Version 1.5 =
 * Modified the way themes are deliveried so the process is more stable for users with odd WordPress setups, by detecting where their theme folders are located instead of assuming wp-content/themes
