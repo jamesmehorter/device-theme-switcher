@@ -96,7 +96,7 @@
 			endif ;
 			
 			//Detect if the device is a tablets
-			if ($uagent_info->DetectTierTablet()) : 
+			if ($uagent_info->DetectTierTablet() || $uagent_info->DetectKindle() || $uagent_info->DetectAmazonSilk()) : 
 				$this->device_theme = $this->tablet_theme;
 			endif ;	
 

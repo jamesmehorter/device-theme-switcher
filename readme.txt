@@ -5,7 +5,9 @@ Donate Link: http://www.jamesmehorter.com/donate/
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, Tablet Theme, Different Themes, Device Theme
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: 1.7
+Stable tag: 1.8
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Set a theme for handhelds and a theme for tablets
 
@@ -54,14 +56,18 @@ Device Theme Switcher really just echo's an html anchor tag. Both links have a C
         color: red ;
     }
     .dts-link.back-to-mobile {
-    	color: blue ;
+        color: blue ;
     }`
 
 == Changelog ==
 
+= Version 1.8 =
+* Updated the Kindle detection for a wider range of support
+
 = Version 1.7 =
 * Updated the plugin to provide backwards compatible support for WordPress < v3.4 (Pre the new Themes API)
 * Added a 3rd theme selection option for older/non-compliant devices, so theme authors can also supply a text-only version to those devices if they like. 
+* Revised some language in the plugin readme file
 
 = Version 1.6 =
 * Updated the plugin to use the new Theme API within WordPress 3.4
@@ -103,4 +109,4 @@ This plugin is powered by the MobileESP PHP library created by Anthony Hand (htt
 
 This plugin is based on the concepts provided by Jonas Vorwerk's (http://www.jonasvorwerk.com/) Mobile theme switcher plugin, and Jeremy Arntz's (http://www.jeremyarntz.com/) Mobile Theme Switcher plugin. 
 
-Copyright (C) 2011 James Mehorter
+Copyright (C) 2012 James Mehorter
