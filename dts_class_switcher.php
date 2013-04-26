@@ -87,23 +87,40 @@
 			//Include the MobileESP code library for acertaining device user agents
 			include_once('mdetect.php');
 			
-			//Setup the MobileESP Class
-			$uagent_info = new uagent_info;
-			
-			//Detect if the device is a handheld
-			if ($uagent_info->DetectTierIphone() || $uagent_info->DetectBlackBerry() || $uagent_info->DetectTierRichCss()) : 
-				$this->device_theme = $this->handheld_theme;
-			endif ;
-			
-			//Detect if the device is a tablets
-			if ($uagent_info->DetectTierTablet() || $uagent_info->DetectKindle() || $uagent_info->DetectAmazonSilk()) : 
-				$this->device_theme = $this->tablet_theme;
-			endif ;	
+			//Check for Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
+			if (isset($_SERVER['HTTP_X_UA_DEVICE'])) :
+				if (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('mobile-iphone', 'mobile-android', 'mobile-smartphone', 'mobile-generic'))) :
+					$this->device_theme = $this->handheld_theme;
+				elseif (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('tablet-ipad', 'tablet-android'))) :
+					$this->device_theme = $this->tablet_theme;
+				else:
+					$this->device_theme = $this->low_support_theme;
+				endif;
+			else :
+				//Include the MobileESP code library for acertaining device user agents
+				include_once('mdetect.php');
+				
+				//Setup the MobileESP Class
+				$uagent_info = new uagent_info;
+				
+				//Setup the MobileESP Class
+				$uagent_info = new uagent_info;
+				
+				//Detect if the device is a handheld
+				if ($uagent_info->DetectTierIphone() || $uagent_info->DetectBlackBerry() || $uagent_info->DetectTierRichCss()) : 
+					$this->device_theme = $this->handheld_theme;
+				endif ;
+				
+				//Detect if the device is a tablets
+				if ($uagent_info->DetectTierTablet() || $uagent_info->DetectKindle() || $uagent_info->DetectAmazonSilk()) : 
+					$this->device_theme = $this->tablet_theme;
+				endif ;	
 
-			//Detect if the device is a tablets
-			if ($uagent_info->DetectBlackBerryLow() || $uagent_info->DetectTierOtherPhones()) : 
-				$this->device_theme = $this->low_support_theme;
-			endif ;	
+				//Detect if the device is a tablets
+				if ($uagent_info->DetectBlackBerryLow() || $uagent_info->DetectTierOtherPhones()) : 
+					$this->device_theme = $this->low_support_theme;
+				endif ;
+			endif;
 		}//END member function deliver_theme_to_device
 		
 		public function deliver_alternate_device_theme () {
