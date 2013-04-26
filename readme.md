@@ -41,7 +41,7 @@ _Styling Example_
 
 ## Changelog 
 
-*_Version 1.8_
+* _Version 1.8_
     * Updated the Kindle detection for a wider range of support
 
 * _Version 1.7_
