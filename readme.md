@@ -41,6 +41,9 @@ _Styling Example_
 
 ## Changelog 
 
+*_Version 1.8_
+    * Updated the Kindle detection for a wider range of support
+
 * _Version 1.7_
     * Updated the plugin to provide backwards compatible support for WordPress < v3.4 (Pre the new Themes API)
     * Added a 3rd theme selection option for older/non-compliant devices, so theme authors can also supply a text-only version to those devices if they like. 
