@@ -6,24 +6,20 @@ Device Theme Switcher is a WordPress plugin that uses the [MobileESP PHP library
 
 Install the plugin from either the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) or grab the latest bundled-zip here on github. Then set your handheld and tablet themes under Appearance > Device Themes. Computer users will be given the theme you specify in Appearance > Themes, as usual. However, now handheld users will see the handheld theme and tablet users will be given the tablet theme. Using WordPress child themes is supported.
 
-## But I want a <em>'View Full Website'</em> link! 
+The following can be used in your themes..
 
-This plugin creates two widgets for doing just that! Or you can use the template tags below. NOTE: If you plan to use the widgets OR a menu specifically for one theme (i.e. a menu that only shows in your handheld theme) you must register the sidebar and/or menu in both your handheld and computer themes. This is because when delivering a handheld theme, behind-the-scenes WordPress still thinks your computer theme is active, so the sidebar / menus must exist in both themes. 
-
-## Uh, template functions? 
-
-_View Full Website_
+##### View Full Website
 
     <?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_to_full_website(); endif; ?>
 
 
-_Return to Mobile Website_
+##### Return to Mobile Website
 
     <?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_back_to_mobile(); endif; ?>
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'.
 
-_Link Styling Example_
+##### Link Styling Example
 
     .dts-link {
         font-size: 1.5em ;
@@ -35,7 +31,7 @@ _Link Styling Example_
     	    color: blue ;
         }
 
-_Constants_
+##### Constants
     
 *Version 1.9+*. You can use these anywhere in themes. This could be helpful if for instance, you want one theme to power all devices.
 
@@ -43,7 +39,9 @@ _Constants_
     <?php if (TABLET_DEVICE) echo "TABLET" ?>
     <?php if (HANDHELD_LOW_SUPPORT_DEVICE) echo "HANDHELD_LOW_SUPPORT" ?>
 
-## Changelog 
+
+
+### Changelog 
 
 * _Version 1.9_
     * NEW - Constants to check in the theme, HANDHELD_DEVICE, TABLET_DEVICE, and HANDHELD_LOW_SUPPORT_DEVICE
