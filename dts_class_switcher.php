@@ -69,6 +69,7 @@
 		// ------------------------------------------------------------------------------
 		public function admin_update_notice(){
 			//Print a message to the admin window letting the user know thier settings have been saved
+			//The CSS used to style this message is located in dts_admin_output.php
 			echo '<div class="dts updated"><p>Settings saved.</p></div>';
 		}//END member function admin_update_notice
 		
@@ -88,6 +89,7 @@
 			include_once('mdetect.php');
 			
 			//Check for Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
+			//Thanks to Tim Broder for this addition! https://github.com/broderboy | http://timbroder.com/
 			if (isset($_SERVER['HTTP_X_UA_DEVICE'])) :
 				if (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('mobile-iphone', 'mobile-android', 'mobile-smartphone', 'mobile-generic'))) :
 					$this->device_theme = $this->handheld_theme;
@@ -103,33 +105,47 @@
 				//Setup the MobileESP Class
 				$uagent_info = new uagent_info;
 				
-				//Setup the MobileESP Class
-				$uagent_info = new uagent_info;
-				
 				//Detect if the device is a handheld
 				if ($uagent_info->DetectTierIphone() || $uagent_info->DetectBlackBerry() || $uagent_info->DetectTierRichCss()) : 
+					//Set constant for access in themes and other plugins
+					//The @ error/warning suppression sucks here.. but this hook is called multiple times and produces errors
+					@define("HANDHELD_DEVICE", true);
+					//Tell DTS to use the handheld theme
 					$this->device_theme = $this->handheld_theme;
 				endif ;
 				
-				//Detect if the device is a tablets
+				//Detect if the device is a tablet
 				if ($uagent_info->DetectTierTablet() || $uagent_info->DetectKindle() || $uagent_info->DetectAmazonSilk()) : 
+					//Set constant for access in themes and other plugins
+					//The @ error/warning suppression sucks here.. but this hook is called multiple times and produces errors
+					@define("TABLET_DEVICE", true);
+					//Tell DTS to use the tablet theme
 					$this->device_theme = $this->tablet_theme;
 				endif ;	
 
-				//Detect if the device is a tablets
+				//Detect if the device is a low support device (poor css and javascript rendering / older devices)
 				if ($uagent_info->DetectBlackBerryLow() || $uagent_info->DetectTierOtherPhones()) : 
+					//Set constant for access in themes and other plugins
+					//The @ error/warning suppression sucks here.. but this hook is called multiple times and produces errors
+					@define("HANDHELD_LOW_SUPPORT_DEVICE", true);
+					//Tell DTS to use the low support theme
 					$this->device_theme = $this->low_support_theme;
 				endif ;
 			endif;
 		}//END member function deliver_theme_to_device
 		
 		public function deliver_alternate_device_theme () {
-			//Open $_SESSION for use, but only if session_start() has not been called already 
-			if (!isset($_SESSION)) : @session_start() ; endif; 
+			//Open $_SESSION for use, but only if session_start() has not been called already
+			//NOTE: WordPress is inherently stateless. It only stores a cookie when you login.
+			//Using SESSION's for DTS was a hard choice, as it goes against one of the core WP principles - to be stateless
+			//However, aside from using COOKIES there really is no other way..
+				//unless maybe I stored the selection in an option and make DB calls - mm just thought of that
+				//Maybe in the next version
+			if (!isset($_SESSION['dts_device'])) : @session_start() ; endif; 
 			
 			//Check if the user has a session yet
 			//Also check if the user does not have dts_device index in their session yet
-			//In either case, create a session index to store the users theme preference
+			//In either case, create a session index to store the users theme preference (handheld users who chose to view the full site)
 			if (session_id() == "" || !isset($_SESSION['dts_device'])) :  
 				$_SESSION['dts_device'] = '';
 			endif;
@@ -161,8 +177,7 @@
 			//Instantiate a new object of type device_theme_switcher to setup our plugin controller
 			$dts = new Device_Theme_Switcher;
 			
-			//This is not returning anything when coming a non device!
-			//Since it's a filter it must, by default, return the active theme
+			
 			if ($dts->deliver_alternate_device_theme()) :
 				$dts->detect_device_and_set_flag();
 				if ($dts->device_theme != "") :
@@ -171,12 +186,7 @@
 						if ($theme['Name'] == $dts->device_theme) :
 							//For the template file name, we need to check if the theme being set is a child theme
 							//If it is a child theme, then we need to grab the parent theme and pass that instead 
-							
-							/*
-
-								CHECK FOR wp_get_theme() if not exists use get_the_data() 
-								wp_get_theme was introduced in WordPress 3.4, this ensures we're backwards compatible
-							*/
+							//CHECK FOR wp_get_theme() (introduced in WordPress 3.4) if it does not exist use get_the_data() 
 							if (function_exists('wp_get_theme')) : 
 								$theme_data = wp_get_theme( $theme['Stylesheet'] );
 							else : 
@@ -191,9 +201,11 @@
 						endif;
 					endforeach;
 				else :
+					//Since it's a filter it must, by default, return the active theme
 					return get_option('template');
 				endif;
 			else :
+				//Since it's a filter it must, by default, return the active theme
 				return get_option('template');
 			endif;
 		} //END member function deliver_template

@@ -12,22 +12,18 @@ This plugin creates two widgets for doing just that! Or you can use the template
 
 ## Uh, template functions? 
 
-<strong>View Full Website</strong> 
+_View Full Website_
 
     <?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_to_full_website(); endif; ?>
 
 
-<strong>Return to Mobile Website</strong>
+_Return to Mobile Website_
 
     <?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_back_to_mobile(); endif; ?>
 
-
-## Notes
-The users chosen theme is stored in a PHP Session, so the user can browse around your website prior to clicking 'Return to mobile website'. You can use the theme links anywhere in your themes, like in header.php or footer.php. 
-
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'.
 
-_Styling Example_
+_Link Styling Example_
 
     .dts-link {
         font-size: 1.5em ;
@@ -39,7 +35,20 @@ _Styling Example_
     	    color: blue ;
         }
 
+_Constants_
+    
+*Version 1.9+*. You can use these anywhere in themes. This could be helpful if for instance, you want one theme to power all devices.
+
+    <?php if (HANDHELD_DEVICE) echo "HANDHELD" ?>
+    <?php if (TABLET_DEVICE) echo "TABLET" ?>
+    <?php if (HANDHELD_LOW_SUPPORT_DEVICE) echo "HANDHELD_LOW_SUPPORT" ?>
+
 ## Changelog 
+
+* _Version 1.9_
+    * NEW - Constants to check in the theme, HANDHELD_DEVICE, TABLET_DEVICE, and HANDHELD_LOW_SUPPORT_DEVICE
+    * Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
+    * Made the Admin UI more presentable and WordPressy
 
 * _Version 1.8_
     * Updated the Kindle detection for a wider range of support
