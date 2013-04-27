@@ -46,9 +46,7 @@ To display a link for users to "View the full website" place the following anywh
 To display a link for users to "Return to the mobile website" place the following anywhere in your default/active website theme.
 `<?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_back_to_mobile(); endif; ?>`
 
-= How do I style the widget or template tag output?? =
-
-Device Theme Switcher really just echo's an html anchor tag. Both links have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile' so you can style the link differently if you want
+The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
 
 *Styling Example*
 `.dts-link {
@@ -69,6 +67,11 @@ Constants (Since Version 1.9). You can use these anywhere in themes. This could 
 `<?php if (HANDHELD_LOW_SUPPORT_DEVICE) echo "HANDHELD_LOW_SUPPORT" ?>`
 
 == Changelog ==
+
+= Version 1.9 = 
+* NEW - Constants to check in the theme, HANDHELD_DEVICE, TABLET_DEVICE, and HANDHELD_LOW_SUPPORT_DEVICE
+* Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
+* Made the Admin UI more presentable and WordPressy
 
 = Version 1.8 =
 * Updated the Kindle detection for a wider range of support

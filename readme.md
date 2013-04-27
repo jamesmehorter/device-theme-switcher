@@ -6,6 +6,11 @@ Device Theme Switcher is a WordPress plugin that uses the [MobileESP PHP library
 
 Install the plugin from either the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) or grab the latest bundled-zip here on github. Then set your handheld and tablet themes under Appearance > Device Themes. Computer users will be given the theme you specify in Appearance > Themes, as usual. However, now handheld users will see the handheld theme and tablet users will be given the tablet theme. Using WordPress child themes is supported.
 
+#### How do Menus and Widgets work?!
+
+In order to use different widgets or menus in different themes you must register the menu location and/or sidebar in *both your handheld and computer themes*. Then you must populate the different menus/widgets while the default/computer theme is active, and simply only output the sidebar/menu you want in each theme's files. That's it! You should only set your handheld theme as the active theme if you're developing/debugging and want to view the handheld theme on a computer.
+
+
 The following can be used in your themes..
 
 ##### View Full Website
@@ -17,19 +22,21 @@ The following can be used in your themes..
 
     <?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_back_to_mobile(); endif; ?>
 
-The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'.
+The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
 
 ##### Link Styling Example
 
-    .dts-link {
-        font-size: 1.5em ;
-    }
-        .dts-link.to-full-website {
-            color: red ;
+    <style type="text/css">
+        .dts-link {
+            font-size: 1.5em ;
         }
-        .dts-link.back-to-mobile {
-    	    color: blue ;
-        }
+            .dts-link.to-full-website {
+                color: red ;
+            }
+            .dts-link.back-to-mobile {
+        	    color: blue ;
+            }
+    </style>
 
 ##### Constants
     
@@ -38,8 +45,6 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
     <?php if (HANDHELD_DEVICE) echo "HANDHELD" ?>
     <?php if (TABLET_DEVICE) echo "TABLET" ?>
     <?php if (HANDHELD_LOW_SUPPORT_DEVICE) echo "HANDHELD_LOW_SUPPORT" ?>
-
-
 
 ### Changelog 
 
