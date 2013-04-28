@@ -57,6 +57,14 @@
 	}//END FUNCTION dts_register_widgets
 
 	// ------------------------------------------------------------------------
+	// WP SESSION MANAGER
+	// ------------------------------------------------------------------------
+	//Include the WP Session Manager Plugin by Eric A Mann 
+	//http://eamann.com/tech/introducing-wp_session
+	//https://github.com/ericmann/wp-session-manager
+	include('inc/wp-session-manager/wp-session-manager.php');
+
+	// ------------------------------------------------------------------------
 	// DEVICE THEME SWITCHER
 	// ------------------------------------------------------------------------
 	//Include our external device theme switcher class library
