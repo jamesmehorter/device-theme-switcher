@@ -60,11 +60,11 @@
 	// DEVICE THEME SWITCHER
 	// ------------------------------------------------------------------------
 	//Include our external device theme switcher class library
-	include_once('dts_class_switcher.php');
+	include_once('inc/dts_class_switcher.php');
 	
 	// ------------------------------------------------------------------------
 	// WIDGETS
 	// ------------------------------------------------------------------------
 	//Include our external widget class library
-	include_once('dts_class_widgets.php');
+	include_once('inc/dts_class_widgets.php');
 ?>
