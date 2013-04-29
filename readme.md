@@ -17,12 +17,12 @@ The following can be used in your themes..
 
 ##### View Full Website
 
-    <?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_to_full_website(); endif; ?>
+    <?php if (class_exists('DTS')) : DTS::generate_link_to_full_website(); endif; ?>
 
 
 ##### Return to Mobile Website
 
-    <?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_back_to_mobile(); endif; ?>
+    <?php if (class_exists('DTS')) : DTS::generate_link_back_to_mobile(); endif; ?>
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
 
@@ -40,20 +40,62 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
             }
     </style>
 
-##### Constants
-    
-*Version 1.9+*. You can use these anywhere in themes. This could be helpful if for instance, you want one theme to power all devices.
+##### DTS CLass
 
-    <?php if (HANDHELD_DEVICE) echo "HANDHELD" ?>
-    <?php if (TABLET_DEVICE) echo "TABLET" ?>
-    <?php if (HANDHELD_LOW_SUPPORT_DEVICE) echo "HANDHELD_LOW_SUPPORT" ?>
+The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
+
+    <?php 
+        //Create a new instance of 
+        $dts = new DTS ;
+        
+        //See what's in there..
+        print_r($dts) ;
+
+        /*
+        DTS Object
+        (
+            [device] => computer (Possible values: computer, tablet, handheld, and low_support)
+            [handheld_theme] => Array
+                (
+                    [name] => WordPress Classic
+                    [template] => classic
+                    [stylesheet] => classic
+                )
+
+            [tablet_theme] => Array
+                (
+                    [name] => WordPress Default
+                    [template] => default
+                    [stylesheet] => default
+                )
+
+            [low_support_theme] => Array
+                (
+                    [name] => WordPress Default
+                    [template] => default
+                    [stylesheet] => default
+                )
+
+            [default_template] => classic
+            [default_stylesheet] => classic
+            [device_theme] => Array
+                (
+                )
+
+        )
+        */
+
+        //use it..
+        if ($dts->device == 'tablet') do_something() ;
+    ?>
 
 ### Changelog 
 
 * _Version 1.9_
-    * NEW - Constants to check in the theme, HANDHELD_DEVICE, TABLET_DEVICE, and HANDHELD_LOW_SUPPORT_DEVICE
-    * Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
-    * Made the Admin UI more presentable and WordPressy
+    * NEW - Made the Admin UI more presentable and WordPressy
+    * NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings.
+    * FIX - Numerous code rewrites to improve overall performance, redundancy, and improve extensibility. 
+    * FIX - Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
 
 * _Version 1.8_
     * Updated the Kindle detection for a wider range of support

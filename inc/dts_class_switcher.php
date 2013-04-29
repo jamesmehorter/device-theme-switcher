@@ -3,12 +3,15 @@
 	// DEVICE THEME SWITCHER CONTROLLER CLASS 
 	//		+ This class is instantiated within itself by the deliver_template() and deliver_stylesheet() functions
 	// ------------------------------------------------------------------------
-	class Device_Theme_Switcher {
+	class DTS {
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_init', array('device_theme_switcher', 'init') );
 		// ------------------------------------------------------------------------------
 		public function __construct() {
+			//Update the global variable used in themes
+			$this->device = 'computer' ;
+			
 			//Retrieve any DTS theme options which were previously saved
 		    //The theme option is a url encoded string containing 3 values for name, template, and stylesheet
 		    parse_str(get_option('dts_handheld_theme'), $this->handheld_theme);
@@ -23,9 +26,8 @@
 			$this->device_theme = array();
 		}//END member function init
 		
-		public function add_defaults() {
-			//No defaults are loaded 
-		}
+		public function add_defaults() { //No defaults are loaded 
+		}//ENDadd_defaults
 		
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
@@ -83,7 +85,7 @@
 		// ------------------------------------------------------------------------
 		// DEVICE READING & THEME ASSIGNMENT
 		// ------------------------------------------------------------------------
-		public function detect_device_and_set_flag () {
+		public function detect_device_and_assign_theme () {
 			//Use Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
 			//Thanks to Tim Broder for this addition! https://github.com/broderboy | http://timbroder.com/
 			if (isset($_SERVER['HTTP_X_UA_DEVICE'])) :
@@ -107,7 +109,7 @@
 				if ($uagent_info->DetectTierIphone() || $uagent_info->DetectBlackBerry() || $uagent_info->DetectTierRichCss()) : 
 					//Set constant for access in themes and other plugins
 					//The @ error/warning suppression sucks here.. but this hook is called multiple times and produces errors
-					@define("HANDHELD_DEVICE", true);
+					$this->device = 'handheld' ;
 					//Tell DTS to use the handheld theme
 					$this->device_theme = $this->handheld_theme;
 				endif ;
@@ -116,7 +118,7 @@
 				if ($uagent_info->DetectTierTablet() || $uagent_info->DetectKindle() || $uagent_info->DetectAmazonSilk()) : 
 					//Set constant for access in themes and other plugins
 					//The @ error/warning suppression sucks here.. but this hook is called multiple times and produces errors
-					@define("TABLET_DEVICE", true);
+					$this->device = 'tablet' ;
 					//Tell DTS to use the tablet theme
 					$this->device_theme = $this->tablet_theme;
 				endif ;	
@@ -125,7 +127,7 @@
 				if ($uagent_info->DetectBlackBerryLow() || $uagent_info->DetectTierOtherPhones()) : 
 					//Set constant for access in themes and other plugins
 					//The @ error/warning suppression sucks here.. but this hook is called multiple times and produces errors
-					@define("HANDHELD_LOW_SUPPORT_DEVICE", true);
+					$this->device = 'low_support' ;
 					//Tell DTS to use the low support theme
 					$this->device_theme = $this->low_support_theme;
 				endif ;
@@ -133,52 +135,44 @@
 		}//END member function deliver_theme_to_device
 		
 		// ------------------------------------------------------------------------
-		// SESSION MANAGEMENT
+		// SESSION MANAGEMENT - This section allows users to click 'view full website' and be able to browse the active-theme website
 		// ------------------------------------------------------------------------
 		public function has_not_requested_delivery_of_default_theme () {
 			//Open $_SESSION for use, but only if session_start() has not been called already
-			//NOTE: WordPress is inherently stateless. 
-			//DTS only stores a small string in SESSION,
-			//though if COOKIE's are disabled, at least SESSION will append the session id on URLS. 
+			//NOTE: WordPress is inherently stateless. DTS only stores a small string in SESSION,
+			//though if COOKIE's are disabled, at least SESSION will persistantly append the session id on URLS.
+			//Using wp_session_manager to creae psuedo sessions with WP transients works but lacks the persistant urls
 			//This is the best scenario I've come up with.
-			if (!isset($_SESSION['dts_device'])) : 
-				@session_start() ; 
-			endif; 
+			if (!isset($_SESSION['dts_device'])) @session_start() ;
 			
 			//Check if the user has a session yet
 			//Also check if the user does not have dts_device index in their session yet
 			//In either case, create a session index to store the users theme preference (handheld users who chose to view the full site)
-			if (session_id() == "" || !isset($_SESSION['dts_device'])) :  
-				$_SESSION['dts_device'] = '';
-			endif;
+			if (session_id() == "" || !isset($_SESSION['dts_device'])) $_SESSION['dts_device'] = '' ;
 			
 			//Check if the user has requested the full version of the website 'screen' or if they are requesting the device theme 'device'
 			//By setting an option to this value we can let users browse the default theme & switch back to the device version at any time
-			if (isset($_GET)) :
-				if (isset($_GET['dts_device'])) :
-					if ($_GET['dts_device'] == 'screen') : $_SESSION['dts_device'] = 'screen'; endif;
-					if ($_GET['dts_device'] == 'device') : $_SESSION['dts_device'] = 'device'; endif;
-				endif;
-			endif;			
+			if (isset($_GET)) : if (isset($_GET['dts_device'])) :
+				if ($_GET['dts_device'] == 'screen') $_SESSION['dts_device'] = 'screen' ; 
+				if ($_GET['dts_device'] == 'device') $_SESSION['dts_device'] = 'device' ;
+			endif; endif;			
 			
 			//Check if the user has implicitly requested the full version (default theme in 'Appearance > Themes')
 			//If they have not, go ahead and display the device themes set in the plugin admin page
-			if ($_SESSION['dts_device'] == '' || $_SESSION['dts_device'] == 'device') :
-				//Lets start a countdown to expire the session
-				//Because.. 
-				return true;
-			endif;
+			if ($_SESSION['dts_device'] == '' || $_SESSION['dts_device'] == 'device') return true ; 
 
-			//Default is false
+			//Default is false unless otherwise (true returned above) 
+			//the user has not implicitly requested the active theme
 			return false;
-		}
+		}//ENDhas_not_requested_delivery_of_default_theme
 
 		// ------------------------------------------------------------------------------
 		// CALLBACK MEMBER FUNCTION FOR: add_filter('stylesheet', array('device_theme_switcher', 'deliver_handheld_template'));
 		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_template'));
 		// ------------------------------------------------------------------------------
 		public function deliver_template(){
-			return Device_Theme_Switcher::which_theme('template') ;
+			//return the template file (pointing to one of 4 possible themes [handheld, tablet, low support, default/active])
+			return DTS::which_theme('template') ;
 		} //END member function deliver_template
 		
 
@@ -187,7 +181,8 @@
 		//								 add_filter('template', array('device_theme_switcher', 'deliver_handheld_stylesheet'));
 		// ------------------------------------------------------------------------------
 		public function deliver_stylesheet(){
-			return Device_Theme_Switcher::which_theme('stylesheet') ;
+			//return the template file (pointing to one of 4 possible themes [handheld, tablet, low support, default/active])
+			return DTS::which_theme('stylesheet') ;
 		} //END member function deliver_stylesheet
 		
 
@@ -197,14 +192,12 @@
 		//$theme_file should be either 'template' or 'stylesheet'
 		public function which_theme ($theme_file) {
 			//Instantiate a new object of type device_theme_switcher to setup our plugin controller
-			$dts = new Device_Theme_Switcher;
+			$dts = new DTS;
 			
 			//Only change the theme if the user did not implicitly requested the full/active theme
 			if ($dts->has_not_requested_delivery_of_default_theme()) : 
 				//Determine which device device/theme to deliver
-				$dts->detect_device_and_set_flag();
-
-				//var_dump($dts->device_theme) . "<br />";
+				$dts->detect_device_and_assign_theme();
 
 				//Check if the user is a mobile user - if so return the theme set by the admin for their device type
 				if (!empty($dts->device_theme)) : return $dts->device_theme[$theme_file]; //Deliver the device theme set via the
@@ -215,15 +208,17 @@
 				//The user is using a mobile (handheld or tablet) and has requested the default/active theme
 				return $dts->default_template_or_stylesheet($theme_file);
 			endif;
-		}//which_theme
+		}//ENDwhich_theme
 			//which_theme helper function to reduce redundany 
 			//$theme_file should be either 'template' or 'stylesheet'
 			public function default_template_or_stylesheet ($theme_file) {
+				$this->device = 'computer' ;
+
 				switch ($theme_file) :
 					case 'template' : return $this->default_template; break;
 					case 'stylesheet' : return $this->default_stylesheet; break;
 				endswitch;
-			}//default_template_or_stylesheet
+			}//ENDdefault_template_or_stylesheet
 
 		// ------------------------------------------------------------------------
 		// THEME DEVICE LINK SWITCH - For switching between mobile and screen themes
@@ -234,9 +229,9 @@
 		// ------------------------------------------------------------------------
 		public function generate_link_to_full_website ($link_text = "View Full Website") {
 			//Instantiate a new object of type device_theme_switcher to setup our plugin controller
-			$dts = new Device_Theme_Switcher;
-			$dts->detect_device_and_set_flag();
-			if (!isset($_SESSION['dts_device'])) : @session_start() ; endif;
+			$dts = new DTS;
+			$dts->detect_device_and_assign_theme();
+			if (!isset($_SESSION['dts_device'])) @session_start() ;
 			if (!empty($dts->device_theme) && $_SESSION['dts_device'] != 'screen') : ?>
 	        	<a href="<?php bloginfo('url') ?>?dts_device=screen" title="<?php echo $link_text ?>" class="dts-link to-full-website"><?php echo $link_text ?></a><?php
 			endif;
@@ -252,10 +247,13 @@
 		//Display some output in the WP Admin Dashboard 'Right Now' section
 		//		+ Show what device these have been selected below what default theme is active
 		public function right_now () { ?>
-            <br />
-            Handheld Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_handheld_theme') ?></strong></a> 
-            <br />
-            Tablet Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_tablet_theme') ?></strong></a><?php
-		}
-	} //END class definition for the device_theme_switcher
+            <br />Handheld Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_handheld_theme') ?></strong></a> 
+            <br />Tablet Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_tablet_theme') ?></strong></a><?php
+		}//END right_now
+	} //END DTS Class
+
+	//We renamed the primary class to DTS in version 1.9
+	//This line can be deleted once everyone is on 1.9 :)
+	//It was used in documentation for users inserting the html links wrapped with if(class_exists(Device_Theme_Switcher))
+	class Device_Theme_Switcher Extends DTS {}
 ?>
