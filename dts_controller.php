@@ -61,8 +61,8 @@
 	// ------------------------------------------------------------------------
 	//Include the WP Session Manager Plugin by Eric A Mann 
 	//http://eamann.com/tech/introducing-wp_session
-	//https://github.com/ericmann/wp-session-manager
-	include('inc/wp-session-manager/wp-session-manager.php');
+	//Pulled from https://github.com/ericmann/wp-session-manager as a submodule
+	//include('inc/wp-session-manager/wp-session-manager.php');
 
 	// ------------------------------------------------------------------------
 	// DEVICE THEME SWITCHER
