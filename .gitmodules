@@ -1,3 +1,0 @@
-[submodule "inc/wp-session-manager"]
-	path = inc/wp-session-manager
-	url = https://github.com/ericmann/wp-session-manager.git
