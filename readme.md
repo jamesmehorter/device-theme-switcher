@@ -1,3 +1,5 @@
+![Screenshot](https://raw.github.com/jamesmehorter/device-theme-switcher/master/banner-772x250.jpg)
+
 # Introducing Device Theme Switcher
 
 Device Theme Switcher is a WordPress plugin that uses the [MobileESP PHP library created by Anthony Hand](http://code.google.com/p/mobileesp/). Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > Device Themes', where you can set one theme for handheld devices, another theme for tablet devices, and yet another theme for low support devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. WordPress child themes are supported. 
