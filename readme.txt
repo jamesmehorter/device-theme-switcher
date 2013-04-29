@@ -41,10 +41,10 @@ If you plan to use the widgets OR a menu specifically for one theme (i.e. a menu
 This plugin creates two widgets for doing just that! Or you can use the template tags below.
 
 To display a link for users to "View the full website" place the following anywhere in your handheld and tablet themes.
-`<?php if (class_exists('DTS')) : DTS::generate_link_to_full_website(); endif; ?>`
+`<?php if (class_exists('DTS')) DTS::generate_link_to_full_website() ?>`
 
 To display a link for users to "Return to the mobile website" place the following anywhere in your default/active website theme.
-`<?php if (class_exists('DTS')) : DTS::generate_link_back_to_mobile(); endif; ?>`
+`<?php if (class_exists('DTS')) DTS::generate_link_back_to_mobile() ?>`
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
 
