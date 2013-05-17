@@ -23,7 +23,6 @@
                 $operation = "update";
                 $previous_version = "1.x";
             endif;
-
             switch ($operation) : 
                 case 'update' : 
                     if ($previous_version == "1.x") : 
@@ -37,4 +36,9 @@
                 break;
             endswitch;
         }//init
+        
+        static function update_notice () {
+            echo get_transient('dts_updated_notice');
+            delete_transient('dts_updated_notice');
+        }
     }//DTS_Update

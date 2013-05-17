@@ -44,6 +44,7 @@
 	include('inc/class.update.php');
 	//Run any update actions (typically only the first time the plugin is updated)
 	add_action('admin_init', array('DTS_Update', 'init'));
+	add_action('admin_notices', array('DTS_Update', 'update_notice'));
 	// ------------------------------------------------------------------------
 	// ADMIN
 	// ------------------------------------------------------------------------
