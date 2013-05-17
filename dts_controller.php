@@ -2,14 +2,14 @@
 	/** 
 		Plugin Name: Device Theme Switcher
 		Plugin URI: https://github.com/jamesmehorter/device-theme-switcher/
-		Description: This plugin allows you to set a separate theme for handheld and tablet devices under Appearance > Device Themes
-		Version: 1.8
+		Description: Set a separate themes for handheld and tablet devices under Appearance > Device Themes
+		Version: 2.0
 		Author: James Mehorter | jamesmehorter@gmail.com
 		Author URI: http://www.jamesmehorter.com
 		License: GPLV2
 		License URI: http://www.gnu.org/licenses/gpl-2.0.html
 		
-		Copyright 2012  James mehorter  (email : jamesmehorter@gmail.com)
+		Copyright 2013  James mehorter  (email : jamesmehorter@gmail.com)
 	
 		This program is free software; you can redistribute it and/or modify
 		it under the terms of the GNU General Public License, version 2, as 
@@ -24,49 +24,67 @@
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
-	
 	// ------------------------------------------------------------------------
-	// REGISTER HOOKS & CALLBACK FUNCTIONS:                                    
+	// CORE
 	// ------------------------------------------------------------------------
-	//Set a member function of the plugin to run upon plugin activation, to set any plugin default values
-	register_activation_hook(__FILE__, array('Device_Theme_Switcher', 'add_defaults'));
-	//Set a member function of the plugin tp run upon plugin deactivation, to remove any plugin values that have been stored in the db
-	register_uninstall_hook(__FILE__, array('Device_Theme_Switcher', 'remove'));
-	
-	add_action('activity_box_end', array('Device_Theme_Switcher', 'right_now'));
-	
+	include('inc/class.core.php');
+	//Activation: Install any initial settings
+	register_activation_hook(__FILE__, array('DTS_Core', 'activate'));
+	//Deactivation: Run any special routines on deactivation
+	register_deactivation_hook(__FILE__, array('DTS_Core', 'deactivate'));
+	//Uninstall: Remove anything stored in the database
+	register_uninstall_hook(__FILE__, array('DTS_Core', 'uninstall'));
+	//Run any update actions (typically only the first time the plugin is updated)
+	add_action('init', array('DTS_Core', 'init'));
+	//Display a 'Settings' link with the plugin in the plugins list
+    add_filter('plugin_action_links', array('DTS_Core', 'device_theme_switcher_settings_link'), 10, 2);
+	// ------------------------------------------------------------------------
+	// UPDATE
+	// ------------------------------------------------------------------------
+	include('inc/class.update.php');
+	//Run any update actions (typically only the first time the plugin is updated)
+	add_action('admin_init', array('DTS_Update', 'init'));
+	// ------------------------------------------------------------------------
+	// ADMIN
+	// ------------------------------------------------------------------------
+	include('inc/class.wp-admin.php');
+	//Add a notice about the selected device themes in the Dashboard Right Now widget
+	add_action('activity_box_end', array('DTS_Admin', 'right_now'));
 	//Create our plugin admin page under the 'Appearance' menu
-	add_action('admin_menu', array('Device_Theme_Switcher', 'admin_menu'));
-
+	add_action('admin_menu', array('DTS_Admin', 'admin_menu'));
 	//Check if we need to save any form data that was submitted
-	add_action('load-appearance_page_device-themes', array('Device_Theme_Switcher', 'load'));
-	
-	//We only want to tap into the theme filters if a frontend page is being requested
-	if (!is_admin()) :
-		//Hook into the template output function with a filter and change the template delivered if need be
-		add_filter('template', array('Device_Theme_Switcher', 'deliver_template'));
-		//Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
-		add_filter('stylesheet', array('Device_Theme_Switcher', 'deliver_stylesheet'));
-	endif;	
-
+	add_action('load-appearance_page_device-themes', array('DTS_Admin', 'load'));
+	// ------------------------------------------------------------------------
+	// WIDGETS
+	// ------------------------------------------------------------------------
+	//Include our external widget class library
+	include_once('inc/class.widgets.php');
 	//Register our widgets for displaying a 'View Full Website' and 'Return to mobile website' links
-	add_action( 'widgets_init', 'dts_register_widgets' );
 	function dts_register_widgets () {
 		//Register the 'View Full Website' widget
 		register_widget('DTS_View_Full_Website');
 		//Register the 'Return to Mobile Website' widget
 		register_widget('DTS_Return_To_Mobile_Website');
 	}//END FUNCTION dts_register_widgets
-
+	add_action( 'widgets_init', 'dts_register_widgets' );
 	// ------------------------------------------------------------------------
-	// DEVICE THEME SWITCHER
+	// THEME SWITCHING
 	// ------------------------------------------------------------------------
-	//Include our external device theme switcher class library
-	include_once('dts_class_switcher.php');
-	
-	// ------------------------------------------------------------------------
-	// WIDGETS
-	// ------------------------------------------------------------------------
-	//Include our external widget class library
-	include_once('dts_class_widgets.php');
-?>
+	//We only want to tap into the theme filters if a frontend page is being requested
+	if (!is_admin()) :
+		//Include our external device theme switcher class library
+		include_once('inc/class.switcher.php');
+		//Load support for legacy GET variables
+		include('inc/legacy/legacy_get_support.php');
+		//Instantiate a new instance of this class
+		//This is the single class instance that is accessible via 'global $dts;'
+		$dts = new DTS_Switcher ;
+		//Hook into the template output function with a filter and change the template delivered if need be
+		add_filter('template', array('DTS_Switcher', 'deliver_template'));
+		//Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
+		add_filter('stylesheet', array('DTS_Switcher', 'deliver_stylesheet'));
+		//Include the template tags developers can access in their themes
+		include_once('inc/inc.template-tags.php');
+		//Load support for legacy classes, methods, functions, and variables
+		include('inc/legacy/legacy_structural_support.php');
+	endif;
