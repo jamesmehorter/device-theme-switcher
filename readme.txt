@@ -5,7 +5,7 @@ Donate Link: http://www.jamesmehorter.com/donate/
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, Tablet Theme, Different Themes, Device Theme
 Requires at least: 3.0
 Tested up to: 3.4.1
-Stable tag: 1.9
+Stable tag: 1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,9 +13,9 @@ Set a theme for handhelds and a theme for tablets
 
 == Description ==
 
-Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > Device Themes', where you can set one theme for handheld devices, another theme for tablet devices, and yet another theme for low support devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. WordPress child themes are supported. 
+Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > Device Themes', where you can set one theme for handheld devices, and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. This plugin is esspecially helpful if you're a theme developer that wants to create 3 tailored verions of your theme. WordPress child themes are supported. 
 
-'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities. Often these is older devices.
+'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds.
 
 **Please let us know if you have any questions or find any bugs. You can contact us by posting a new topic to the support forum on the right of this page. If you like our plugin please vote it up!**
 
@@ -26,27 +26,27 @@ Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > 
 
 == Installation ==
 
-1) Download and activate. After activation you'll have a new menu under 'Appearance' titled 'Device Themes'.
+1) Download and active. After activation you'll have a new menu under 'Appearance' titled 'Device Themes'.
 
-2) Set your normal website theme as you usually do in 'Appearance > Themes'. Then set your device themes under the new 'Appearnace > Device Themes' page.
+2) Set your normal website theme as you usually do in 'Appearance > Themes'. Then set your handheld and tablet themes under the new 'Appearnace > Device Themes' page. Using WordPress child themes is supported.
 
 == Frequently Asked Questions ==
 
-= How do Menus and Widgets work?! =
-
-If you plan to use the widgets OR a menu specifically for one theme (i.e. a menu that only shows in your handheld theme) you must register the menu location/menu and/or sidebar in *both your handheld and computer themes*. When DTS delivers a handheld/tablet theme, behind-the-scenes WordPress still thinks your computer theme is active. 
-
 = How do I display a link in my handheld theme for users to "View Full Website"? =
 
-This plugin creates two widgets for doing just that! Or you can use the template tags below.
+This plugin creates two widgets for doing just that! Or you can use the template tags below. NOTE: If you plan to use the widgets OR a menu specifically for one theme (i.e. a menu that only shows in your handheld theme) you must register the sidebar and/or menu in both your handheld and computer themes. This is because when delivering a handheld theme, behind-the-scenes WordPress still thinks your computer theme is active, so the sidebar / menus must exist in both themes. 
 
 To display a link for users to "View the full website" place the following anywhere in your handheld and tablet themes.
-`<?php if (class_exists('DTS')) DTS::generate_link_to_full_website() ?>`
+`<?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_to_full_website(); endif; ?>`
 
 To display a link for users to "Return to the mobile website" place the following anywhere in your default/active website theme.
-`<?php if (class_exists('DTS')) DTS::generate_link_back_to_mobile() ?>`
+`<?php if (class_exists('Device_Theme_Switcher')) : Device_Theme_Switcher::generate_link_back_to_mobile(); endif; ?>`
 
-The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
+The users chosen theme is stored in a PHP Session, so the user can browse around your website prior to clicking 'Return to mobile website'. You can use the theme links anywhere in your themes, like in header.php or footer.php. 
+
+= How do I style the widget or template tag output?? =
+
+Device Theme Switcher really just echo's an html anchor tag. Both links have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile' so you can style the link differently if you want
 
 *Styling Example*
 `.dts-link {
@@ -56,65 +56,10 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
         color: red ;
     }
     .dts-link.back-to-mobile {
-        color: blue ;
+    	color: blue ;
     }`
 
-= How can I progmatically detect the current device? =
-
-The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
-
-`<?php 
-    //Create a new instance of 
-    $dts = new DTS ;
-    
-    //See what's in there..
-    print_r($dts) ;
-
-    /*
-    DTS Object
-    (
-        [device] => computer (Possible values: computer, tablet, handheld, and low_support)
-        [handheld_theme] => Array
-            (
-                [name] => WordPress Classic
-                [template] => classic
-                [stylesheet] => classic
-            )
-
-        [tablet_theme] => Array
-            (
-                [name] => WordPress Default
-                [template] => default
-                [stylesheet] => default
-            )
-
-        [low_support_theme] => Array
-            (
-                [name] => WordPress Default
-                [template] => default
-                [stylesheet] => default
-            )
-
-        [default_template] => classic
-        [default_stylesheet] => classic
-        [device_theme] => Array
-            (
-            )
-
-    )
-    */
-
-    //use it..
-    if ($dts->device == 'tablet') do_something() ;
-?>`
-
 == Changelog ==
-
-= Version 1.9 = 
-* NEW - Made the Admin UI more presentable and WordPressy
-* NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings.
-* FIX - Numerous code rewrites to improve overall performance, redundancy, and improve extensibility. 
-* FIX - Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
 
 = Version 1.8 =
 * Updated the Kindle detection for a wider range of support
