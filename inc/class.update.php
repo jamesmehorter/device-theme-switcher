@@ -1,6 +1,15 @@
 <?php 
     class DTS_Update {
+        // ------------------------------------------------------------------------
+        // INITIALIZATION
+        // ------------------------------------------------------------------------
         static function init () {
+            DTS_Update::update(DTS_Update::version_comparison());
+        }//init
+        // ------------------------------------------------------------------------
+        // VERSION DETECTION & COMPARISON
+        // ------------------------------------------------------------------------
+        static function version_comparison () {
             $operation = "";
             //check for the new dts_version option
             $previous_version = get_option('dts_version');
@@ -23,9 +32,16 @@
                 $operation = "update";
                 $previous_version = "1.x";
             endif;
-            switch ($operation) : 
+
+            return array('operation' => $operation, 'previous_version' => $previous_version);
+        }
+        // ------------------------------------------------------------------------
+        // UPDATE ROUTINE
+        // ------------------------------------------------------------------------
+        static function update ($update) {
+            switch ($update['operation']) : 
                 case 'update' : 
-                    if ($previous_version == "1.x") : 
+                    if ($update['previous_version'] == "1.x") : 
                         //This is an update from verion 1.x to 2.0
                         //We need to update the dts theme values stored in the database
                         //previously just the slug was kept, now we're storing a url encoded string of 3 values
@@ -35,8 +51,10 @@
                     //Only if we make a change in 2.1+ will we need to run an update script
                 break;
             endswitch;
-        }//init
-        
+        }
+        // ------------------------------------------------------------------------
+        // UPDATE NOTICES
+        // ------------------------------------------------------------------------
         static function update_notice () {
             echo get_transient('dts_updated_notice');
             delete_transient('dts_updated_notice');
