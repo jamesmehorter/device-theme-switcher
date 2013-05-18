@@ -1,3 +1,5 @@
+# Device Theme Switcher
+
 WordPress plugin that let's set one theme for handheld devices and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. WordPress child themes are supported. 
 
 'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities. Often these is older devices.
