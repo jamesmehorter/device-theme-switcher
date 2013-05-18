@@ -1,30 +1,35 @@
-![Screenshot](https://raw.github.com/jamesmehorter/device-theme-switcher/master/banner-772x250.jpg)
+![Screenshot](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/banner-772x250.jpg)
 
-# Introducing Device Theme Switcher
+# Device Theme Switcher
 
-Device Theme Switcher is a WordPress plugin that uses the [MobileESP PHP library created by Anthony Hand](http://code.google.com/p/mobileesp/). Device Theme Switcher creates a new page in your WordPress Admin; 'Appearance > Device Themes', where you can set one theme for handheld devices, another theme for tablet devices, and yet another theme for low support devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. WordPress child themes are supported. 
+WordPress plugin that let's set one theme for handheld devices and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. WordPress child themes are supported. 
 
 'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities. Often these is older devices.
 
 ## How do I use it?
 
-Install the plugin from either the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) or grab the latest bundled-zip here on github. Then set your handheld and tablet themes under Appearance > Device Themes. Computer users will be given the theme you specify in Appearance > Themes, as usual. However, now handheld users will see the handheld theme and tablet users will be given the tablet theme. Using WordPress child themes is supported.
+Install the plugin from the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) Then set your handheld and tablet themes under Appearance > Device Themes. Computer users will be given the theme you specify in Appearance > Themes, as usual. However, now handheld users will see the handheld theme and tablet users will be given the tablet theme. Using WordPress child themes is supported.
 
 #### How do Menus and Widgets work?!
 
 In order to use different widgets or menus in different themes you must register the menu location and/or sidebar in *both your handheld and computer themes*. Then you must populate the different menus/widgets while the default/computer theme is active, and simply only output the sidebar/menu you want in each theme's files. That's it! You should only set your handheld theme as the active theme if you're developing/debugging and want to view the handheld theme on a computer.
 
+##### URL Switching
 
-The following can be used in your themes..
+Your device themes can be easily accessed to 'test' and see what other devices see.
 
-##### View Full Website
+    www.mywebsite.com/?theme=handheld
+    www.mywebsite.com/?theme=tablet
+    www.mywebsite.com/?theme=low_support
+    www.mywebsite.com/?theme=active
 
-    <?php if (class_exists('DTS')) DTS::generate_link_to_full_website() ?>
+##### Template Tags
+    <?php
+        //View Full Website
+        link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true);
 
-
-##### Return to Mobile Website
-
-    <?php if (class_exists('DTS')) DTS::generate_link_back_to_mobile() ?>
+        //Return to Mobile Website
+        link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true);
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
 
@@ -38,7 +43,7 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
                 color: red ;
             }
             .dts-link.back-to-mobile {
-        	    color: blue ;
+                color: blue ;
             }
     </style>
 
@@ -47,8 +52,8 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
 The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
 
     <?php 
-        //Create a new instance of 
-        $dts = new DTS ;
+        //Access the device theme switcher object
+        global $dts
         
         //See what's in there..
         print_r($dts) ;
