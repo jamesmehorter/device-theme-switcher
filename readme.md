@@ -1,7 +1,3 @@
-![Screenshot](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/banner-772x250.jpg)
-
-# Device Theme Switcher
-
 WordPress plugin that let's set one theme for handheld devices and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. WordPress child themes are supported. 
 
 'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities. Often these is older devices.
@@ -14,7 +10,7 @@ Install the plugin from the [WordPress Plugin Repository](http://wordpress.org/e
 
 In order to use different widgets or menus in different themes you must register the menu location and/or sidebar in *both your handheld and computer themes*. Then you must populate the different menus/widgets while the default/computer theme is active, and simply only output the sidebar/menu you want in each theme's files. That's it! You should only set your handheld theme as the active theme if you're developing/debugging and want to view the handheld theme on a computer.
 
-##### URL Switching
+##### URL Switching - __NEW__ *in Version 2.0!*
 
 Your device themes can be easily accessed to 'test' and see what other devices see.
 
@@ -23,7 +19,7 @@ Your device themes can be easily accessed to 'test' and see what other devices s
     www.mywebsite.com/?theme=low_support
     www.mywebsite.com/?theme=active
 
-##### Template Tags
+##### Template Tags - __NEW__ *in Version 2.0!*
     <?php
         //View Full Website
         link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true);
@@ -47,7 +43,7 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
             }
     </style>
 
-##### DTS CLass
+##### DTS Class - __NEW__ *in Version 2.0!*
 
 The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
 
@@ -58,22 +54,20 @@ The DTS Class contains all the current device theme switcher settings and the cu
         //See what's in there..
         print_r($dts) ;
 
-        /*
-        DTS Object
+        DTS_Switcher Object
         (
-            [device] => computer (Possible values: computer, tablet, handheld, and low_support)
             [handheld_theme] => Array
                 (
-                    [name] => WordPress Classic
-                    [template] => classic
-                    [stylesheet] => classic
+                    [name] => Responsive
+                    [template] => responsive
+                    [stylesheet] => responsive
                 )
 
             [tablet_theme] => Array
                 (
-                    [name] => WordPress Default
-                    [template] => default
-                    [stylesheet] => default
+                    [name] => Twenty Twelve
+                    [template] => twentytwelve
+                    [stylesheet] => twentytwelve
                 )
 
             [low_support_theme] => Array
@@ -83,24 +77,26 @@ The DTS Class contains all the current device theme switcher settings and the cu
                     [stylesheet] => default
                 )
 
-            [default_template] => classic
-            [default_stylesheet] => classic
-            [device_theme] => Array
+            [active_theme] => Array
                 (
+                    [name] => Responsive
+                    [template] => responsive
+                    [stylesheet] => responsive
                 )
 
+            [device] => active (Possible values: computer, tablet, handheld, and low_support)
+            [theme_override] => tablet
         )
-        */
 
         //use it..
         if ($dts->device == 'tablet') do_something() ;
-    ?>
 
 ### Changelog 
 
-* _Version 1.9_
+* _Version 2.0_
     * NEW - Made the Admin UI more presentable and WordPressy
     * NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings.
+    * NEW - URL Switching - Easily see what other devices see
     * FIX - Numerous code rewrites to improve overall performance, redundancy, and improve extensibility. 
     * FIX - Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
 
@@ -142,4 +138,8 @@ The DTS Class contains all the current device theme switcher settings and the cu
 
 ## Credits
 
-This plugin is based on the [concepts provided by Jonas Vorwerk's Mobile theme switcher plugin](http://www.jonasvorwerk.com/), and [Jeremy Arntz's Mobile Theme Switcher plugin](http://www.jeremyarntz.com/).
+This plugin is powered by the [MobileESP PHP library created by Anthony Hand](http://code.google.com/p/mobileesp/). 
+
+This plugin is based on the [concepts provided by Jonas Vorwerk's Mobile theme switcher plugin](http://www.jonasvorwerk.com/) , and [Jeremy Arntz's Mobile Theme Switcher plugin](http://www.jeremyarntz.com/).
+
+Copyright (C) 2013 James Mehorter

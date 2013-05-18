@@ -56,8 +56,9 @@
         endforeach;
     endforeach;
 
-    $admin_notice = '<div class="dts updated">
-                <p><strong>Device Theme Switcher 2.0 comes packed with major improvements, new features, and even more theme-switchery!</strong></p>
-                <p>Read about all the goodness, <a href="#">here</a>.</p>
-              </div>';
+    $admin_notice = '
+        <div class="dts updated">
+            <p><strong>Device Theme Switcher 2.0 comes packed with major improvements, new features, and even more theme-switchery!</strong></p>
+            <p>Read about all the goodness, <a href="http://jamesmehorter.github.io/device-theme-switcher/">here</a>.</p>
+        </div>';
     set_transient('dts_updated_notice', $admin_notice, 60*60*12);
