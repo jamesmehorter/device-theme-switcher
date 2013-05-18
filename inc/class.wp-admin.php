@@ -135,7 +135,6 @@
         // ADMIN NOTICES
         // ------------------------------------------------------------------------------
         static public function admin_activation_notice(){
-            echo "BLAJ";
             //Print a message to the admin window letting the user know thier settings have been saved
             //The CSS used to style this message is located in dts_admin_output.php
             echo '<div class="dts activated"><p>Welcome to Device Theme Switcher!</p></div>';
@@ -143,6 +142,6 @@
         static public function admin_save_settings_notice(){
             //Print a message to the admin window letting the user know thier settings have been saved
             //The CSS used to style this message is located in dts_admin_output.php
-            echo '<div class="dts saved-settings"><p>Settings saved.</p></div>';
+            echo '<div class="dts updated"><p>Settings saved.</p></div>';
         }//admin_save_settings_notice
     }//Class DTS_Admin
