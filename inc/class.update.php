@@ -11,13 +11,10 @@
         // ------------------------------------------------------------------------
         static function version_comparison () {
             $operation = "";
-            //check for the new dts_version option
+            //check for the dts_version option (New in Version 2.0)
             $previous_version = get_option('dts_version');
             if ($previous_version) : //if the user is running version 2.0+ 
-                //echo "yes";
                 //see if the installed version matches the version in this code
-                //echo "Installed " . $previous_version . "<br />";
-                //echo "Code Version" . DTS_VERSION;
                 if ($previous_version == DTS_VERSION) : 
                     //do nothing - the versions are identical, no update needed
                 else :
@@ -25,8 +22,9 @@
                     update_option('dts_version', DTS_VERSION);
                     $operation = 'update';
                 endif;
-            else : //if the user is running pre version 2.0 (before 2.0 no version was added during activation)
+            else : 
                 //there is no dts_version option in the db
+                //The user is running pre version 2.0 (no version was added to the db on activation before 2.0 )
                 //add the version to the database
                 add_option('dts_version', DTS_VERSION);
                 $operation = "update";
@@ -34,7 +32,7 @@
             endif;
 
             return array('operation' => $operation, 'previous_version' => $previous_version);
-        }
+        }//version_comparison
         // ------------------------------------------------------------------------
         // UPDATE ROUTINE
         // ------------------------------------------------------------------------
@@ -51,12 +49,12 @@
                     //Only if we make a change in 2.1+ will we need to run an update script
                 break;
             endswitch;
-        }
+        }//update
         // ------------------------------------------------------------------------
         // UPDATE NOTICES
         // ------------------------------------------------------------------------
         static function update_notice () {
             echo get_transient('dts_updated_notice');
             delete_transient('dts_updated_notice');
-        }
+        }//update_notice
     }//DTS_Update

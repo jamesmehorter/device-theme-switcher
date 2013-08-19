@@ -82,14 +82,31 @@
             foreach ($dts['themes'] as $device => $theme) : 
                 if (empty($theme)) : $dts['themes'][$device] = array('name' => '', 'template' => '', 'stylesheet' => ''); endif;
             endforeach ?>
-            <div class="wrap">
+            <style type="text/css">
+                div.wrap.device-theme-switcher-settings table td {
+                    padding: 0 5px 0 5px ;
+                }
+                    div.wrap.device-theme-switcher-settings select {
+                        width: 145px ;
+                    }
+                .advanced-options-toggle, .help-and-support-toggle {
+                    font-size: 0.9em ;
+                    outline: none ;
+                }
+                .advanced-options, .help-and-support {
+                    width: 806px ;
+                    display: none ; /* We'll enable this via JavaScript */
+                }
+            </style>
+            
+            <div class="wrap device-theme-switcher-settings">
                 <div id="icon-themes" class="icon32"><br></div>
                 <h2>Device Themes<br /><br /></h2>
                 <form method="post" action="<?php echo admin_url() ?>themes.php?page=device-themes">
                     <table>
                         <tr>
-                            <th scope="row" align="right">
-                                <label for="dts_handheld_theme"><?php _e("Handheld Theme") ?> &nbsp; &nbsp;</label>
+                            <th scope="row" align="right" width="150px">
+                                <label for="dts_handheld_theme"><?php _e("Handheld Theme") ?></label>
                             </th><td>
                                 <select name="dts[dts_handheld_theme]">
                                     <?php foreach ($available_themes as $theme) : ?>
@@ -97,10 +114,10 @@
                                     <?php endforeach ?>
                                 </select>
                             </td>
-                            <td><span class="description">&nbsp; &nbsp; <?php _e("Handheld devices like Apple iPhone, Android, BlackBerry, and more.") ?></span></td>                 
+                            <td><span class="description"> <?php _e("Handheld devices like Apple iPhone, Android, BlackBerry, and more.") ?></span></td>                 
                         </tr><tr>
                             <th scope="row" align="right">
-                                <label for="dts_tablet_theme"><?php _e("Tablet Theme") ?> &nbsp; &nbsp;</label>
+                                <label for="dts_tablet_theme"><?php _e("Tablet Theme") ?> </label>
                             </th><td>
                                 <select name="dts[dts_tablet_theme]">
                                     <?php foreach ($available_themes as $theme) : ?>
@@ -108,27 +125,133 @@
                                     <?php endforeach ?>
                                 </select>
                             </td>
-                            <td><span class="description">&nbsp; &nbsp; <?php _e("Tablet devices like Apple iPad, Galaxy Tab, Kindle Fire, and more.") ?></span></td>
-                        <tr>
+                            <td><span class="description"> <?php _e("Tablet devices like Apple iPad, Galaxy Tab, Kindle Fire, and more.") ?></span></td>
+                        </tr><tr>
                             <th scope="row" align="right">
-                                <label for="dts_low_support_theme"><?php _e("Low Support Theme") ?> &nbsp; &nbsp;</label>
-                            </th><td>
-                                <select name="dts[dts_low_support_theme]">
-                                    <?php foreach ($available_themes as $theme) : ?>
-                                        <option value="<?php echo build_query($theme)?>" <?php selected($theme['name'], $dts['themes']['low_support']['name']) ?>><?php echo $theme['name'] ?> &nbsp; </option>
-                                    <?php endforeach ?>
-                                </select>
-                                <td><span class="description">&nbsp; &nbsp; <?php _e("Devices which lack complete CSS / Javascript support") ?></span></td>
-                            </td>
-                        </tr></tr>
-                            <td colspan="3">
-                                <br />
+                                <a href="#" class="advanced-options-toggle"><?php _e("Show Advanced Options") ?></a> 
+                            </th><td colspan="2"></td>
+                        </tr>
+                    </table>
+                    <div class="advanced-options">
+                        <table>
+                            <tr>
+                                <th scope="row" align="right" width="150px">
+                                    <label for="dts_low_support_theme"><?php _e("Low-Support Theme") ?> </label>
+                                </th><td>
+                                    <select name="dts[dts_low_support_theme]">
+                                        <?php foreach ($available_themes as $theme) : ?>
+                                            <option value="<?php echo build_query($theme)?>" <?php selected($theme['name'], $dts['themes']['low_support']['name']) ?>><?php echo $theme['name'] ?> &nbsp; </option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </td><td>
+                                    <span class="description"> <?php _e("Set a theme for devices that lack complete CSS & JavaScipt Support.") ?></span>
+                                </td>
+                            </tr><tr>
+                                <th scope="row" align="right"valign="top">
+                                    <label for="dts_session_timeout"><?php _e("Session timeout") ?> </label>
+                                </th><td valign="top">
+                                    <select name="dts_session_timeout_value">
+                                        <option value="none"><?php _e("None") ?></option>
+                                        <option value="900"><?php _e("15 Minutes") ?></option>
+                                        <option value="1800"><?php _e("30 Minutes") ?></option>
+                                        <option value="2700"><?php _e("45 Minutes") ?></option>
+                                        <option value="3600"><?php _e("60 Minutes") ?></option>
+                                        <option value="4500"><?php _e("75 Minutes") ?></option>
+                                        <option value="5400"><?php _e("90 Minutes") ?></option>
+                                    </select>
+                                </td><td>
+                                    <span class="description">
+                                    <?php _e("Set a length of time until a user is kicked back to their device theme") ?><br />  
+                                    <?php _e("after they've requested the 'Desktop Version.'") ?></span>
+                                </td>                 
+                            </tr><tr>
+                                <th scope="row" align="right" valign="top">
+                                    <label for="dts_disable_mobile_theme_caching"><?php _e("Theme Caching") ?> </label>
+                                </th><td valign="top">
+                                    <input type="checkbox" name="dts_disable_mobile_theme_caching" /> <?php _e("Disable caching") ?>
+                                </td><td>
+                                    <span class="description">
+                                         <?php _e("Disable theme caching for handheld and tablet devices.") ?><br />
+                                         <?php _e("This setting may be needed if you're using a plugin like W3 Total Cache or WP Super Cache.") ?>
+                                    </span>
+                                </td>                 
+                            </tr>
+                        </table>
+                    </div>
+                    <table>
+                        <tr>
+                            <th scope="row" align="right" width="150px">
                                 <input type="hidden" name="dts_settings_update" value="true" />
-                                <input type="submit" value="<?php _e("Save Device Themes") ?>" class="button button-primary" />
-                            </td>
+                                <input type="submit" value="<?php _e("Save Settings") ?>" class="button button-primary" /> 
+                            </th></td colspan="2"></td>
                         </tr>
                     </table>
                 </form>
+                <br /><br />
+                <table>
+                    <tr>
+                        <th scope="row" align="right" width="150px">
+                            <a href="#" class="help-and-support-toggle"><?php _e("Help & Support") ?></a> 
+                        </th><td colspan="2"></td>
+                    </tr>
+                </table>
+                <div class="help-and-support">
+                    <table>
+                        <tr>
+                            <th scope="row" align="right" width="150px">
+                                <?php _e("Helpful Links") ?>
+                            </th><td align="left">
+                                <a href="http://wordpress.org/support/plugin/device-theme-switcher" title="Device Theme Switcher Support Forum" target="_blank">Support Forum</a> | 
+                                <a href="http://wordpress.org/plugins/device-theme-switcher/faq/" title="Device Theme Switcher FAQ" target="_blank">FAQ</a>
+                            </td>
+                        </tr><tr>
+                            <th scope="row" align="right" width="150px">
+                                <?php _e("Shortcodes") ?> 
+                            </th><td align="left">
+                                Blah
+                            </td>
+                        </tr><tr>
+                            <th scope="row" align="right" valign="top">
+                                <?php _e("Template Tags") ?> 
+                            </th><td align="left" >
+                                <?php echo htmlentities("<?php") . "<br />" ?>
+                                &nbsp; &nbsp; //View Full Website<br />
+                                &nbsp; &nbsp; link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true);<br /><br />
+                                &nbsp; &nbsp; //Return to Mobile Website<br />
+                                &nbsp; &nbsp; link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true);<br />
+                                <?php echo "?>" ?>
+                            </td>
+                        </tr><tr>
+                            <th scope="row" align="right" valign="top">
+                                <?php _e("URL Paramaters") ?> 
+                            </th><td align="left">
+                                <a href="<?php bloginfo('url') ?>/?theme=handheld" title="View Handheld Theme" target="_blank"><?php bloginfo('url') ?>/?theme=handheld</a><br />
+                                <a href="<?php bloginfo('url') ?>/?theme=tablet" title="View Tablet Theme" target="_blank"><?php bloginfo('url') ?>/?theme=tablet</a><br />
+                                <a href="<?php bloginfo('url') ?>/?theme=low_support" title="View Low-Support Theme" target="_blank"><?php bloginfo('url') ?>/?theme=low_support</a><br />
+                                <a href="<?php bloginfo('url') ?>/?theme=active" title="View Active Theme" target="_blank"><?php bloginfo('url') ?>/?theme=active</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <script type="text/javascript">
+                    (function($){
+                        $('.advanced-options-toggle').click(function(){
+                            oThis = $(this)
+                            $('.advanced-options').slideToggle(600, function(){
+                                if ($(this).is(':visible')) {
+                                    oThis.text('Hide Advanced Options')
+                                } else {
+                                    oThis.text('Show Advanced Options')
+                                }
+                            })
+                        })
+                        $('.help-and-support-toggle').click(function(){
+                            $('.help-and-support').slideToggle(600, function(){
+                                //complete
+                            })
+                        })
+                    })(jQuery)
+                </script>
             </div><?php
         } //generate_admin_settings_page
         // ------------------------------------------------------------------------------

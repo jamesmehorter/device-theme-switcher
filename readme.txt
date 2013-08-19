@@ -1,10 +1,13 @@
 === Plugin Name ===
 Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
-Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, Tablet Theme, Different Themes, Device Theme
 Requires at least: 3.0
-Tested up to: 3.5.1
+Tested up to: 3.6
 Stable tag: 2.0
+Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, iPad, iPhone, Android, Blackberry, Tablet Theme, Different Themes, Device Theme
+Author URI: http://www.jamesmehorter.com/
+Donate Link: http://www.jamesmehorter.com/donate/
+Plugin URI: https://github.com/jamesmehorter/device-theme-switcher
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,16 +15,13 @@ Set a theme for handhelds and a theme for tablets
 
 == Description ==
 
-WordPress plugin that let's set one theme for handheld devices and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'. WordPress child themes are supported. 
-
-'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities. Often these is older devices.
-
-Visit our site http://jamesmehorter.github.io/device-theme-switcher/, or Fork the repo https://github.com/jamesmehorter/device-theme-switcher
+WordPress plugin that let's you set one theme for handheld devices and another theme for tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'.
 
 == Screenshots ==
 
-1. View of the Device Theme Switcher Window and options. 
-2. View of the two widgets in the admin.
+1. View of the Device Theme Switcher settings.
+1. View of the Device Theme Switcher advanced settings & help items. 
+2. View of the two Device Theme Switcher Widgets and their settings.
 
 == Installation ==
 
@@ -37,7 +37,7 @@ In order to use different widgets or menus in different themes you must register
 
 = How can I test the plugin and see what other devices see? =
 
-Your device themes can be easily accessed to 'test' and see what other devices see.
+Your device themes can be easily accessed in order to 'test' and see what other device owners see.
 
 `www.mywebsite.com/?theme=handheld
 www.mywebsite.com/?theme=tablet
@@ -116,6 +116,18 @@ The DTS Class contains all the current device theme switcher settings and the cu
     //use it..
     if ($dts->device == 'tablet') do_something() ;`
 
+= Are WordPress Child Themes supported? =
+
+Yes! Device Theme Switcher simply delivers the requested theme (Either automatically via the user's type of device or specifically via a ?device=tablet url paramater. 
+
+= Help!? My theme isn't working! = 
+
+If your theme does not work as expected in any of the devices-**the issue is with the theme, NOT with the plugin!** This plugin just switches your installed themes around, that's it. The only thing this plugin relies on is that you have [correctly-written/working WordPress themes](http://codex.wordpress.org/Theme_Development#Theme_Development_Standards). If your theme 'Activates' in Appearance > Themes and displays correctly in the browser, then it's a 'working' theme. 
+
+= What devices are considered handheld or tablet? = 
+
+'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities. Often these is older devices.
+
 == Changelog ==
 
 = Version 2.0 = 
@@ -165,7 +177,8 @@ The DTS Class contains all the current device theme switcher settings and the cu
     
 == Upgrade Notice ==
 
-Auto Updating this plugin is OK. Your saved settings for this plugin will never be changed when updating. You can even deactivate / reactivate this plugin without ever losing those settings. Deleteing the plugin correctly (from within the Admin > Plugins page) is the only way to remove the plugin settings. 
+= 2.0 =
+Major Improvements, New Features, and even prettier!
 
 == Credits ==
 

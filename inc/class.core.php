@@ -13,8 +13,8 @@
         static function activate () {
             DTS_Core::init();
             //add the version to the database
-            add_option('dts_version', DTS_VERSION);
-            //Display an admin notice letting the user know the save was successfull
+            update_option('dts_version', DTS_VERSION);
+            //Display an admin notice letting the user know the activation was successfull
             //add_action('admin_notices', array('DTS_Admin', 'admin_activation_notice'));
         }
         // ------------------------------------------------------------------------------
