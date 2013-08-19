@@ -23,9 +23,11 @@
             if ($_POST) : if ($_POST['dts_settings_update'] == "true") :
                 //Loop through the 3 device <select>ed <option>s in the admin form
                 foreach ($_POST['dts'] as $selected_device => $chosen_theme) : 
-                    //Update each of the 3 dts database options with a urlencoded array of the selected theme 
-                    //The array contains 3 values: name, template, and stylesheet - these are all we need for use later on
-                    update_option($selected_device, $chosen_theme);
+                    if ($chosen_theme != "Use Handheld Setting") : 
+                        //Update each of the 3 dts database options with a urlencoded array of the selected theme 
+                        //The array contains 3 values: name, template, and stylesheet - these are all we need for use later on
+                        update_option($selected_device, $chosen_theme);
+                    endif;
                 endforeach ; 
                 //Display an admin notice letting the user know the save was successfull
                 add_action('admin_notices', array('DTS_Admin', 'admin_save_settings_notice'));
@@ -36,14 +38,14 @@
         // CALLBACK MEMBER FUNCTION SPECIFIED IN: add_options_page()
         // ------------------------------------------------------------------------------
         public function generate_admin_settings_page() {
-            //Gather all of the currently installed theme names
+            //Gather all of the currently installed theme names so they can be displayed in the <select> boxes below
             if (function_exists('wp_get_themes')) : 
                 $installed_themes = wp_get_themes();
             else :
                 $installed_themes = get_themes();
             endif;
 
-            //Loop through each of the installed themes
+            //Loop through each of the installed themes and build an custom array of theme for use below
             foreach ($installed_themes as $theme) : 
                 //Gather each theme's theme data
                 //wp_get_theme was introduced in WordPress v3.4 - this check ensures we're backwards compatible
@@ -87,7 +89,7 @@
                     padding: 0 5px 0 5px ;
                 }
                     div.wrap.device-theme-switcher-settings select {
-                        width: 145px ;
+                        width: 155px ;
                     }
                 .advanced-options-toggle, .help-and-support-toggle {
                     font-size: 0.9em ;
@@ -139,9 +141,20 @@
                                     <label for="dts_low_support_theme"><?php _e("Low-Support Theme") ?> </label>
                                 </th><td>
                                     <select name="dts[dts_low_support_theme]">
-                                        <?php foreach ($available_themes as $theme) : ?>
-                                            <option value="<?php echo build_query($theme)?>" <?php selected($theme['name'], $dts['themes']['low_support']['name']) ?>><?php echo $theme['name'] ?> &nbsp; </option>
-                                        <?php endforeach ?>
+                                        <option>Use Handheld Setting</option><?php 
+                                        /*
+                                            By default the active theme should be used
+                                            if a handheld theme is set that should be used for ALL handheld devices
+                                            if a low support theme is set, use that one
+                                        */
+                                        //print_r($dts);
+
+                                        //Still does not work properly.. the <select> needs to be on 'none' or something
+
+                                        foreach ($available_themes as $theme) : ?>
+        
+                                        <option value="<?php echo build_query($theme)?>" <?php selected($theme['name'], $dts['themes']['low_support']['name']) ?>><?php echo $theme['name'] ?> &nbsp; </option><?php endforeach ?>
+
                                     </select>
                                 </td><td>
                                     <span class="description"> <?php _e("Set a theme for devices that lack complete CSS & JavaScipt Support.") ?></span>

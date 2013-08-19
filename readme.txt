@@ -136,6 +136,7 @@ If your theme does not work as expected in any of the devices-**the issue is wit
 * NEW - URL Switching - Easily see what other devices see
 * FIX - Numerous code rewrites to improve overall performance, redundancy, and improve extensibility. 
 * FIX - Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
+* Removed the low-support option. Adds more confusion than it helps. Email me if you think otherwise!
 
 = Version 1.8 =
 * Updated the Kindle detection for a wider range of support

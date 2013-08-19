@@ -96,7 +96,7 @@ The DTS Class contains all the current device theme switcher settings and the cu
 ### Changelog 
 
 * _Version 2.0_
-    * NEW - Made the Admin UI more presentable and WordPressy
+    * NEW - The Admin UI is now more presentable and WordPressy
     * NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings.
     * NEW - URL Switching - Easily see what other devices see
     * FIX - Numerous code rewrites to improve overall performance, redundancy, and improve extensibility. 

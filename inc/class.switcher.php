@@ -72,7 +72,7 @@
 				//Does the requested theme match the detected device theme?
 				if ($_GET['theme'] == $this->device) : unset($_SESSION['dts']); //The default/active theme is given back and their session is going to be removed
 				else : 
-					//Kill the request if it isn't valid
+					//Kill the request if it isn't valid, i.e. don't try to load ?theme=fooeybear unless it really exists
 					if (isset($this->{$_GET['theme'] . "_theme"})) :
 						if (!empty($this->{$_GET['theme'] . "_theme"})) : 
 							//Store the requested theme in SESSION
