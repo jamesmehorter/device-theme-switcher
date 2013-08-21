@@ -14,6 +14,9 @@
             DTS_Core::init();
             //add the version to the database
             update_option('dts_version', DTS_VERSION);
+            //Add new plugin options - but don't overwrite an old value 
+            if (!get_option('dts_session_lifetime')) add_option('dts_session_lifetime', 300);
+
             //Display an admin notice letting the user know the activation was successfull
             //add_action('admin_notices', array('DTS_Admin', 'admin_activation_notice'));
         }
@@ -32,6 +35,7 @@
             delete_option('dts_handheld_theme');
             delete_option('dts_tablet_theme');
             delete_option('dts_low_support_theme');
+            delete_option('dts_session_lifetime');
         }
         static function device_theme_switcher_settings_link($links, $file) {
             if ($file == 'device-theme-switcher/dts_controller.php') :

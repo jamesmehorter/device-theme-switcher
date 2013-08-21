@@ -2,6 +2,9 @@
     /*********************************************
     UPDATE VERSION 1.x to 2.0
     *********************************************/
+    //Add new plugin options
+    add_option('dts_session_lifetime', 300);
+
     //The following options are no longer being used in 2.0, let's remove them
     delete_option('dts_device');
     delete_option('dts_current_theme');

@@ -22,13 +22,21 @@
             //Unfortunetly we can't use the settings api on a subpage, so we need to check for and update any options this plugin uses
             if ($_POST) : if ($_POST['dts_settings_update'] == "true") :
                 //Loop through the 3 device <select>ed <option>s in the admin form
-                foreach ($_POST['dts'] as $selected_device => $chosen_theme) : 
-                    if ($chosen_theme != "Use Handheld Setting") : 
+                foreach ($_POST['dts_theme'] as $selected_device => $chosen_theme) : 
+                    if ($chosen_theme == "Use Handheld Setting") : 
+                        //The user is trying to disable the low support theme option
+                        //Go ahead and remove the option for it
+                        delete_option($selected_device);
+                    else :
                         //Update each of the 3 dts database options with a urlencoded array of the selected theme 
                         //The array contains 3 values: name, template, and stylesheet - these are all we need for use later on
                         update_option($selected_device, $chosen_theme);
                     endif;
                 endforeach ; 
+
+                //Save the chosen session lifetime
+                update_option('dts_session_lifetime', $_POST['dts_session_lifetime']);
+
                 //Display an admin notice letting the user know the save was successfull
                 add_action('admin_notices', array('DTS_Admin', 'admin_save_settings_notice'));
             endif; endif;
@@ -44,28 +52,24 @@
             else :
                 $installed_themes = get_themes();
             endif;
-
             //Loop through each of the installed themes and build an custom array of theme for use below
             foreach ($installed_themes as $theme) : 
                 //Gather each theme's theme data
                 //wp_get_theme was introduced in WordPress v3.4 - this check ensures we're backwards compatible
                 if (function_exists('wp_get_theme')) : $theme_data = wp_get_theme( $theme['Stylesheet'] );
                 else : $theme_data = get_theme_data( get_theme_root() . '/' . $theme['Stylesheet'] . '/style.css' ); endif;
-
                 //We'll only display a theme if it is an actual / functioning theme with theme data
                 if (isset($theme_data)) : 
                     //Check if the theme is a child theme
                     //In this instance the 'Template' variable will be empty and we're supposed to submit the stylesheet instead
                     if (!empty($theme_data['Template'])) : $template = $theme_data['Template'];
                     else : $template = $theme['Stylesheet']; endif;
-
                     //Increment $available_themes with each functional theme    
                     //We're going to output each array in the value of each theme <option> below
                     $available_themes[] = array(
                         'name' => $theme->Name,
                         'template' => $template,
                         'stylesheet' => $theme['Stylesheet']);
-
                     //Store the theme names so we can use array_multisort on $available_theme to sort by name
                     $available_theme_names[] = $theme->Name;
                 endif;
@@ -73,6 +77,9 @@
 
             //Alphabetically sort the theme name list for display in the selection dropdowns
             array_multisort($available_theme_names, SORT_ASC, $available_theme_names);
+
+            //Get the set option if it exists
+            $dts['session_lifetime'] = get_option('dts_session_lifetime');
 
             //Retrieve any DTS theme options which were previously saved
             //The theme option is a url encoded string containing 3 values for name, template, and stylesheet
@@ -110,7 +117,7 @@
                             <th scope="row" align="right" width="150px">
                                 <label for="dts_handheld_theme"><?php _e("Handheld Theme") ?></label>
                             </th><td>
-                                <select name="dts[dts_handheld_theme]">
+                                <select name="dts_theme[dts_handheld_theme]">
                                     <?php foreach ($available_themes as $theme) : ?>
                                         <option value="<?php echo build_query($theme)?>" <?php selected($theme['name'], $dts['themes']['handheld']['name']) ?>><?php echo $theme['name'] ?> &nbsp; </option>
                                     <?php endforeach ?>
@@ -121,7 +128,7 @@
                             <th scope="row" align="right">
                                 <label for="dts_tablet_theme"><?php _e("Tablet Theme") ?> </label>
                             </th><td>
-                                <select name="dts[dts_tablet_theme]">
+                                <select name="dts_theme[dts_tablet_theme]">
                                     <?php foreach ($available_themes as $theme) : ?>
                                         <option value="<?php echo build_query($theme)?>" <?php selected($theme['name'], $dts['themes']['tablet']['name']) ?>><?php echo $theme['name'] ?> &nbsp; </option>
                                     <?php endforeach ?>
@@ -140,7 +147,7 @@
                                 <th scope="row" align="right" width="150px">
                                     <label for="dts_low_support_theme"><?php _e("Low-Support Theme") ?> </label>
                                 </th><td>
-                                    <select name="dts[dts_low_support_theme]">
+                                    <select name="dts_theme[dts_low_support_theme]">
                                         <option>Use Handheld Setting</option><?php 
                                         /*
                                             By default the active theme should be used
@@ -161,21 +168,53 @@
                                 </td>
                             </tr><tr>
                                 <th scope="row" align="right"valign="top">
-                                    <label for="dts_session_timeout"><?php _e("Session timeout") ?> </label>
+                                    <label for="dts_session_lifetime"><?php _e("Session Lifetime") ?> </label>
                                 </th><td valign="top">
-                                    <select name="dts_session_timeout_value">
-                                        <option value="none"><?php _e("None") ?></option>
-                                        <option value="900"><?php _e("15 Minutes") ?></option>
-                                        <option value="1800"><?php _e("30 Minutes") ?></option>
-                                        <option value="2700"><?php _e("45 Minutes") ?></option>
-                                        <option value="3600"><?php _e("60 Minutes") ?></option>
-                                        <option value="4500"><?php _e("75 Minutes") ?></option>
-                                        <option value="5400"><?php _e("90 Minutes") ?></option>
+                                    <?php 
+                                        function array_multi_search($needle, $haystack, $keytosearch) { 
+                                            $matched_key = false ;
+                                            
+                                            return $matched_key ;
+                                        }//array_multi_search
+                                        //Build a list of default session lifetimes
+                                        $dts_session_lifetimes = array(
+                                            array('value' => 0, 'text' => _("Until Browser is closed")),
+                                            array('value' => 300, 'text' => _("5 Minutes (Plugin Default)")),
+                                            array('value' => 900, 'text' => _("15 Minutes")),
+                                            array('value' => 1800, 'text' => _("30 Minutes")),
+                                            array('value' => 2700, 'text' => _("45 Minutes")),
+                                            array('value' => 3600, 'text' => _("60 Minutes")),
+                                            array('value' => 4500, 'text' => _("75 Minutes")),
+                                            array('value' => 5400, 'text' => _("90 Minutes")));
+                                        //Grab the server's session parms
+                                        $session_params = session_get_cookie_params();
+                                        
+                                        //See if the server's session lifetime is already in our default list
+                                        $lifetime_cookie_match = false;
+                                        foreach($dts_session_lifetimes as $key => $value) : 
+                                            if($key == $session_params['lifetime']) $lifetime_cookie_match = $key ;
+                                        endforeach;
+                                       
+                                        //If it is found in the default list..
+                                        if ($lifetime_cookie_match !== false)
+                                            //Append some descriptive text our default 'text' index (that displays in the <option> below)
+                                            $dts_session_lifetimes[$lifetime_cookie_match]['text'] .= _(" (Set in php.ini)");
+                                        else
+                                            //add it to the array at position 1
+                                            array_splice($dts_session_lifetimes, 1, 0, array(
+                                                'value' => $session_params['lifetime'], 
+                                                'title' => _($session_params['lifetime'] * 60 . ' Minutes (Set in php.ini)')));
+                                    ?>
+                                    <select name="dts_session_lifetime"><?php     
+                                        foreach ($dts_session_lifetimes as $lifetime) : ?>
+                                        <option value="<?php echo $lifetime['value'] ?>" <?php selected($dts['session_lifetime'], $lifetime['value']) ?>><?php echo $lifetime['text'] ?></option>
+
+                                        <?php endforeach ?>
                                     </select>
                                 </td><td>
                                     <span class="description">
-                                    <?php _e("Set a length of time until a user is kicked back to their device theme") ?><br />  
-                                    <?php _e("after they've requested the 'Desktop Version.'") ?></span>
+                                    <?php _e("Set a length of time until a user is kicked back to their device theme <br />after they've requested the 'Desktop Version. <strong>Note:</strong> Some mobile browsers do not actually close!") ?><br />
+                                    </span>
                                 </td>                 
                             </tr><tr>
                                 <th scope="row" align="right" valign="top">

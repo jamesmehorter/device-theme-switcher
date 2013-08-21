@@ -34,6 +34,20 @@
 		public function detect_device () {
 			//Default is active (default computer theme set by the admin) until it's overridden
 			$device = 'active';
+
+			//Give the handheld theme to any low_support device
+			//UNLESS one has been set in the admin already
+			$low_support_device = 'handheld' ;
+			$low_support_theme = get_option('dts_low_support_theme');
+			if (!empty($low_support_theme) && is_array($low_support_theme)) : 
+				if (isset($low_support_theme['name'])) : 
+					if (!empty($low_support_theme['name'])) : 
+						//Detect if the device is a low support device (poor css and javascript rendering / older devices)
+						$low_support_device = 'low_support' ;
+					endif;
+				endif;
+			endif;
+
 			//Use Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
 			//Thanks to Tim Broder for this addition! https://github.com/broderboy | http://timbroder.com/
 			if (isset($_SERVER['HTTP_X_UA_DEVICE'])) :
@@ -42,7 +56,7 @@
 				elseif (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('tablet-ipad', 'tablet-android')))
 					$device_theme = $this->tablet_theme;
 				else
-					$device = 'low_support' ;
+					$device = $low_support_device ;
 			//DEFAULT ACTION - Use MobileESP
 			else :
 				//Include the MobileESP code library for acertaining device user agents
@@ -53,8 +67,8 @@
 				if ($ua->DetectSmartphone() || $ua->DetectTierRichCss()) $device = 'handheld' ;
 				//Detect if the device is a tablet
 				if ($ua->DetectTierTablet() || $ua->DetectKindle() || $ua->DetectAmazonSilk()) $device = 'tablet' ;
-				//Detect if the device is a low support device (poor css and javascript rendering / older devices)
-				if ($ua->DetectBlackBerryLow() || $ua->DetectTierOtherPhones()) $device = 'low_support' ;
+				//Detect if the device is a low_support device (poor javascript and css support / text-only)
+				if ($ua->DetectBlackBerryLow() || $ua->DetectTierOtherPhones()) $device = $low_support_device ;
 			endif;
 			//Return the user's device
 			return $device ;
@@ -62,13 +76,27 @@
 		// ------------------------------------------------------------------------
 		// THEME DELIVER LOGIC
 		// ------------------------------------------------------------------------
+
+
+
+		/*
+	
+			implement the session lifetime
+			check the session start value against get_option('dts_session_lifetime')?
+			where should that code be placed?
+
+		*/
+
+
+
 		public function deliver_theme () {
 			$this->theme_override = "";
 			//Is the user requesting a theme override?
 			//This is how users can 'view full website' and vice versa
 			if (isset($_GET['theme'])) : 
 				//Both conditions below will need SESSION
-				if (session_id() == '') : @session_start(); endif;
+
+				if (session_id() == '') : session_start(); endif;
 				//Does the requested theme match the detected device theme?
 				if ($_GET['theme'] == $this->device) : unset($_SESSION['dts']); //The default/active theme is given back and their session is going to be removed
 				else : 
@@ -87,7 +115,7 @@
 			else : 
 				//there is no new override being requested
 				//Check if there is an already existant override stored in SESSION
-				if (session_id() == '') : @session_start(); endif;
+				if (session_id() == '') : session_start(); endif;
 				if (isset($_SESSION['dts']['theme'])) : 
 					//Kill the request if it isn't valid
 					if (isset($this->{$_SESSION['dts']['theme'] . "_theme"}))
