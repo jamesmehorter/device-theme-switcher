@@ -37,6 +37,9 @@
                 //Save the chosen session lifetime
                 update_option('dts_session_lifetime', $_POST['dts_session_lifetime']);
 
+                //Save the chosen session lifetime
+                update_option('dts_disable_mobile_theme_caching', $_POST['dts_disable_mobile_theme_caching']);
+
                 //Display an admin notice letting the user know the save was successfull
                 add_action('admin_notices', array('DTS_Admin', 'admin_save_settings_notice'));
             endif; endif;
@@ -220,7 +223,7 @@
                                 <th scope="row" align="right" valign="top">
                                     <label for="dts_disable_mobile_theme_caching"><?php _e("Theme Caching") ?> </label>
                                 </th><td valign="top">
-                                    <input type="checkbox" name="dts_disable_mobile_theme_caching" /> <?php _e("Disable caching") ?>
+                                    <input type="checkbox" name="dts_disable_mobile_theme_caching" <?php checked(get_option('dts_disable_mobile_theme_caching'), 'on') ?>/> <?php _e("Disable caching") ?>
                                 </td><td>
                                     <span class="description">
                                          <?php _e("Disable theme caching for handheld and tablet devices.") ?><br />
@@ -253,8 +256,8 @@
                             <th scope="row" align="right" width="150px">
                                 <?php _e("Helpful Links") ?>
                             </th><td align="left">
-                                <a href="http://wordpress.org/support/plugin/device-theme-switcher" title="Device Theme Switcher Support Forum" target="_blank">Support Forum</a> | 
-                                <a href="http://wordpress.org/plugins/device-theme-switcher/faq/" title="Device Theme Switcher FAQ" target="_blank">FAQ</a>
+                                <a href="http://wordpress.org/support/plugin/device-theme-switcher" title="Device Theme Switcher Support Forum" target="_blank"><?php _e("Support Forum") ?></a> | 
+                                <a href="http://wordpress.org/plugins/device-theme-switcher/faq/" title="Device Theme Switcher FAQ" target="_blank"><?php _e("FAQ") ?></a>
                             </td>
                         </tr><tr>
                             <th scope="row" align="right" width="150px">
@@ -266,17 +269,19 @@
                             <th scope="row" align="right" valign="top">
                                 <?php _e("Template Tags") ?> 
                             </th><td align="left" >
-                                <?php echo htmlentities("<?php") . "<br />" ?>
-                                &nbsp; &nbsp; //View Full Website<br />
-                                &nbsp; &nbsp; link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true);<br /><br />
-                                &nbsp; &nbsp; //Return to Mobile Website<br />
-                                &nbsp; &nbsp; link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true);<br />
-                                <?php echo "?>" ?>
+                                <span class="description"><?php _e("View Full Website") ?></span><br />
+                                <?php echo htmlentities("<?php") ?> link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true); <?php echo "?>" ?>
+                                <br /><br />
+                                <span class="description"><?php _e("Return to Mobile Website") ?></span><br />
+                                <?php echo htmlentities("<?php") ?> link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true); <?php echo "?>" ?>
+                                <br /><br />
                             </td>
                         </tr><tr>
                             <th scope="row" align="right" valign="top">
-                                <?php _e("URL Paramaters") ?> 
+                                <?php _e("URL Paramaters") ?>
                             </th><td align="left">
+                                <span class="description"> <?php _e("Helpful for developers to view a specific device theme") ?></span>
+                                <br />
                                 <a href="<?php bloginfo('url') ?>/?theme=handheld" title="View Handheld Theme" target="_blank"><?php bloginfo('url') ?>/?theme=handheld</a><br />
                                 <a href="<?php bloginfo('url') ?>/?theme=tablet" title="View Tablet Theme" target="_blank"><?php bloginfo('url') ?>/?theme=tablet</a><br />
                                 <a href="<?php bloginfo('url') ?>/?theme=low_support" title="View Low-Support Theme" target="_blank"><?php bloginfo('url') ?>/?theme=low_support</a><br />
