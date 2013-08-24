@@ -41,16 +41,14 @@ www.mywebsite.com/?theme=active`
 
 Template Tags, Shortcodes, and Widgets all output a simple HTML anchor tag which links to the mobile/active theme for the website by using URL Switching (See Above). 
 
-Template tags can be used in any theme or plugin file. 
+Template tags can be used in any theme or plugin file. Shortcodes can be used in the content of any post, page, or custom-post-type.
 
 `//Display a link to 'View Full Website'
 <?php link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true) ?>
+[link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
+
 //Display a link to 'Return to Mobile Website'
-<?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>`
-
-Shortcodes can be used in the content of any post, page, or custom-post-type.
-
-`[link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
+<?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>
 [link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]`
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file. 
