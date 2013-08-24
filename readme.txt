@@ -239,7 +239,7 @@ Major Improvements, New Features, and even prettier!
 
 == Credits ==
 
-This plugin is powered by the MobileESP PHP library created by Anthony Hand (http://code.google.com/p/mobileesp/). 
+This plugin is powered by the MobileESP PHP library created by Anthony Hand (http://www.jonasvorwerk.com/). 
 
 This plugin is based on the concepts provided by Jonas Vorwerk's (http://www.jonasvorwerk.com/) Mobile theme switcher plugin, and Jeremy Arntz's (http://www.jeremyarntz.com/) Mobile Theme Switcher plugin. 
 
