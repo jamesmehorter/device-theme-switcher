@@ -101,11 +101,11 @@
                     div.wrap.device-theme-switcher-settings select {
                         width: 155px ;
                     }
-                .advanced-options-toggle, .help-and-support-toggle {
+                .optional-settings-toggle, .help-and-support-toggle {
                     font-size: 0.9em ;
                     outline: none ;
                 }
-                .advanced-options, .help-and-support {
+                .optional-settings, .help-and-support {
                     max-width: 850px ;
                     display: none ; /* We'll enable this via JavaScript */
                 }
@@ -140,11 +140,11 @@
                             <td><span class="description"> <?php _e("Tablet devices like Apple iPad, Galaxy Tab, Kindle Fire, and more.") ?></span></td>
                         </tr><tr>
                             <th scope="row" align="right">
-                                <a href="#" class="advanced-options-toggle"><?php _e("Show Advanced Options") ?></a> 
+                                <a href="#" class="optional-settings-toggle"><?php _e("Show Optional Settings") ?></a> 
                             </th><td colspan="2"></td>
                         </tr>
                     </table>
-                    <div class="advanced-options">
+                    <div class="optional-settings">
                         <table>
                             <tr>
                                 <th scope="row" align="right" width="150px">
@@ -250,19 +250,21 @@
                             </td>
                         </tr><tr>
                             <th scope="row" align="right" width="150px">
-                                <?php _e("Shortcodes") ?> 
+                                <?php _e("Shortcode") ?> 
                             </th><td align="left">
-                                Blah
+                                <span class="description"><?php _e("Display a link to 'View Full Website'") ?></span><br />
+                                [device-theme-switcher link_text="View Full Website" css_classes="blue-text, alignleft"]
+                                <br /><br />
                             </td>
                         </tr><tr>
                             <th scope="row" align="right" valign="top">
                                 <?php _e("Template Tags") ?> 
                             </th><td align="left" >
-                                <span class="description"><?php _e("View Full Website") ?></span><br />
-                                <?php echo htmlentities("<?php") ?> link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true); <?php echo "?>" ?>
+                                <span class="description"><?php _e("Display a link to 'View Full Website'") ?></span><br />
+                                <?php echo htmlentities("<?php") ?> link_to_full_website($link_text = "View Full Website", $css_classes = array("blue-text", "alignleft"), $echo = true); <?php echo "?>" ?>
                                 <br /><br />
-                                <span class="description"><?php _e("Return to Mobile Website") ?></span><br />
-                                <?php echo htmlentities("<?php") ?> link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true); <?php echo "?>" ?>
+                                <span class="description"><?php _e("Display a link to 'Return to Mobile Website'") ?></span><br />
+                                <?php echo htmlentities("<?php") ?> link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array("red-text", "alignright"), $echo = true); <?php echo "?>" ?>
                                 <br /><br />
                             </td>
                         </tr><tr>
@@ -281,13 +283,13 @@
                 </div>
                 <script type="text/javascript">
                     (function($){
-                        $('.advanced-options-toggle').click(function(){
+                        $('.optional-settings-toggle').click(function(){
                             oThis = $(this)
-                            $('.advanced-options').slideToggle(600, function(){
+                            $('.optional-settings').slideToggle(600, function(){
                                 if ($(this).is(':visible')) {
-                                    oThis.text('Hide Advanced Options')
+                                    oThis.text('Hide Optional Settings')
                                 } else {
-                                    oThis.text('Show Advanced Options')
+                                    oThis.text('Show Optional Settings')
                                 }
                             })
                         })

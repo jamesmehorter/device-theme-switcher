@@ -1,72 +1,15 @@
 # Device Theme Switcher
 
+[Installation](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#installation) | [Features](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#features) | [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#screenshots) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#faq) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#changelog) | [Credits](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#credits)
+
 WordPress plugin that let's you set one theme for all handheld devices and another theme for all tablet devices. Normal computer visitors are given the active theme set in 'Appearance > Themes'.
 
 'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities-often these are older devices.
 
-## How do I use it?
+## Installation
 Install the plugin from the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) Then set your handheld and tablet themes under Appearance > Device Themes. Computer users will be given the theme you specify in Appearance > Themes, as usual. However, now handheld users will see the handheld theme and tablet users will be given the tablet theme. Using WordPress child themes is supported.
 
-#### How do Menus and Widgets work?!
-Keep in mind, DTS simply changes which theme is delivered to the user-but WordPress still thinks the active theme is 'active' the whole time. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
-
-##### How do I show the same menu in each theme?
-Simply place you `register_nav_menu('my-menu-location', 'My Menu Location Name');` function in both of your primary/active and handheld/tablet theme functions.php files. Then, while your primary theme is 'active' go into Appearance > Menus-create your menu and assign it to the menu location-and populate it with some menu items. That's it!
-
-##### How do I show one menu in my active theme and a different menu in my handheld/tablet theme?
-Register a menu location for each theme, and place your `register_nav_menus()` code in each theme. E.g.:
-
-In each theme's functions.php file:
-
-    register_nav_menus(array(
-        'active-menu-location' => 'Active Theme Menu Location',
-        'handheld-menu-location' => 'Handheld Theme Menu Location',
-        'tablet-menu-location' => 'Tablet Theme Menu Location',
-    ));
-
-Then, while your primary theme is 'active' go into Appearance > Menus-create your 3 menus-assign each one to their designated menu location-and populate each with some menu items. 
-
-Lastly we just need to display each menu in each theme:
-
-Active theme header.php:
-    
-    wp_nav_menu(array('theme_location' => 'active-menu-location'));
-
-Handheld theme header.php
-    
-    wp_nav_menu(array('theme_location' => 'handheld-menu-location'));
-
-Tablet theme header.php
-    
-    wp_nav_menu(array('theme_location' => 'tablet-menu-location'));
-
-That's it-the important part is that you register each location in each theme!
-
-##### How can I display the same sidebar in each theme?
-Place the same `register_sidebar()` function in each theme's functions.php file, and add your widgets to your sidebar while the primary theme is 'active'.
-
-##### How can I display a different sidebar in each theme?
-Place the same 3 `register_sidebar()` functions in each theme's functions.php file, and add your widgets to each sidebar while the primary theme is 'active'. E.g:
-
-In each theme's functions.php file:
-
-    register_sidebar(array('name' => 'Active Theme Sidebar'));
-    register_sidebar(array('name' => 'Handheld Theme Sidebar'));
-    register_sidebar(array('name' => 'Tablet Theme Sidebar'));
-
-Then, while your primary theme is 'active' go into Appearance > Widgets-and assign some widgets to each sidebar. Lastly we just need to display each sidebar in each theme:
-
-Active theme page.php:
-    
-    dynamic_sidebar('Active Theme Sidebar');
-
-Handheld theme page.php
-    
-    dynamic_sidebar('Handheld Theme Sidebar');
-
-Tablet theme page.php
-    
-    dynamic_sidebar('Tablet Theme Sidebar');
+## Features
 
 #### URL Switching - __NEW__ *in Version 2.0!*
 
@@ -144,6 +87,75 @@ The DTS Class contains all the current device theme switcher settings and the cu
 
         //use it..
         if ($dts->device == 'tablet') do_something() ;
+
+## Screenshots
+
+![View of the Device Theme Switcher settings](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/screenshot-1.jpg "View of the Device Theme Switcher settings")
+![View of the Device Theme Switcher advanced settings & help items.](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/screenshot-2.jpg "View of the Device Theme Switcher advanced settings & help items")
+![View of the two Device Theme Switcher Widgets and their settings](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/screenshot-3.jpg "View of the two Device Theme Switcher Widgets and their settings")
+
+## FAQ
+
+#### How do Menus and Widgets work?!
+Keep in mind, DTS simply changes which theme is delivered to the user-but WordPress still thinks the active theme is 'active' the whole time. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
+
+#### How do I show the same menu in each theme?
+Simply place you `register_nav_menu('my-menu-location', 'My Menu Location Name');` function in both of your primary/active and handheld/tablet theme functions.php files. Then, while your primary theme is 'active' go into Appearance > Menus-create your menu and assign it to the menu location-and populate it with some menu items. That's it!
+
+#### How do I show one menu in my active theme and a different menu in my handheld/tablet theme?
+Register a menu location for each theme, and place your `register_nav_menus()` code in each theme. E.g.:
+
+###### In each theme's functions.php file:
+
+    register_nav_menus(array(
+        'active-menu-location' => 'Active Theme Menu Location',
+        'handheld-menu-location' => 'Handheld Theme Menu Location',
+        'tablet-menu-location' => 'Tablet Theme Menu Location',
+    ));
+
+Then, while your primary theme is 'active' go into Appearance > Menus-create your 3 menus-assign each one to their designated menu location-and populate each with some menu items. 
+
+###### Lastly we just need to display each menu in each theme:
+
+Active theme header.php:
+    
+    wp_nav_menu(array('theme_location' => 'active-menu-location'));
+
+Handheld theme header.php
+    
+    wp_nav_menu(array('theme_location' => 'handheld-menu-location'));
+
+Tablet theme header.php
+    
+    wp_nav_menu(array('theme_location' => 'tablet-menu-location'));
+
+That's it-the important part is that you register each location in each theme!
+
+#### How can I display the same sidebar in each theme?
+Place the same `register_sidebar()` function in each theme's functions.php file, and add your widgets to your sidebar while the primary theme is 'active'.
+
+#### How can I display a different sidebar in each theme?
+Place the same 3 `register_sidebar()` functions in each theme's functions.php file, and add your widgets to each sidebar while the primary theme is 'active'. E.g:
+
+###### In each theme's functions.php file:
+
+    register_sidebar(array('name' => 'Active Theme Sidebar'));
+    register_sidebar(array('name' => 'Handheld Theme Sidebar'));
+    register_sidebar(array('name' => 'Tablet Theme Sidebar'));
+
+###### Then, while your primary theme is 'active' go into Appearance > Widgets-and assign some widgets to each sidebar. Lastly we just need to display each sidebar in each theme:
+
+Active theme page.php:
+    
+    dynamic_sidebar('Active Theme Sidebar');
+
+Handheld theme page.php
+    
+    dynamic_sidebar('Handheld Theme Sidebar');
+
+Tablet theme page.php
+    
+    dynamic_sidebar('Tablet Theme Sidebar');
 
 ### Changelog 
 
