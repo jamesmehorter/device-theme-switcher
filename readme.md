@@ -10,9 +10,71 @@ Install the plugin from the [WordPress Plugin Repository](http://wordpress.org/e
 
 #### How do Menus and Widgets work?!
 
-In order to use different widgets or menus in different themes you must register the menu location and/or sidebar in *both your handheld and computer themes*. Then you must populate the different menus/widgets while the default/computer theme is active, and simply only output the sidebar/menu you want in each theme's files. That's it! You should only set your handheld theme as the active theme if you're developing/debugging and want to view the handheld theme on a computer.
+Keep in mind, DTS simply changes which theme is delivered to the user-but WordPress still thinks the active theme is 'active' the whole time. This means you need to have your register_nav_menu() or register_widget() functions in all your themes! See below for details and examples.
 
-##### URL Switching - __NEW__ *in Version 2.0!*
+##### How do I show the same menu in each theme?
+
+Simply place you register_nav_menu('my-menu-location', 'My Menu Location Name'); function in both of your primary/active and handheld/tablet theme functions.php files. Then, while your primary theme is 'active' go into Appearance > Menus-create your menu and assign it to the menu location-and populate it with some menu items. That's it!
+
+##### How do I show one menu in my active theme and a different menu in my handheld/tablet theme?
+
+Register a menu location for each theme, and place your register_nav_menus() code in each theme. E.g.:
+
+In each theme's functions.php file:
+
+    register_nav_menus(array(
+        'active-menu-location' => 'Active Theme Menu Location',
+        'handheld-menu-location' => 'Handheld Theme Menu Location',
+        'tablet-menu-location' => 'Tablet Theme Menu Location',
+    ));
+
+Then, while your primary theme is 'active' go into Appearance > Menus-create your 3 menus-assign each one to their designated menu location-and populate each with some menu items. 
+
+Lastly we just need to display each menu in each theme:
+
+Active theme header.php:
+    
+    wp_nav_menu(array('theme_location' => 'active-menu-location'));
+
+Handheld theme header.php
+    
+    wp_nav_menu(array('theme_location' => 'handheld-menu-location'));
+
+Tablet theme header.php
+    
+    wp_nav_menu(array('theme_location' => 'tablet-menu-location'));
+
+That's it-the important part is that you register each location in each theme!
+
+##### How can I display the same sidebar in each theme?
+
+Place the same register_sidebar() function in each theme's functions.php file, and add your widgets to your sidebar while the primary theme is 'active'.
+
+##### How can I display a different sidebar in each theme?
+
+Place the same 3 register_sidebar() functions in each theme's functions.php file, and add your widgets to each sidebar while the primary theme is 'active'. E.g:
+
+In each theme's functions.php file:
+
+    register_sidebar(array('name' => 'Active Theme Sidebar'));
+    register_sidebar(array('name' => 'Handheld Theme Sidebar'));
+    register_sidebar(array('name' => 'Tablet Theme Sidebar'));
+
+Then, while your primary theme is 'active' go into Appearance > Widgets-and assign some widgets to each sidebar. Lastly we just need to display each sidebar in each theme:
+
+Active theme page.php:
+    
+    dynamic_sidebar('Active Theme Sidebar');
+
+Handheld theme page.php
+    
+    dynamic_sidebar('Handheld Theme Sidebar');
+
+Tablet theme page.php
+    
+    dynamic_sidebar('Tablet Theme Sidebar');
+
+#### URL Switching - __NEW__ *in Version 2.0!*
 
 Your device themes can be easily accessed to 'test' and see what other devices see.
 
@@ -21,7 +83,7 @@ Your device themes can be easily accessed to 'test' and see what other devices s
     www.mywebsite.com/?theme=low_support
     www.mywebsite.com/?theme=active
 
-##### Template Tags - __NEW__ *in Version 2.0!*
+#### Template Tags - __NEW__ *in Version 2.0!*
     <?php
         //View Full Website
         link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true);
