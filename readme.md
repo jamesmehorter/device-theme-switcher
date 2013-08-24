@@ -17,6 +17,7 @@ Simply place you register_nav_menu('my-menu-location', 'My Menu Location Name');
 Register a menu location for each theme, and place your register_nav_menus() code in each theme. E.g.:
 
 In each theme's functions.php file:
+
     register_nav_menus(array(
         'active-menu-location' => 'Active Theme Menu Location',
         'handheld-menu-location' => 'Handheld Theme Menu Location',
@@ -28,12 +29,15 @@ Then, while your primary theme is 'active' go into Appearance > Menus-create you
 Lastly we just need to display each menu in each theme:
 
 Active theme header.php:
+    
     wp_nav_menu(array('theme_location' => 'active-menu-location'));
 
 Handheld theme header.php
+    
     wp_nav_menu(array('theme_location' => 'handheld-menu-location'));
 
 Tablet theme header.php
+    
     wp_nav_menu(array('theme_location' => 'tablet-menu-location'));
 
 That's it-the important part is that you register each location in each theme!
@@ -45,6 +49,7 @@ Place the same register_sidebar() function in each theme's functions.php file, a
 Place the same 3 register_sidebar() functions in each theme's functions.php file, and add your widgets to each sidebar while the primary theme is 'active'. E.g:
 
 In each theme's functions.php file:
+
     register_sidebar(array('name' => 'Active Theme Sidebar'));
     register_sidebar(array('name' => 'Handheld Theme Sidebar'));
     register_sidebar(array('name' => 'Tablet Theme Sidebar'));
@@ -52,12 +57,15 @@ In each theme's functions.php file:
 Then, while your primary theme is 'active' go into Appearance > Widgets-and assign some widgets to each sidebar. Lastly we just need to display each sidebar in each theme:
 
 Active theme page.php:
+    
     dynamic_sidebar('Active Theme Sidebar');
 
 Handheld theme page.php
+    
     dynamic_sidebar('Handheld Theme Sidebar');
 
 Tablet theme page.php
+    
     dynamic_sidebar('Tablet Theme Sidebar');
 
 #### URL Switching - __NEW__ *in Version 2.0!*
