@@ -76,26 +76,12 @@
 		// ------------------------------------------------------------------------
 		// THEME DELIVER LOGIC
 		// ------------------------------------------------------------------------
-
-
-
-		/*
-	
-			implement the session lifetime
-			check the session start value against get_option('dts_session_lifetime')?
-			where should that code be placed?
-
-		*/
-
-
-
 		public function deliver_theme () {
 			$this->theme_override = "";
 			//Is the user requesting a theme override?
 			//This is how users can 'view full website' and vice versa
 			if (isset($_GET['theme'])) : 
 				//Both conditions below will need SESSION
-
 				if (session_id() == '') : session_start(); endif;
 				//Does the requested theme match the detected device theme?
 				if ($_GET['theme'] == $this->device) : unset($_SESSION['dts']); //The default/active theme is given back and their session is going to be removed
@@ -118,8 +104,17 @@
 				if (session_id() == '') : session_start(); endif;
 				if (isset($_SESSION['dts']['theme'])) : 
 					//Kill the request if it isn't valid
-					if (isset($this->{$_SESSION['dts']['theme'] . "_theme"}))
-						$this->theme_override = $_SESSION['dts']['theme'];
+					if (isset($this->{$_SESSION['dts']['theme'] . "_theme"})) : 
+						//Only allow the override to continue if the session life is less than the desired lifetime
+						if ((time() - $_SESSION['dts']['start']) < get_option('dts_session_lifetime')) : 
+							//allow the override to continue
+							$this->theme_override = $_SESSION['dts']['theme'];
+						else :
+							//The session too old, and we're going to force it close
+							//remove the stored session 
+							unset($_SESSION['dts']);
+						endif;
+					endif;
 				endif;
 			endif;
 			//If none of the above conditions triggered the user is given their device-assigned theme

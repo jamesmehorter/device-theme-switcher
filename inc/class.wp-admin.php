@@ -106,7 +106,7 @@
                     outline: none ;
                 }
                 .advanced-options, .help-and-support {
-                    width: 806px ;
+                    max-width: 850px ;
                     display: none ; /* We'll enable this via JavaScript */
                 }
             </style>
@@ -167,7 +167,7 @@
 
                                     </select>
                                 </td><td>
-                                    <span class="description"> <?php _e("Set a theme for devices that lack complete CSS & JavaScipt Support.") ?></span>
+                                    <span class="description"> <?php _e("Devices which lack complete CSS & JavaScipt Support.") ?></span>
                                 </td>
                             </tr><tr>
                                 <th scope="row" align="right"valign="top">
@@ -182,8 +182,8 @@
                                         //Build a list of default session lifetimes
                                         $dts_session_lifetimes = array(
                                             array('value' => 0, 'text' => _("Until Browser is closed")),
-                                            array('value' => 300, 'text' => _("5 Minutes (Plugin Default)")),
-                                            array('value' => 900, 'text' => _("15 Minutes")),
+                                            array('value' => 300, 'text' => _("5 Minutes")),
+                                            array('value' => 900, 'text' => _("15 Minutes (Plugin Default)")),
                                             array('value' => 1800, 'text' => _("30 Minutes")),
                                             array('value' => 2700, 'text' => _("45 Minutes")),
                                             array('value' => 3600, 'text' => _("60 Minutes")),
@@ -216,18 +216,7 @@
                                     </select>
                                 </td><td>
                                     <span class="description">
-                                    <?php _e("Set a length of time until a user is kicked back to their device theme <br />after they've requested the 'Desktop Version. <strong>Note:</strong> Some mobile browsers do not actually close!") ?><br />
-                                    </span>
-                                </td>                 
-                            </tr><tr>
-                                <th scope="row" align="right" valign="top">
-                                    <label for="dts_disable_mobile_theme_caching"><?php _e("Theme Caching") ?> </label>
-                                </th><td valign="top">
-                                    <input type="checkbox" name="dts_disable_mobile_theme_caching" <?php checked(get_option('dts_disable_mobile_theme_caching'), 'on') ?>/> <?php _e("Disable caching") ?>
-                                </td><td>
-                                    <span class="description">
-                                         <?php _e("Disable theme caching for handheld and tablet devices.") ?><br />
-                                         <?php _e("This setting may be needed if you're using a plugin like W3 Total Cache or WP Super Cache.") ?>
+                                    <?php _e("Length of time until a user is redirected back to their initial device theme <br />after they've requested the 'Desktop' Version.<br /><strong>Note:</strong> A lot of mobile browsers do not actually close and end the session!") ?><br />
                                     </span>
                                 </td>                 
                             </tr>
@@ -316,8 +305,7 @@
         // ------------------------------------------------------------------------------
         static public function admin_activation_notice(){
             //Print a message to the admin window letting the user know thier settings have been saved
-            //The CSS used to style this message is located in dts_admin_output.php
-            echo '<div class="dts activated"><p>Welcome to Device Theme Switcher!</p></div>';
+            //echo '<div class="dts activated"><p>Welcome to Device Theme Switcher!</p></div>';
         }//admin_activation_notice
         static public function admin_save_settings_notice(){
             //Print a message to the admin window letting the user know thier settings have been saved
