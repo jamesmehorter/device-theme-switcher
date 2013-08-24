@@ -2,7 +2,7 @@
 	// ------------------------------------------------------------------------
 	// WIDGETS
 	// ------------------------------------------------------------------------
-	//Called Via register_widget('DTS_View_Full_Website');
+	//Called Via register_widget('DTS_View_Full_Website'); in dts_controller.php
 	class DTS_View_Full_Website extends WP_Widget {
 		//Widget constructor	
 		function DTS_View_Full_Website() {
@@ -14,7 +14,7 @@
 			extract($args, EXTR_SKIP);
 			$link_text = empty($instance['link_text']) ? ' ' : apply_filters('widget_link_text', $instance['link_text']);
 			echo $before_widget;			
-			Device_Theme_Switcher::generate_link_to_full_website($link_text);
+			link_to_full_website($link_text, $css_classes = array(), $echo = true)
 			echo $after_widget;	
 		}
 		//Save widget options	
@@ -55,7 +55,7 @@
 			extract($args, EXTR_SKIP);
 			$link_text = empty($instance['link_text']) ? ' ' : apply_filters('widget_link_text', $instance['link_text']);
 			echo $before_widget;			
-			Device_Theme_Switcher::generate_link_back_to_mobile($link_text);
+			link_back_to_device($link_text, $css_classes = array(), $echo = true)
 			echo $after_widget;	
 		}
 		//Save widget options	
