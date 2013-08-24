@@ -60,6 +60,28 @@
 	add_action('load-appearance_page_device-themes', array('DTS_Admin', 'load'));
 
 	// ------------------------------------------------------------------------
+	// THEME SWITCHING
+	// ------------------------------------------------------------------------
+	//We only want to tap into the theme filters if a frontend page is being requested
+	if (!is_admin()) :
+		//Include our external device theme switcher class library
+		include_once('inc/class.switcher.php');
+		//Load support for legacy GET variables
+		include('inc/legacy/legacy_get_support.php');
+		//Instantiate a new instance of this class
+		//This is the single class instance that is accessible via 'global $dts;'
+		$dts = new DTS_Switcher ;
+		//Hook into the template output function with a filter and change the template delivered if need be
+		add_filter('template', array('DTS_Switcher', 'deliver_template'));
+		//Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
+		add_filter('stylesheet', array('DTS_Switcher', 'deliver_stylesheet'));
+		//Include the template tags developers can access in their themes
+		include_once('inc/inc.template-tags.php');
+		//Load support for legacy classes, methods, functions, and variables
+		include('inc/legacy/legacy_structural_support.php');
+	endif;
+
+	// ------------------------------------------------------------------------
 	// WIDGETS
 	// ------------------------------------------------------------------------
 	//Include our external widget class library
@@ -82,27 +104,6 @@
 	//Ex: [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
 	//Ex: [link_back_to_device link_text="Return to Mobile Website" css_classes="blue-text, alignleft"]
 	//This shortcode outputs an HTML <a> link for the user to 'View Full Website' or to 'Return to Mobile Website'
-	add_shortcode( 'link_to_full_website', array('DTS_Shortcode', 'link_to_full_website_shortcode') );
-	add_shortcode( 'link_back_to_device', array('DTS_Shortcode', 'link_back_to_device_shortcode') );
-
-	// ------------------------------------------------------------------------
-	// THEME SWITCHING
-	// ------------------------------------------------------------------------
-	//We only want to tap into the theme filters if a frontend page is being requested
-	if (!is_admin()) :
-		//Include our external device theme switcher class library
-		include_once('inc/class.switcher.php');
-		//Load support for legacy GET variables
-		include('inc/legacy/legacy_get_support.php');
-		//Instantiate a new instance of this class
-		//This is the single class instance that is accessible via 'global $dts;'
-		$dts = new DTS_Switcher ;
-		//Hook into the template output function with a filter and change the template delivered if need be
-		add_filter('template', array('DTS_Switcher', 'deliver_template'));
-		//Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
-		add_filter('stylesheet', array('DTS_Switcher', 'deliver_stylesheet'));
-		//Include the template tags developers can access in their themes
-		include_once('inc/inc.template-tags.php');
-		//Load support for legacy classes, methods, functions, and variables
-		include('inc/legacy/legacy_structural_support.php');
-	endif;
+	$dts_shortcode = new DTS_Shortcode() ;
+	add_shortcode( 'link_to_full_website', array($dts_shortcode, 'link_to_full_website_shortcode') );
+	add_shortcode( 'link_back_to_device', array($dts_shortcode, 'link_back_to_device_shortcode') );

@@ -10,12 +10,12 @@
         //                            OR
         //                            device_theme_switcher::generate_link_back_to_mobile()
         // ------------------------------------------------------------------------
-        public function generate_link_to_full_website ($link_text = "View Full Website") {
+        static function generate_link_to_full_website ($link_text = "View Full Website") {
             link_to_full_website($link_text, array());
         }//generate_link_to_full_website
         
         //Generate a link back to the mobile website
-        public static function generate_link_back_to_mobile ($link_text = "Return to Mobile Website") {
+        static function generate_link_back_to_mobile ($link_text = "Return to Mobile Website") {
             link_back_to_device($link_text, array());
         }//generate_link_back_to_mobile
     }
