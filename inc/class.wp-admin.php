@@ -74,19 +74,15 @@
                     $available_theme_names[] = $theme->Name;
                 endif;
             endforeach;
-
             //Alphabetically sort the theme name list for display in the selection dropdowns
             array_multisort($available_theme_names, SORT_ASC, $available_theme_names);
-
             //Get the set option if it exists
             $dts['session_lifetime'] = get_option('dts_session_lifetime');
-
             //Retrieve any DTS theme options which were previously saved
             //The theme option is a url encoded string containing 3 values for name, template, and stylesheet
             parse_str(get_option('dts_handheld_theme'), $dts['themes']['handheld']);
             parse_str(get_option('dts_tablet_theme'), $dts['themes']['tablet']);
             parse_str(get_option('dts_low_support_theme'), $dts['themes']['low_support']);
-
             //Ensure there are default values in each of the $dts['themes']
             foreach ($dts['themes'] as $device => $theme) : 
                 if (empty($theme)) : $dts['themes'][$device] = array('name' => '', 'template' => '', 'stylesheet' => ''); endif;

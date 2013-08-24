@@ -99,17 +99,17 @@ The DTS Class contains all the current device theme switcher settings and the cu
 ## Screenshots
 
 *View of the 'Appearance > Device Themes' page*
-![View of the Device Theme Switcher settings](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/screenshot-1-large.jpg "View of the Device Theme Switcher settings")
+![View of the Device Theme Switcher settings](https://raw.github.com/jamesmehorter/device-theme-switcher/assets/screenshot-1-large.jpg "View of the Device Theme Switcher settings")
 
 ---
 
 *View of the two Device Theme Switcher Widgets*
-![View of the two Device Theme Switcher Widgets and their settings](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/screenshot-2-large.jpg "View of the two Device Theme Switcher Widgets and their settings")
+![View of the two Device Theme Switcher Widgets and their settings](https://raw.github.com/jamesmehorter/device-theme-switcher/assets/screenshot-2-large.jpg "View of the two Device Theme Switcher Widgets and their settings")
 
 ---
 
 *How does Device Theme Switcher work?*
-![How does DTS work?](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/how-does-dts-work-large.jpg "How does DTS work?")
+![How does DTS work?](https://raw.github.com/jamesmehorter/device-theme-switcher/assets/how-does-dts-work-large.jpg "How does DTS work?")
 
 ---
 
