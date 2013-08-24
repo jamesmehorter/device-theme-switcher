@@ -20,14 +20,13 @@ Device Theme Switcher is a WordPress plugin which delivers one of your WordPress
 == Screenshots ==
 
 1. View of the Device Theme Switcher settings.
-1. View of the Device Theme Switcher advanced settings & help items.
 2. View of the two Device Theme Switcher Widgets and their settings.
 
 == Installation ==
 
 = How to Install = 
 
-Install and activate in your WordPress 'Plugins > Add New' section by searching for 'Device Theme Switcher', or download the plugin zip (Big orange button up and to the right which says 'Download Version 2.0') and upload it manually in the 'WordPress Plugins > Add New > Upload' section. After activation you'll have a new menu: 'Appearance > Device Themes'-where you set which theme is given to which type of device.
+Install and activate in your WordPress 'Plugins > Add New' section by searching for 'Device Theme Switcher', or download the plugin zip (Big orange button up and to the right which says 'Download Version 2.0') and upload it manually in the 'WordPress Plugins > Add New > Upload' section. After activation you'll have a new menu: 'Appearance > Device Themes'-where you set which theme is given to which type of device.t
 
 = URL Switching - NEW in Version 2.0! =
 

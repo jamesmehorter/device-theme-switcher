@@ -95,7 +95,7 @@ The DTS Class contains all the current device theme switcher settings and the cu
 
 ---
 
-![View of the Device Theme Switcher advanced settings & help items.](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/screenshot-2-large.jpg "View of the Device Theme Switcher advanced settings & help items")
+![How does DTS work?](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/how-does-dts-work-large.jpg "How does DTS work?")
 
 ---
 
