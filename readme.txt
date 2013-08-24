@@ -124,10 +124,10 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
 
 = How can I progmatically detect the current device? =
 
-The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
+The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in your theme or plugin. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
 
 `<?php 
-    //Access the device theme switcher object
+    //Access the device theme switcher object anywhere in your theme or plugin
     global $dts
     
     //See what's in there..
@@ -141,30 +141,26 @@ The DTS Class contains all the current device theme switcher settings and the cu
                 [template] => responsive
                 [stylesheet] => responsive
             )
-
         [tablet_theme] => Array
             (
                 [name] => Twenty Twelve
                 [template] => twentytwelve
                 [stylesheet] => twentytwelve
             )
-
         [low_support_theme] => Array
             (
                 [name] => WordPress Default
                 [template] => default
                 [stylesheet] => default
             )
-
         [active_theme] => Array
             (
                 [name] => Responsive
                 [template] => responsive
                 [stylesheet] => responsive
             )
-
-        [device] => active (Possible values: computer, tablet, handheld, and low_support)
-        [theme_override] => tablet
+        [device] => active (Possible values: active, handheld, tablet, and low_support)
+        [theme_override] => tablet (I was given the active theme [I'm on a computer] and I used a url parameter [site.com?theme=tablet] to view the tablet theme)
     )
 
     //use it..
@@ -184,13 +180,19 @@ If your theme does not work as expected in any of the devices-**the issue is wit
 
 == Changelog ==
 
-= Version 2.0 = 
+= Version 2.0 - Released 08/24/2013 = 
+* Complete code rewrites to improve overall performance, redundancy, and improve extensibility. 
+* NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings. Examples in the FAQ.
+* NEW - URL Switching - Easily check what other devices see. Examples in the FAQ.
+* NEW - Session Timeout, so users who visit the 'Desktop' theme are bumped back to their device theme after 15 minutes
+* NEW - Optional Settings section in the WordPress admin in Appearance > Device Themes Allows users to override the session timeout. Also moved the low-support theme setting to this section. This new section also a
+* NEW - Help & Support section in the WordPress admin in Appearance > Device Themes
+* Included the latest version of MobileESP ~ Thanks Anthony!
+
+= Version 1.9 =
+* Note: DTS Version 1.9 was not released to the public
 * NEW - Made the Admin UI more presentable and WordPressy
-* NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings.
-* NEW - URL Switching - Easily see what other devices see
-* FIX - Numerous code rewrites to improve overall performance, redundancy, and improve extensibility. 
 * FIX - Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
-* Removed the low-support option. Adds more confusion than it helps. Email me if you think otherwise!
 
 = Version 1.8 =
 * Updated the Kindle detection for a wider range of support

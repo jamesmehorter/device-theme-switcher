@@ -61,7 +61,6 @@
 
     $admin_notice = '
         <div class="dts updated">
-            <p><strong>Device Theme Switcher 2.0 comes packed with major improvements, new features, and even more theme-switchery!</strong></p>
-            <p>Read about all the goodness, <a href="http://jamesmehorter.github.io/device-theme-switcher/">here</a>.</p>
+            <p><strong>Thanks for upgrading! We\'ve compeltely rewritten Device Theme Switcher and added lots of new goodies! Read about the changes <a href="http://wordpress.org/plugins/device-theme-switcher/faq/" target="_blank">here</a>.</strong></p>
         </div>';
     set_transient('dts_updated_notice', $admin_notice, 60*60*12);

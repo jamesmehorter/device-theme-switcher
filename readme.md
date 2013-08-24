@@ -8,13 +8,13 @@ WordPress plugin that let's you set one theme for all handheld devices and anoth
 Install the plugin from the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) Then set your handheld and tablet themes under Appearance > Device Themes. Computer users will be given the theme you specify in Appearance > Themes, as usual. However, now handheld users will see the handheld theme and tablet users will be given the tablet theme. Using WordPress child themes is supported.
 
 #### How do Menus and Widgets work?!
-Keep in mind, DTS simply changes which theme is delivered to the user-but WordPress still thinks the active theme is 'active' the whole time. This means you need to have your register_nav_menu() or register_widget() functions in all your themes! See below for details and examples.
+Keep in mind, DTS simply changes which theme is delivered to the user-but WordPress still thinks the active theme is 'active' the whole time. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
 
 ##### How do I show the same menu in each theme?
-Simply place you register_nav_menu('my-menu-location', 'My Menu Location Name'); function in both of your primary/active and handheld/tablet theme functions.php files. Then, while your primary theme is 'active' go into Appearance > Menus-create your menu and assign it to the menu location-and populate it with some menu items. That's it!
+Simply place you `register_nav_menu('my-menu-location', 'My Menu Location Name');` function in both of your primary/active and handheld/tablet theme functions.php files. Then, while your primary theme is 'active' go into Appearance > Menus-create your menu and assign it to the menu location-and populate it with some menu items. That's it!
 
 ##### How do I show one menu in my active theme and a different menu in my handheld/tablet theme?
-Register a menu location for each theme, and place your register_nav_menus() code in each theme. E.g.:
+Register a menu location for each theme, and place your `register_nav_menus()` code in each theme. E.g.:
 
 In each theme's functions.php file:
 
@@ -43,10 +43,10 @@ Tablet theme header.php
 That's it-the important part is that you register each location in each theme!
 
 ##### How can I display the same sidebar in each theme?
-Place the same register_sidebar() function in each theme's functions.php file, and add your widgets to your sidebar while the primary theme is 'active'.
+Place the same `register_sidebar()` function in each theme's functions.php file, and add your widgets to your sidebar while the primary theme is 'active'.
 
 ##### How can I display a different sidebar in each theme?
-Place the same 3 register_sidebar() functions in each theme's functions.php file, and add your widgets to each sidebar while the primary theme is 'active'. E.g:
+Place the same 3 `register_sidebar()` functions in each theme's functions.php file, and add your widgets to each sidebar while the primary theme is 'active'. E.g:
 
 In each theme's functions.php file:
 
@@ -106,7 +106,7 @@ The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full We
 The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
 
     <?php 
-        //Access the device theme switcher object
+        //Access the device theme switcher object anywhere in your theme or plugin
         global $dts
         
         //See what's in there..
@@ -120,30 +120,26 @@ The DTS Class contains all the current device theme switcher settings and the cu
                     [template] => responsive
                     [stylesheet] => responsive
                 )
-
             [tablet_theme] => Array
                 (
                     [name] => Twenty Twelve
                     [template] => twentytwelve
                     [stylesheet] => twentytwelve
                 )
-
             [low_support_theme] => Array
                 (
                     [name] => WordPress Default
                     [template] => default
                     [stylesheet] => default
                 )
-
             [active_theme] => Array
                 (
                     [name] => Responsive
                     [template] => responsive
                     [stylesheet] => responsive
                 )
-
-            [device] => active (Possible values: computer, tablet, handheld, and low_support)
-            [theme_override] => tablet
+            [device] => active (Possible values: active, handheld, tablet, and low_support)
+            [theme_override] => tablet (I was given the active theme [I'm on a computer] and I used a url parameter [site.com?theme=tablet] to view the tablet theme)
         )
 
         //use it..
@@ -151,11 +147,18 @@ The DTS Class contains all the current device theme switcher settings and the cu
 
 ### Changelog 
 
-* _Version 2.0_
-    * NEW - The Admin UI is now more presentable and WordPressy
-    * NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings.
-    * NEW - URL Switching - Easily see what other devices see
-    * FIX - Numerous code rewrites to improve overall performance, redundancy, and improve extensibility. 
+* _Version 2.0 - Released 08/24/2013_
+    * Complete code rewrites to improve overall performance, redundancy, and improve extensibility. 
+    * NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings. Examples in the FAQ.
+    * NEW - URL Switching - Easily check what other devices see. Examples in the FAQ.
+    * NEW - Session Timeout, so users who visit the 'Desktop' theme are bumped back to their device theme after 15 minutes
+    * NEW - Optional Settings section in the WordPress admin in Appearance > Device Themes Allows users to override the session timeout. Also moved the low-support theme setting to this section. This new section also a
+    * NEW - Help & Support section in the WordPress admin in Appearance > Device Themes
+    * Included the latest version of MobileESP ~ Thanks Anthony!!
+
+* _Version 1.9_
+    * Note: DTS Version 1.9 was not released to the public
+    * NEW - Made the Admin UI more presentable and WordPressy
     * FIX - Included a pull request from Tim Broder (https://github.com/broderboy) which adds support for Varnish Device Detect (https://github.com/varnish/varnish-devicedetect). Thanks Tim!!
 
 * _Version 1.8_
