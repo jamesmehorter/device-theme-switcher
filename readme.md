@@ -2,10 +2,11 @@
 
 [Installation](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#installation) | [Features](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#features) | [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#screenshots) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#faq) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#changelog) | [Credits](https://github.com/jamesmehorter/device-theme-switcher/tree/2.0#credits)
 
-Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme 'Appearance > Themes'.
+Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme in 'Appearance > Themes'.
 
 ## Installation
-Install the plugin from the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) Then set your handheld and tablet themes under Appearance > Device Themes.
+
+Install and activate in your WordPress 'Plugins > Add New' section by searching for 'Device Theme Switcher', or download the plugin zip from the [WordPress Plugin Repository](http://wordpress.org/extend/plugins/device-theme-switcher/) and upload it manually in the 'WordPress Plugins > Add New > Upload' section. After activation you'll have a new menu: 'Appearance > Device Themes'-where you set which theme is given to which type of device.
 
 ## Features
 
@@ -20,11 +21,12 @@ Your device themes can be easily accessed to 'test' and see what other devices s
 
 #### Template Tags - __NEW__ *in Version 2.0!*
     <?php
-        //View Full Website
+        //Display a link to 'View Full Website'
         link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true);
 
-        //Return to Mobile Website
+        //Display a link to 'Return to Mobile Website'
         link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true);
+    ?>
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
 
@@ -85,12 +87,13 @@ The DTS Class contains all the current device theme switcher settings and the cu
 
         //use it..
         if ($dts->device == 'tablet') do_something() ;
+    ?>
 
 ## Screenshots
 
 ![View of the Device Theme Switcher settings](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/screenshot-1-large.jpg "View of the Device Theme Switcher settings")
 ![View of the Device Theme Switcher advanced settings & help items.](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/screenshot-2-large.jpg "View of the Device Theme Switcher advanced settings & help items")
-![View of the two Device Theme Switcher Widgets and their settings](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/screenshot-3-largef.jpg "View of the two Device Theme Switcher Widgets and their settings")
+![View of the two Device Theme Switcher Widgets and their settings](https://raw.github.com/jamesmehorter/device-theme-switcher/2.0/assets/screenshot-3-large.jpg "View of the two Device Theme Switcher Widgets and their settings")
 
 ## FAQ
 
@@ -99,6 +102,9 @@ The DTS Class contains all the current device theme switcher settings and the cu
 
 #### Are WordPress child themes supported?
 Yes!
+
+#### Help!? My theme isn't working!
+If your theme does not work as expected on any of the devices-**the issue is with the theme, NOT with the plugin!** Follow [typical WordPress debugging practices](http://codex.wordpress.org/Debugging_in_WordPress) to find and correct the issue in your theme (Or possibly another plugin). The only theme-requirement this plugin relies on is that you have [properly-written WordPress themes](http://codex.wordpress.org/Theme_Development#Theme_Development_Standards). If your theme activates in Appearance > Themes and you can preview the theme in your computer's browser-then it is 'properly-written' as far as Device Theme Switcher is concerned.
 
 #### How do Menus and Widgets work?!
 All Device Theme Switcher really does is change which theme is delivered to the visitor based on the deivce they're using-*but WordPress still thinks the active theme is 'active' the whole time*. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
