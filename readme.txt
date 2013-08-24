@@ -37,6 +37,38 @@ www.mywebsite.com/?theme=tablet
 www.mywebsite.com/?theme=low_support
 www.mywebsite.com/?theme=active`
 
+= Template Tags, Shortcodes, and Widgets - NEW in Version 2.0! =
+
+Template Tags, Shortcodes, and Widgets all output a simple HTML anchor tag which links to the mobile/active theme for the website by using URL Switching (See Above). 
+
+Template tags can be used in any theme or plugin file. 
+
+`//Display a link to 'View Full Website'
+<?php link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true) ?>
+//Display a link to 'Return to Mobile Website'
+<?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>`
+
+Shortcodes can be used in the content of any post, page, or custom-post-type.
+
+`[link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
+[link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]`
+
+The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file. 
+
+Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes): 
+
+`<style type="text/css">
+    .dts-link {
+        font-size: 1.5em ;
+    }
+        .dts-link.to-full-website {
+            color: red ;
+        }
+        .dts-link.back-to-mobile {
+            color: blue ;
+        }
+</style>`
+
 = DTS Class - NEW in Version 2.0! =
 
 The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
@@ -81,29 +113,6 @@ The DTS Class contains all the current device theme switcher settings and the cu
     //use it..
     if ($dts->device == 'tablet') do_something() ;
 ?>`
-
-= Template Tags =
-
-`//Display a link to 'View Full Website'
-<?php link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true) ?>
-//Display a link to 'Return to Mobile Website'
-<?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>`
-
-= Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes) =
-
-The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
-
-`<style type="text/css">
-    .dts-link {
-        font-size: 1.5em ;
-    }
-        .dts-link.to-full-website {
-            color: red ;
-        }
-        .dts-link.back-to-mobile {
-            color: blue ;
-        }
-</style>`
 
 == Frequently Asked Questions ==
 
