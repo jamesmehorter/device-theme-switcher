@@ -20,18 +20,16 @@ Your device themes can be easily accessed to 'test' and see what other devices s
     www.mywebsite.com/?theme=active
 
 #### Template Tags - __NEW__ *in Version 2.0!*
-    <?php
-        //Display a link to 'View Full Website'
-        link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true);
 
-        //Display a link to 'Return to Mobile Website'
-        link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true);
-    ?>
+Template tags can be used anywhere in your theme or plugin. They output an HTML anchor tag which links to 
+    //Display a link to 'View Full Website'
+    <?php link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true) ?>
+    //Display a link to 'Return to Mobile Website'
+    <?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>
+
+##### Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes)
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
-
-##### Link Styling Example
-
     <style type="text/css">
         .dts-link {
             font-size: 1.5em ;

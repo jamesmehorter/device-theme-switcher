@@ -48,7 +48,7 @@
 				endif;
 			endif;
 
-			//Use Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
+			//Check for Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
 			//Thanks to Tim Broder for this addition! https://github.com/broderboy | http://timbroder.com/
 			if (isset($_SERVER['HTTP_X_UA_DEVICE'])) :
 				if (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('mobile-iphone', 'mobile-android', 'mobile-smartphone', 'mobile-generic')))
@@ -57,10 +57,9 @@
 					$device_theme = $this->tablet_theme;
 				else
 					$device = $low_support_device ;
-			//DEFAULT ACTION - Use MobileESP
-			else :
+			else : //DEFAULT ACTION - Use MobileESP to sniff the UserAgent string
 				//Include the MobileESP code library for acertaining device user agents
-				include_once('mdetect.php');
+				include_once('mobile-esp.php');
 				//Setup the MobileESP Class
 				$ua = new uagent_info;
 				//Detect if the device is a handheld

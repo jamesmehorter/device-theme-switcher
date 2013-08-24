@@ -26,10 +26,10 @@
 		function form($instance) {
 			//Output admin widget options form
 			$instance 	= wp_parse_args( (array) $instance, array('link_text' => '') );
-			$link_text	= strip_tags($instance['link_text']);
+			$link_text	= $instance['link_text'];
 			//set a default
 			if ($link_text == "") :
-				$link_text = "View Full Website";
+				$link_text = __("View Full Website");
 			endif;
 			
 			//Output our widget contents
@@ -67,10 +67,10 @@
 		function form($instance) {
 			//Output admin widget options form
 			$instance 	= wp_parse_args( (array) $instance, array('link_text' => '') );
-			$link_text	= strip_tags($instance['link_text']);
+			$link_text	= $instance['link_text'];
 			//set a default
 			if ($link_text == "") :
-				$link_text = "Return to Mobile Website";
+				$link_text = __("Return to Mobile Website");
 			endif;
 			
 			//Output our widget contents

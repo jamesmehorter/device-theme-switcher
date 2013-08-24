@@ -2,7 +2,7 @@
     class DTS_Admin {
         //Display some output in the WP Admin Dashboard 'Right Now' section
         //      + Show what device these have been selected below what default theme is active
-        public function right_now () { ?>
+        static function right_now () { ?>
             <br />Handheld Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_handheld_theme') ?></strong></a> 
             <br />Tablet Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_tablet_theme') ?></strong></a><?php
         }//right_now
@@ -10,7 +10,7 @@
         // ------------------------------------------------------------------------------
         // CALLBACK MEMBER FUNCTION FOR: add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
         // ------------------------------------------------------------------------------
-        public function admin_menu () {
+        static function admin_menu () {
             //Create the admin menu page
             add_submenu_page('themes.php',  __('Device Theme Switcher'), __('Device Themes'), 'manage_options', 'device-themes', array('DTS_Admin', 'generate_admin_settings_page'));
         }//admin_menu
@@ -18,7 +18,7 @@
         // ------------------------------------------------------------------------------
         // CALLED MEMBER FUNCTION FOR: if ($_POST) : $dts->update; ...
         // ------------------------------------------------------------------------------
-        public function load () {
+        static function load () {
             //Unfortunetly we can't use the settings api on a subpage, so we need to check for and update any options this plugin uses
             if ($_POST) : if ($_POST['dts_settings_update'] == "true") :
                 //Loop through the 3 device <select>ed <option>s in the admin form
@@ -37,9 +37,6 @@
                 //Save the chosen session lifetime
                 update_option('dts_session_lifetime', $_POST['dts_session_lifetime']);
 
-                //Save the chosen session lifetime
-                update_option('dts_disable_mobile_theme_caching', $_POST['dts_disable_mobile_theme_caching']);
-
                 //Display an admin notice letting the user know the save was successfull
                 add_action('admin_notices', array('DTS_Admin', 'admin_save_settings_notice'));
             endif; endif;
@@ -48,7 +45,7 @@
         // ------------------------------------------------------------------------------
         // CALLBACK MEMBER FUNCTION SPECIFIED IN: add_options_page()
         // ------------------------------------------------------------------------------
-        public function generate_admin_settings_page() {
+        static function generate_admin_settings_page() {
             //Gather all of the currently installed theme names so they can be displayed in the <select> boxes below
             if (function_exists('wp_get_themes')) : 
                 $installed_themes = wp_get_themes();
@@ -249,11 +246,13 @@
                                 <a href="http://wordpress.org/plugins/device-theme-switcher/faq/" title="Device Theme Switcher FAQ" target="_blank"><?php _e("FAQ") ?></a>
                             </td>
                         </tr><tr>
-                            <th scope="row" align="right" width="150px">
-                                <?php _e("Shortcode") ?> 
+                            <th scope="row" align="right" width="150px" valign="top">
+                                <?php _e("Shortcodes") ?> 
                             </th><td align="left">
                                 <span class="description"><?php _e("Display a link to 'View Full Website'") ?></span><br />
-                                [device-theme-switcher link_text="View Full Website" css_classes="blue-text, alignleft"]
+                                [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]<br /><br />
+                                <span class="description"><?php _e("Display a link to 'Return to Mobile Website'") ?></span><br />
+                                [link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]
                                 <br /><br />
                             </td>
                         </tr><tr>
@@ -305,11 +304,11 @@
         // ------------------------------------------------------------------------------
         // ADMIN NOTICES
         // ------------------------------------------------------------------------------
-        static public function admin_activation_notice(){
+        static function admin_activation_notice(){
             //Print a message to the admin window letting the user know thier settings have been saved
             //echo '<div class="dts activated"><p>Welcome to Device Theme Switcher!</p></div>';
         }//admin_activation_notice
-        static public function admin_save_settings_notice(){
+        static function admin_save_settings_notice(){
             //Print a message to the admin window letting the user know thier settings have been saved
             //The CSS used to style this message is located in dts_admin_output.php
             echo '<div class="dts updated"><p>Settings saved.</p></div>';

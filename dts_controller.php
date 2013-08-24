@@ -24,6 +24,7 @@
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
+
 	// ------------------------------------------------------------------------
 	// CORE
 	// ------------------------------------------------------------------------
@@ -38,6 +39,7 @@
 	add_action('init', array('DTS_Core', 'init'));
 	//Display a 'Settings' link with the plugin in the plugins list
     add_filter('plugin_action_links', array('DTS_Core', 'device_theme_switcher_settings_link'), 10, 2);
+
 	// ------------------------------------------------------------------------
 	// UPDATE
 	// ------------------------------------------------------------------------
@@ -45,6 +47,7 @@
 	//Run any update actions (typically only the first time the plugin is updated)
 	add_action('admin_init', array('DTS_Update', 'init'));
 	add_action('admin_notices', array('DTS_Update', 'update_notice'));
+
 	// ------------------------------------------------------------------------
 	// ADMIN
 	// ------------------------------------------------------------------------
@@ -55,6 +58,7 @@
 	add_action('admin_menu', array('DTS_Admin', 'admin_menu'));
 	//Check if we need to save any form data that was submitted
 	add_action('load-appearance_page_device-themes', array('DTS_Admin', 'load'));
+
 	// ------------------------------------------------------------------------
 	// WIDGETS
 	// ------------------------------------------------------------------------
@@ -68,6 +72,19 @@
 		register_widget('DTS_Return_To_Mobile_Website');
 	}//END FUNCTION dts_register_widgets
 	add_action( 'widgets_init', 'dts_register_widgets' );
+
+	// ------------------------------------------------------------------------
+	// SHORTCODES
+	// ------------------------------------------------------------------------
+	//Include our external shortcodes class library
+	include_once('inc/class.shortcodes.php');
+	//Register the [device-theme-switcher] shortcode
+	//Ex: [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
+	//Ex: [link_back_to_device link_text="Return to Mobile Website" css_classes="blue-text, alignleft"]
+	//This shortcode outputs an HTML <a> link for the user to 'View Full Website' or to 'Return to Mobile Website'
+	add_shortcode( 'link_to_full_website', array('DTS_Shortcode', 'link_to_full_website_shortcode') );
+	add_shortcode( 'link_back_to_device', array('DTS_Shortcode', 'link_back_to_device_shortcode') );
+
 	// ------------------------------------------------------------------------
 	// THEME SWITCHING
 	// ------------------------------------------------------------------------
