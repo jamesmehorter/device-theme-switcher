@@ -28,32 +28,32 @@
         //Gather all of the currently installed theme names
         if (function_exists('wp_get_themes')) : $installed_themes = wp_get_themes();
         else : $installed_themes = get_themes(); endif;
-
         //Loop through each of the installed themes
         foreach ($installed_themes as $theme) : 
             //Gather each theme's theme data
             //wp_get_theme was introduced in WordPress v3.4 - this check ensures we're backwards compatible
             if (function_exists('wp_get_theme')) : $theme_data = wp_get_theme( $theme['Stylesheet'] );
             else : $theme_data = get_theme_data( get_theme_root() . '/' . $theme['Stylesheet'] . '/style.css' ); endif;
-
             //We'll only display a theme if it is an actual / functioning theme with theme data
             if (isset($theme_data)) : 
                 //Check if the theme is a child theme
                 //In this instance the 'Template' variable will be empty and we're suppose to submit the stylesheet instead
-                if (!empty($theme_data['Template'])) : $template = $theme_data['Template'];
-                else : $template = $theme['Stylesheet']; endif;
-
+                if (!empty($theme_data['Template'])) : 
+                    $template = $theme_data['Template'];
+                    $theme_name = $theme_data['Name'];
+                else : 
+                    $template = $theme['Stylesheet']; 
+                endif;
                 //Ok we found the theme the user had installed
-                if ($theme_string_name == $template) :
-                    update_option($dts_option_name, 
-                        build_query(
-                            array(
-                                'name' => $theme->Name,
-                                'template' => $template,
-                                'stylesheet' => $theme['Stylesheet']
-                            )
+                if ($theme_string_name == $theme_data['Name']) :
+                    $theme_options = build_query(
+                        array(
+                            'name' => $theme->Name,
+                            'template' => $template,
+                            'stylesheet' => $theme['Stylesheet']
                         )
                     );
+                    update_option($dts_option_name, $theme_options);
                 endif;
             endif;
         endforeach;
