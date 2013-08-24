@@ -171,7 +171,8 @@
 			if (!empty($target_theme)) : ## only output the html link if the above logic determines if a link should be shown or not
 				array_unshift($css_classes, 'dts-link'); ## ensure 'dts-link' is the first css class in the link
 				//Build the HTML link
-				$html_output = "<a href='" . $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?') . "?theme=$target_theme' title='$link_text' class='" . implode(' ', $css_classes) . "'>$link_text</a>\n";
+				$protocol = !empty($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
+				$html_output = "<a href='$protocol://" . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?') . "?theme=$target_theme' title='$link_text' class='" . implode(' ', $css_classes) . "'>$link_text</a>\n";
 			endif; 
 			if ($echo) : echo $html_output; ## Echo the HTML link
 			else : return $html_output; endif; ## Return the HTML link
