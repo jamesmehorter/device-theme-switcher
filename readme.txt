@@ -43,12 +43,16 @@ Template Tags, Shortcodes, and Widgets all output a simple HTML anchor tag which
 
 Template tags can be used in any theme or plugin file. Shortcodes can be used in the content of any post, page, or custom-post-type.
 
-`//Display a link to 'View Full Website'
+`//Template Tag - Display a link to 'View Full Website'
 <?php link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true) ?>
+
+//Shortcode - Display a link to 'View Full Website'
 [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
 
-//Display a link to 'Return to Mobile Website'
+//Template Tag - Display a link to 'Return to Mobile Website'
 <?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>
+
+//Shortcode -  - Display a link to 'Return to Mobile Website'
 [link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]`
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file. 
@@ -133,6 +137,7 @@ Simply place you register_nav_menu('my-menu-location', 'My Menu Location Name');
 Register a menu location for each theme, and place your register_nav_menus() code in each theme. E.g.:
 
 In each theme's functions.php file:
+
 register_nav_menus(array(
     'active-menu-location' => 'Active Theme Menu Location',
     'handheld-menu-location' => 'Handheld Theme Menu Location',
@@ -163,6 +168,7 @@ Place the same register_sidebar() function in each theme's functions.php file, a
 Place the same 3 register_sidebar() functions in each theme's functions.php file, and add your widgets to each sidebar while the primary theme is 'active'. E.g:
 
 In each theme's functions.php file:
+
 `register_sidebar(array('name' => 'Active Theme Sidebar'));
 register_sidebar(array('name' => 'Handheld Theme Sidebar'));
 register_sidebar(array('name' => 'Tablet Theme Sidebar'));`

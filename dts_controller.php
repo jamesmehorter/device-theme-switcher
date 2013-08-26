@@ -74,9 +74,9 @@
 		//This is the single class instance that is accessible via 'global $dts;'
 		$dts = new DTS_Switcher ;
 		//Hook into the template output function with a filter and change the template delivered if need be
-		add_filter('template', array('DTS_Switcher', 'deliver_template'));
+		add_filter('template', array('DTS_Switcher', 'deliver_template'), 10, 0);
 		//Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
-		add_filter('stylesheet', array('DTS_Switcher', 'deliver_stylesheet'));
+		add_filter('stylesheet', array('DTS_Switcher', 'deliver_stylesheet'), 10, 0);
 		//Include the template tags developers can access in their themes
 		include_once('inc/inc.template-tags.php');
 		//Load support for legacy classes, methods, functions, and variables

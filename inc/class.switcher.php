@@ -135,6 +135,13 @@
 		// ------------------------------------------------------------------------------
 		static function deliver_theme_file ($file) {
 			global $dts; //see the dts::__contruct for a walkthrough on how this object is created
+			//Retrieve the current active theme
+		    $dts->active_theme = array(
+		    	'name' => get_option('current_theme'),
+		    	'template' => get_option('template'),
+				'stylesheet' => get_option('stylesheet')
+		   	);
+
 			if (!empty($dts->{$dts->theme_override . "_theme"})) : return $dts->{$dts->theme_override . "_theme"}[$file]; 
 			elseif (!empty($dts->{$dts->device . "_theme"})) : return $dts->{$dts->device . "_theme"}[$file]; 
 			else : return $dts->active_theme[$file] ; endif;
