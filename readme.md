@@ -188,7 +188,7 @@ Tablet theme page.php
 ## Changelog 
 
 * _Version 2.1 - Released 08/26/2013_
-    * FIX - Corrected an issue (http://wordpress.org/support/topic/version-20-compatibilities-problems-with-jonradio-multiple-themes) where plugins which modify pre_option_template or pre_option_styleshet would be overridden by Device Theme Switcher. Thanks EmuZone for pointing this out! 
+    * FIX - Corrected an issue (http://wordpress.org/support/topic/version-20-compatibilities-problems-with-jonradio-multiple-themes) where plugins which modify pre_option_template or pre_option_stylesheet would be overridden by Device Theme Switcher. Thanks EmuZone for pointing this out! 
     * FIX - Corrected an issue with the Admin Dashboard 'Right Now' to properly display the active device themes.
 
 * _Version 2.0 - Released 08/24/2013_
