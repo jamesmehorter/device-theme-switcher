@@ -135,7 +135,7 @@
 		// ------------------------------------------------------------------------------
 		static function deliver_theme_file ($file) {
 			global $dts; //see the dts::__contruct for a walkthrough on how this object is created
-			//Retrieve the current active theme
+			//Update the active theme setting (so that other plugins can modify pre_option_template or pre_option_stylesheet)
 		    $dts->active_theme = array(
 		    	'name' => get_option('current_theme'),
 		    	'template' => get_option('template'),

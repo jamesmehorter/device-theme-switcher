@@ -2,9 +2,12 @@
     class DTS_Admin {
         //Display some output in the WP Admin Dashboard 'Right Now' section
         //      + Show what device these have been selected below what default theme is active
-        static function right_now () { ?>
-            <br />Handheld Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_handheld_theme') ?></strong></a> 
-            <br />Tablet Theme <a href="<?php bloginfo('url') ?>/wp-admin/themes.php?page=device-themes"><strong><?php echo get_option('dts_tablet_theme') ?></strong></a><?php
+        static function right_now () { 
+            parse_str(get_option('dts_handheld_theme'), $dts['themes']['handheld']);
+            parse_str(get_option('dts_tablet_theme'), $dts['themes']['tablet']) ?>
+
+            <br />Handheld Device Theme <a href="<?php echo admin_url('themes.php?page=device-themes') ?>"><strong><?php echo $dts['themes']['handheld']['name'] ?></strong></a> 
+            <br />Tablet Device Theme <a href="<?php echo admin_url('themes.php?page=device-themes') ?>"><strong><?php echo $dts['themes']['tablet']['name'] ?></strong></a><?php
         }//right_now
         
         // ------------------------------------------------------------------------------
