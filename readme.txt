@@ -26,7 +26,7 @@ Device Theme Switcher is a WordPress plugin which delivers one of your WordPress
 
 = How to Install = 
 
-Install and activate in your WordPress 'Plugins > Add New' section by searching for 'Device Theme Switcher', or download the plugin zip (Big orange button up and to the right which says 'Download Version 2.0') and upload it manually in the 'WordPress Plugins > Add New > Upload' section. After activation you'll have a new menu: 'Appearance > Device Themes'-where you set which theme is given to which type of device.t
+Install and activate in your WordPress 'Plugins > Add New' section by searching for 'Device Theme Switcher', or download the plugin zip (Big orange button up and to the right which says 'Download Version 2.0') and upload it manually in the 'WordPress Plugins > Add New > Upload' section. After activation you'll have a new menu: 'Appearance > Device Themes'-where you set which theme is given to which visitor device.
 
 = URL Switching - NEW in Version 2.0! =
 
@@ -44,18 +44,18 @@ Template Tags, Shortcodes, and Widgets all output a simple HTML anchor tag which
 Template tags can be used in any theme or plugin file. Shortcodes can be used in the content of any post, page, or custom-post-type.
 
 `//Template Tag - Display a link to 'View Full Website'
-<?php link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true) ?>
+<?php link_to_full_website($link_text = "View Full Website", $css_classes = array('blue-text', 'alignleft'), $echo = true) ?>
 
 //Shortcode - Display a link to 'View Full Website'
-[link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
+[link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]`
 
-//Template Tag - Display a link to 'Return to Mobile Website'
-<?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>
+`//Template Tag - Display a link to 'Return to Mobile Website'
+<?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array('red-text', 'alignright'), $echo = true) ?>
 
 //Shortcode -  - Display a link to 'Return to Mobile Website'
 [link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]`
 
-The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file. 
+The anchor tags that output have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file. 
 
 Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes): 
 
@@ -71,14 +71,17 @@ Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes):
         }
 </style>`
 
-= DTS Class - NEW in Version 2.0! =
+= $dts global - NEW in Version 2.0! =
 
-The DTS Class contains all the current device theme switcher settings and the current user device. You can access the DTS Class anywhere in themes. This could be helpful if for instance, you want one theme to power all devices and are willing to write your own code logic with conditionals and such. 
+The $dts global contains all the run-time device theme switcher settings and the current visitor device. You can access the $dts global anywhere in your theme or plugin.
 
 `<?php 
     //Access the device theme switcher object anywhere in your theme or plugin
     global $dts
     
+    //use it..
+    if ($dts->device == 'tablet') do_something() ;
+
     //See what's in there..
     print_r($dts) ;
 
@@ -109,11 +112,8 @@ The DTS Class contains all the current device theme switcher settings and the cu
                 [stylesheet] => responsive
             )
         [device] => active (Possible values: active, handheld, tablet, and low_support)
-        [theme_override] => tablet (I was given the active theme [I'm on a computer] and I used a url parameter [site.com?theme=tablet] to view the tablet theme)
+        [theme_override] => tablet (Possible Values: See Above)(Explanation: I'm on a computer, so my device is 'active' [I get the active theme] and I used a URL parameter [site.com?theme=tablet] to view the tablet theme)
     )
-
-    //use it..
-    if ($dts->device == 'tablet') do_something() ;
 ?>`
 
 == Frequently Asked Questions ==
@@ -138,11 +138,11 @@ Register a menu location for each theme, and place your register_nav_menus() cod
 
 In each theme's functions.php file:
 
-register_nav_menus(array(
+`register_nav_menus(array(
     'active-menu-location' => 'Active Theme Menu Location',
     'handheld-menu-location' => 'Handheld Theme Menu Location',
     'tablet-menu-location' => 'Tablet Theme Menu Location',
-));
+));`
 
 Then, while your primary theme is 'active' go into Appearance > Menus-create your 3 menus-assign each one to their designated menu location-and populate each with some menu items. 
 

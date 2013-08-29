@@ -55,27 +55,27 @@
             else :
                 $installed_themes = get_themes();
             endif;
-            //Loop through each of the installed themes and build an custom array of theme for use below
+            //Loop through each of the installed themes and build a cache array of themes the user can choose from below
             foreach ($installed_themes as $theme) : 
-                //Gather each theme's theme data
-                //wp_get_theme was introduced in WordPress v3.4 - this check ensures we're backwards compatible
-                if (function_exists('wp_get_theme')) : $theme_data = wp_get_theme( $theme['Stylesheet'] );
-                else : $theme_data = get_theme_data( get_theme_root() . '/' . $theme['Stylesheet'] . '/style.css' ); endif;
-                //We'll only display a theme if it is an actual / functioning theme with theme data
-                if (isset($theme_data)) : 
-                    //Check if the theme is a child theme
-                    //In this instance the 'Template' variable will be empty and we're supposed to submit the stylesheet instead
-                    if (!empty($theme_data['Template'])) : $template = $theme_data['Template'];
-                    else : $template = $theme['Stylesheet']; endif;
-                    //Increment $available_themes with each functional theme    
-                    //We're going to output each array in the value of each theme <option> below
-                    $available_themes[] = array(
-                        'name' => $theme->Name,
-                        'template' => $template,
-                        'stylesheet' => $theme['Stylesheet']);
-                    //Store the theme names so we can use array_multisort on $available_theme to sort by name
-                    $available_theme_names[] = $theme->Name;
+                //Pre WordPress 3.4 $theme was an array with upper case keyes
+                if (is_array($theme)) : 
+                    $name = $theme['Name'];
+                    $template = $theme['Template'];
+                    $stylesheet = $theme['Stylesheet'];
                 endif;
+                //Post WordPress 3.4 $theme is an instance of the WP_Theme object with lowercase variables
+                if (is_object($theme)) : 
+                    $name = $theme->name;
+                    $template = $theme->template;
+                    $stylesheet = $theme->stylesheet;
+                endif;
+
+                $available_themes[] = array(
+                    'name' => $name,
+                    'template' => $template,
+                    'stylesheet' => $stylesheet);
+                //Store the theme names so we can use array_multisort on $available_theme to sort by name
+                $available_theme_names[] = $name;
             endforeach;
             //Alphabetically sort the theme name list for display in the selection dropdowns
             array_multisort($available_theme_names, SORT_ASC, $available_theme_names);
@@ -148,15 +148,6 @@
                                 </th><td>
                                     <select name="dts_theme[dts_low_support_theme]">
                                         <option>Use Handheld Setting</option><?php 
-                                        /*
-                                            By default the active theme should be used
-                                            if a handheld theme is set that should be used for ALL handheld devices
-                                            if a low support theme is set, use that one
-                                        */
-                                        //print_r($dts);
-
-                                        //Still does not work properly.. the <select> needs to be on 'none' or something
-
                                         foreach ($available_themes as $theme) : ?>
         
                                         <option value="<?php echo build_query($theme)?>" <?php selected($theme['name'], $dts['themes']['low_support']['name']) ?>><?php echo $theme['name'] ?> &nbsp; </option><?php endforeach ?>
@@ -172,7 +163,6 @@
                                     <?php 
                                         function array_multi_search($needle, $haystack, $keytosearch) { 
                                             $matched_key = false ;
-                                            
                                             return $matched_key ;
                                         }//array_multi_search
                                         //Build a list of default session lifetimes
