@@ -70,11 +70,11 @@
                     //Increment $available_themes with each functional theme    
                     //We're going to output each array in the value of each theme <option> below
                     $available_themes[] = array(
-                        'name' => $theme->Name,
+                        'name' => $theme['Name'],
                         'template' => $template,
                         'stylesheet' => $theme['Stylesheet']);
                     //Store the theme names so we can use array_multisort on $available_theme to sort by name
-                    $available_theme_names[] = $theme->Name;
+                    $available_theme_names[] = $theme['Name'];
                 endif;
             endforeach;
             //Alphabetically sort the theme name list for display in the selection dropdowns
