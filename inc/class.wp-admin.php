@@ -69,7 +69,6 @@
                     $template = $theme->template;
                     $stylesheet = $theme->stylesheet;
                 endif;
-
                 $available_themes[] = array(
                     'name' => $name,
                     'template' => $template,
