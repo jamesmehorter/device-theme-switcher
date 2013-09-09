@@ -75,43 +75,52 @@
 		// ------------------------------------------------------------------------
 		// THEME DELIVER LOGIC
 		// ------------------------------------------------------------------------
+		//Called via add_filter('template', array('DTS_Switcher', 'deliver_template'), 10, 0); in dts_controller.php
 		public function deliver_theme () {
-			$this->theme_override = "";
+			$this->theme_override = $requested_theme = "";
+
 			//Is the user requesting a theme override?
 			//This is how users can 'view full website' and vice versa
 			if (isset($_GET['theme'])) : 
+				//Clean the input data we're testing against
+				$requested_theme = mysql_real_escape_string($_GET['theme']);
 				//Both conditions below will need SESSION
-				if (session_id() == '') : session_start(); endif;
+				if (session_id() == '') session_start();
 				//Does the requested theme match the detected device theme?
-				if ($_GET['theme'] == $this->device) : unset($_SESSION['dts']); //The default/active theme is given back and their session is going to be removed
+				if ($requested_theme == $this->device) : unset($_SESSION['dts']); //The default/active theme is given back and their session is going to be removed
 				else : 
 					//Kill the request if it isn't valid, i.e. don't try to load ?theme=fooeybear unless it really exists
-					if (isset($this->{$_GET['theme'] . "_theme"})) :
-						if (!empty($this->{$_GET['theme'] . "_theme"})) : 
+					if (isset($this->{$requested_theme . "_theme"})) :
+						if (!empty($this->{$requested_theme . "_theme"})) : 
 							//Store the requested theme in SESSION
-							$_SESSION['dts']['theme'] = $_GET['theme'];
+							//Check if there is an already existant override stored in SESSION
+							if (session_id() == '') session_start();
+							//if (empty(session_id())) session_start();
+							$_SESSION['dts']['theme'] = $requested_theme;
 							$_SESSION['dts']['device'] = $this->device;
 							$_SESSION['dts']['start'] = time();
 							//Return the requested theme
-							$this->theme_override = $_GET['theme'];
+							$this->theme_override = $requested_theme;
 						endif;
 					endif;
 				endif;
 			else : 
 				//there is no new override being requested
 				//Check if there is an already existant override stored in SESSION
-				if (session_id() == '') : session_start(); endif;
-				if (isset($_SESSION['dts']['theme'])) : 
-					//Kill the request if it isn't valid
-					if (isset($this->{$_SESSION['dts']['theme'] . "_theme"})) : 
-						//Only allow the override to continue if the session life is less than the desired lifetime
-						if ((time() - $_SESSION['dts']['start']) < get_option('dts_session_lifetime')) : 
-							//allow the override to continue
-							$this->theme_override = $_SESSION['dts']['theme'];
-						else :
-							//The session too old, and we're going to force it close
-							//remove the stored session 
-							unset($_SESSION['dts']);
+				if (session_id() == '') session_start();
+				if (!empty($_SESSION) && is_array($_SESSION)) : 
+					if (isset($_SESSION['dts']['theme'])) : 
+						//Kill the request if it isn't valid
+						if (isset($this->{$_SESSION['dts']['theme'] . "_theme"})) : 
+							//Only allow the override to continue if the session life is less than the desired lifetime
+							if ((time() - $_SESSION['dts']['start']) < get_option('dts_session_lifetime')) : 
+								//allow the override to continue
+								$this->theme_override = $_SESSION['dts']['theme'];
+							else :
+								//The session too old, and we're going to force it close
+								//remove the stored session 
+								unset($_SESSION['dts']);
+							endif;
 						endif;
 					endif;
 				endif;
