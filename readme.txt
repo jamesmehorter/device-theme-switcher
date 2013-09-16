@@ -2,8 +2,8 @@
 Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
 Requires at least: 3.0
-Tested up to: 3.6
-Stable tag: 2.2
+Tested up to: 3.6.1
+Stable tag: 2.3
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, iPad, iPhone, Android, Blackberry, Tablet Theme, Different Themes, Device Theme
 Author URI: http://www.jamesmehorter.com/
 Donate Link: http://www.jamesmehorter.com/donate/
@@ -186,7 +186,10 @@ Tablet theme page.php
 
 == Changelog ==
 
-= Version 2.2 - Released 08/28/2012 = 
+= Version 2.3 - Released 09/16/2013 = 
+* FIX - Corrected an issue which caused a PHP error to be thrown under odd conditions. Thanks Davis Wuolle! 
+
+= Version 2.2 - Released 08/28/2013 = 
 * FIX - Corrected an issue which caused folks running WordPress Version Pre 3.4 to not see themes in the admin theme select lists. Thanks jstroem for 346b5ec (https://github.com/jstroem/device-theme-switcher/commit/346b5ec1582539b621ef4583153a7dbc6c9423b9)
 
 = Version 2.1 - Released 08/26/2013 = 

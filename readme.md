@@ -187,6 +187,9 @@ Tablet theme page.php
 
 ## Changelog 
 
+* _Version 2.3 - Released 09/16/2013_
+    * FIX - Corrected an issue which caused a PHP error to be thrown under odd conditions. Thanks Davis Wuolle! 
+
 * _Version 2.2 - Released 08/28/2012_
     * FIX - Corrected an issue which caused folks running WordPress Version Pre 3.4 to not see themes in the admin theme select lists. Thanks jstroem for 346b5ec (https://github.com/jstroem/device-theme-switcher/commit/346b5ec1582539b621ef4583153a7dbc6c9423b9)
 
