@@ -19,8 +19,8 @@
                 //Let's grab that and use it to modify the get var
                 //This is a feature in the new code we can benefit from to preserve this legacy link form
                 @session_start(); //Lets not toss a warning if the session was already started during this code execution
-                if (isset($_SESSION['dts']['device'])) : 
-                    $_GET['theme'] = $_SESSION['dts']['device'];
+                if (isset($_SESSION['device-theme-switcher']['device'])) : 
+                    $_GET['theme'] = $_SESSION['device-theme-switcher']['device'];
                     unset($_SESSION['dts_device']);
                 endif;
             break;

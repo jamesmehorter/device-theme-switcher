@@ -78,7 +78,6 @@
 		//Called via add_filter('template', array('DTS_Switcher', 'deliver_template'), 10, 0); in dts_controller.php
 		public function deliver_theme () {
 			$this->theme_override = $requested_theme = "";
-
 			//Is the user requesting a theme override?
 			//This is how users can 'view full website' and vice versa
 			if (isset($_GET['theme'])) : 
@@ -87,7 +86,7 @@
 				//Both conditions below will need SESSION
 				if (session_id() == '') session_start();
 				//Does the requested theme match the detected device theme?
-				if ($requested_theme == $this->device) : unset($_SESSION['dts']); //The default/active theme is given back and their session is going to be removed
+				if ($requested_theme == $this->device) : unset($_SESSION['device-theme-switcher']); //The default/active theme is given back and their session is going to be removed
 				else : 
 					//Kill the request if it isn't valid, i.e. don't try to load ?theme=fooeybear unless it really exists
 					if (isset($this->{$requested_theme . "_theme"})) :
@@ -96,10 +95,13 @@
 							//Check if there is an already existant override stored in SESSION
 							if (session_id() == '') session_start();
 							//if (empty(session_id())) session_start();
-							$_SESSION['dts']['theme'] = $requested_theme;
-							$_SESSION['dts']['device'] = $this->device;
-							$_SESSION['dts']['start'] = time();
-							//Return the requested theme
+							unset($_SESSION['device-theme-switcher']);
+							$_SESSION['device-theme-switcher'] = array(
+								'theme' => $requested_theme,
+								'device' => $this->device,
+								'start' => time()
+							);
+							//Return the requested
 							$this->theme_override = $requested_theme;
 						endif;
 					endif;
@@ -108,18 +110,20 @@
 				//there is no new override being requested
 				//Check if there is an already existant override stored in SESSION
 				if (session_id() == '') session_start();
-				if (!empty($_SESSION) && is_array($_SESSION)) : 
-					if (isset($_SESSION['dts']['theme'])) : 
+				if (isset($_SESSION['device-theme-switcher'])) : 
+					if (isset($_SESSION['device-theme-switcher']['theme'])) : 
+						//echo "<pre>" . print_r($_SESSION, true) . "</pre>";
+
 						//Kill the request if it isn't valid
-						if (isset($this->{$_SESSION['dts']['theme'] . "_theme"})) : 
+						if (isset($this->{$_SESSION['device-theme-switcher']['theme'] . "_theme"})) : 
 							//Only allow the override to continue if the session life is less than the desired lifetime
-							if ((time() - $_SESSION['dts']['start']) < get_option('dts_session_lifetime')) : 
+							if ((time() - $_SESSION['device-theme-switcher']['start']) < get_option('dts_session_lifetime')) : 
 								//allow the override to continue
-								$this->theme_override = $_SESSION['dts']['theme'];
+								$this->theme_override = $_SESSION['device-theme-switcher']['theme'];
 							else :
 								//The session too old, and we're going to force it close
 								//remove the stored session 
-								unset($_SESSION['dts']);
+								unset($_SESSION['device-theme-switcher']);
 							endif;
 						endif;
 					endif;
@@ -180,7 +184,7 @@
 					//check for a current session amd start it up if one doesn't exist
 		            if (session_id() == '') : @session_start(); endif;
 		            //check for the dts array within session (this indicates the user has requested an alternate theme)
-					if (isset($_SESSION['dts']) && $dts->device != 'active') ## only show the link to return if the user is not viewing their default theme (they've requested another theme)
+					if (isset($_SESSION['device-theme-switcher']) && $dts->device != 'active') ## only show the link to return if the user is not viewing their default theme (they've requested another theme)
 						$target_theme = $dts->device; ## display the link under all other conditions
 				break;
 			endswitch;
