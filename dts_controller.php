@@ -67,7 +67,7 @@
 	//We only want to tap into the theme filters if a frontend page is being requested
 	if (!is_admin()) :
 		//Include our external device theme switcher class library
-		include_once('inc/class.switcher.php');
+		include('inc/class.switcher.php');
 		//Load support for legacy GET variables
 		include('inc/legacy/legacy_get_support.php');
 		//Instantiate a new instance of this class
@@ -78,7 +78,7 @@
 		//Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
 		add_filter('stylesheet', array('DTS_Switcher', 'deliver_stylesheet'), 10, 0);
 		//Include the template tags developers can access in their themes
-		include_once('inc/inc.template-tags.php');
+		include('inc/inc.template-tags.php');
 		//Load support for legacy classes, methods, functions, and variables
 		include('inc/legacy/legacy_structural_support.php');
 	endif;
@@ -87,7 +87,7 @@
 	// WIDGETS
 	// ------------------------------------------------------------------------
 	//Include our external widget class library
-	include_once('inc/class.widgets.php');
+	include('inc/class.widgets.php');
 	//Register our widgets for displaying a 'View Full Website' and 'Return to mobile website' links
 	function dts_register_widgets () {
 		//Register the 'View Full Website' widget
@@ -101,7 +101,7 @@
 	// SHORTCODES
 	// ------------------------------------------------------------------------
 	//Include our external shortcodes class library
-	include_once('inc/class.shortcodes.php');
+	include('inc/class.shortcodes.php');
 	//Register the [device-theme-switcher] shortcode
 	//Ex: [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
 	//Ex: [link_back_to_device link_text="Return to Mobile Website" css_classes="blue-text, alignleft"]
