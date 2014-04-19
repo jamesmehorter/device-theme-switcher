@@ -2,8 +2,8 @@
 Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
 Requires at least: 3.0
-Tested up to: 3.6.1
-Stable tag: 2.3
+Tested up to: 3.9
+Stable tag: 2.4
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, iPad, iPhone, Android, Blackberry, Tablet Theme, Different Themes, Device Theme
 Author URI: http://www.jamesmehorter.com/
 Donate Link: http://www.jamesmehorter.com/donate/
@@ -26,7 +26,9 @@ Device Theme Switcher is a WordPress plugin which delivers one of your WordPress
 
 = How to Install = 
 
-Install and activate in your WordPress 'Plugins > Add New' section by searching for 'Device Theme Switcher', or download the plugin zip (Big orange button up and to the right which says 'Download Version 2.0') and upload it manually in the 'WordPress Plugins > Add New > Upload' section. After activation you'll have a new menu: 'Appearance > Device Themes'-where you set which theme is given to which visitor device.
+Install and activate in your WordPress Dashboard 'Plugins > Add New' section by searching for 'Device Theme Switcher'.
+
+After activation you'll have a new menu: 'Appearance > Device Themes'--where you set which theme is given to which visitor device.
 
 = URL Switching - NEW in Version 2.0! =
 
