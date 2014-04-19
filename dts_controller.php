@@ -64,8 +64,9 @@
 	// ------------------------------------------------------------------------
 	// THEME SWITCHING
 	// ------------------------------------------------------------------------
-	//We only want to tap into the theme filters if a frontend page or an ajax request is being requested
-    if ( !is_admin() && !defined('DOING_AJAX') && !DOING_AJAX ) :
+    if ( is_admin() && (!defined( 'DOING_AJAX' ) || !DOING_AJAX) ) :
+        //We only want to tap into the theme filters if a frontend page or an ajax request is being requested
+    else :
 		//Include our external device theme switcher class library
 		include('inc/class.switcher.php');
 		//Load support for legacy GET variables
