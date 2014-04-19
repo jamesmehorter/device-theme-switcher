@@ -51,10 +51,11 @@
 			//Check for Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
 			//Thanks to Tim Broder for this addition! https://github.com/broderboy | http://timbroder.com/
 			if (isset($_SERVER['HTTP_X_UA_DEVICE'])) :
-				if (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('mobile-iphone', 'mobile-android', 'mobile-firefoxos', 'mobile-smartphone', 'mobile-generic')))
+				if (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('mobile-iphone', 'mobile-android', 'mobile-firefoxos', 'mobile-smartphone', 'mobile-generic'))) :
 					$device = 'handheld' ;
-				elseif (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('tablet-ipad', 'tablet-android')))
+				elseif (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('tablet-ipad', 'tablet-android'))) :
                     $device = 'tablet' ;
+                endif;
 			else : //DEFAULT ACTION - Use MobileESP to sniff the UserAgent string
 				//Include the MobileESP code library for acertaining device user agents
 				include_once('mobile-esp.php');
