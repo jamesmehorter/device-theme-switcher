@@ -54,7 +54,7 @@
 				if (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('mobile-iphone', 'mobile-android', 'mobile-firefoxos', 'mobile-smartphone', 'mobile-generic')))
 					$device = 'handheld' ;
 				elseif (in_array($_SERVER['HTTP_X_UA_DEVICE'], array('tablet-ipad', 'tablet-android')))
-					$device_theme = $this->tablet_theme;
+                    $device = 'tablet' ;
 			else : //DEFAULT ACTION - Use MobileESP to sniff the UserAgent string
 				//Include the MobileESP code library for acertaining device user agents
 				include_once('mobile-esp.php');
