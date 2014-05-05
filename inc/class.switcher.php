@@ -34,7 +34,6 @@
 		public function detect_device () {
 			//Default is active (default computer theme set by the admin) until it's overridden
 			$device = 'active';
-
 			//Give the handheld theme to any low_support device
 			//UNLESS one has been set in the admin already
 			$low_support_device = 'handheld' ;

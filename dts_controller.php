@@ -24,10 +24,13 @@
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	*/
-
-	// ------------------------------------------------------------------------
-	// CORE
-	// ------------------------------------------------------------------------
+	/**
+	 *	
+	 * Load the plugin core routines
+	 *
+	 * This is where Device Theme Switcher hooks into the WordPress
+	 * activation, deactivation, unintiall, init, and plugin_action_links
+	 */
 	include('inc/class.core.php');
 	//Activation: Install any initial settings
 	register_activation_hook(__FILE__, array('DTS_Core', 'activate'));
@@ -40,19 +43,29 @@
 	//Display a 'Settings' link with the plugin in the plugins list
     add_filter('plugin_action_links', array('DTS_Core', 'device_theme_switcher_settings_link'), 10, 2);
 
-	// ------------------------------------------------------------------------
-	// UPDATE
-	// ------------------------------------------------------------------------
+	/**
+	 * Load the plugin update routines
+	 *
+	 * The update class checks the currently installed version and runs
+	 * any necessary update routines. This only occurs once per version,
+	 * and ONLY in the admin.
+	 */
 	if (is_admin()) : 
-		include('inc/class.update.php');
-		//Run any update actions (typically only the first time the plugin is updated)
-		add_action('admin_init', array('DTS_Update', 'init'));
-		add_action('admin_notices', array('DTS_Update', 'update_notice'));
+		if (current_user_can('manage_options')) : 
+			include('inc/class.update.php');
+			//Run any update actions (typically only the first time the plugin is updated)
+			add_action('admin_init', array('DTS_Update', 'init'));
+			add_action('admin_notices', array('DTS_Update', 'update_notice'));
+		endif;
 	endif;
 
-	// ------------------------------------------------------------------------
-	// ADMIN
-	// ------------------------------------------------------------------------
+	/**
+	 * Load the plugin admin features
+	 *
+	 * The admin features include the display of the status output in the Dashboard 
+	 * 'Right Now' widget. They also create an admin page at Appearance > Device Themes
+	 * for the website admin to save the plugin settings 
+	 */
 	include('inc/class.wp-admin.php');
 	//Add a notice about the selected device themes in the Dashboard Right Now widget
 	add_action('activity_box_end', array('DTS_Admin', 'right_now'));
@@ -61,9 +74,14 @@
 	//Check if we need to save any form data that was submitted
 	add_action('load-appearance_page_device-themes', array('DTS_Admin', 'load'));
 
-	// ------------------------------------------------------------------------
-	// THEME SWITCHING
-	// ------------------------------------------------------------------------
+	/**
+	 * Load the plugin theme switching functionality
+	 *
+	 * The theme switching utilizes the MobileESP library to detect
+	 * the browser User Agent and determine if it's a 'handheld' or 'tablet'.
+	 * This plugin then taps into the WordPress template and stylesheet hooks 
+	 * to deliver the alternately set themes in Appearance > Device Themes
+	 */
     if ( is_admin() && (!defined( 'DOING_AJAX' ) || !DOING_AJAX) ) :
         //We only want to tap into the theme filters if a frontend page or an ajax request is being requested
     else :
@@ -84,9 +102,12 @@
 		include('inc/legacy/legacy_structural_support.php');
 	endif;
 
-	// ------------------------------------------------------------------------
-	// WIDGETS
-	// ------------------------------------------------------------------------
+	/**
+	 * Load in the plugin widgets
+	 *
+	 * The widgets create an option for capable users to place 'View Full Website'
+	 * and 'Return to Mobile Website' links in their theme sidebars.
+	 */
 	//Include our external widget class library
 	include('inc/class.widgets.php');
 	//Register our widgets for displaying a 'View Full Website' and 'Return to mobile website' links
@@ -98,9 +119,12 @@
 	}//END FUNCTION dts_register_widgets
 	add_action( 'widgets_init', 'dts_register_widgets' );
 
-	// ------------------------------------------------------------------------
-	// SHORTCODES
-	// ------------------------------------------------------------------------
+	/**
+	 * Load the plugin shortcodes
+	 *
+	 * The shortcodes allow capable users to place 'View Full Website' and
+	 * 'Return to Mobile Website' links in their posts / pages.
+	 */
 	//Include our external shortcodes class library
 	include('inc/class.shortcodes.php');
 	//Register the [device-theme-switcher] shortcode

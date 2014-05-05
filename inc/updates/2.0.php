@@ -1,7 +1,8 @@
 <?php
-    /*********************************************
-    UPDATE VERSION 1.x to 2.0
-    *********************************************/
+    /**
+     * UPDATE VERSION 1.x to 2.0
+     */
+        
     //Add new plugin options
     add_option('dts_session_lifetime', 300);
 
@@ -10,14 +11,14 @@
     delete_option('dts_current_theme');
     delete_option('dts_device_themes');
 
-    /*
-        The update below converts the old dts theme options in the options database table
-        OLD FORMAT: default 
-        NEW FORMAT: name=WordPress+Default&template=default&stylesheet=default
-
-        The old format stored just the theme template file name
-        The new format stores a url encoded string of 3 values (name, template, and stylesheet)
-    */
+    /**
+     * The update below converts the old dts theme options in the options database table
+     * 
+     * OLD FORMAT: default 
+     * NEW FORMAT: name=WordPress+Default&template=default&stylesheet=defaut
+     * The old format stored just the theme template file name
+     * The new format stores a url encoded string of 3 values (name, template, and stylesheet)
+     */
     //Select each old dts option (single theme name in a string)
     $theme_setting['dts_handheld_theme']    = get_option('dts_handheld_theme');
     $theme_setting['dts_tablet_theme']      = get_option('dts_tablet_theme');

@@ -1,14 +1,14 @@
-<?php
-    /*
-        Backwards compatibility for Device Theme Switcher v1.x URL $_GET Variables
-        This code only assists users who have hardcoded ?dts_device= links into thier themes
-        -----
-        Captures the following $_GET variables and ports them to the new code logic: 
-        ?dts_device=screen
-        previously used allow the handheld/tablet user to view the full website
-        ?dts_device=device
-        previously used to allow the handheld/tablet user return to their device's assigned theme       
-    */
+<?php    
+    /**
+     * Backwards compatibility for Device Theme Switcher v1.x URL $_GET Variables
+     * 
+     * This code only assists users who have hardcoded ?dts_device= links into thier themes
+     * Captures the following $_GET variables and ports them to the new code logic: 
+     * ?dts_device=screen
+     * Previously used allow the handheld/tablet user to view the full website
+     * ?dts_device=device
+     * previously used to allow the handheld/tablet user return to their device's assigned theme 
+     */
     if (isset($_GET['dts_device'])) : 
         switch ($_GET['dts_device']) : 
             //'active' now represents the 'full website'
