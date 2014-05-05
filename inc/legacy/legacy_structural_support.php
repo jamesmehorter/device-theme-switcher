@@ -1,7 +1,11 @@
 <?php
-    //We renamed the primary class to DTS in version 1.9
-    //This line can be deleted once everyone is on 1.9 :)
-    //It was used in documentation for users inserting the html links wrapped with if(class_exists(Device_Theme_Switcher))
+    /**
+     * We renamed the primary class to DTS in version 1.9
+     *
+     * It was used in documentation for users inserting the html links 
+     * wrapped with if(class_exists(Device_Theme_Switcher)). The following
+     * simply extends the new class with the old name so that it still functions
+     */
     class Device_Theme_Switcher Extends DTS_Switcher {
         // ------------------------------------------------------------------------
         // THEME DEVICE LINK SWITCH - For switching between mobile and screen themes
