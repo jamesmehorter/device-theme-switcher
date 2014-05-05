@@ -20,6 +20,7 @@
                 else :
                     //Update the DB version
                     update_option('dts_version', DTS_VERSION);
+                    //Instruct DTS to run the update operation
                     $operation = 'update';
                 endif;
             else : 
@@ -28,7 +29,7 @@
                 //add the version to the database
                 add_option('dts_version', DTS_VERSION);
                 $operation = "update";
-                $previous_version = "1.x";
+                $previous_version = 1;
             endif;
 
             return array('operation' => $operation, 'previous_version' => $previous_version);
@@ -36,17 +37,19 @@
         // ------------------------------------------------------------------------
         // UPDATE ROUTINE
         // ------------------------------------------------------------------------
-        static function update ($update) {
+        static function update ($update) {    
             switch ($update['operation']) : 
                 case 'update' : 
-                    if ($update['previous_version'] == "1.x") : 
-                        //This is an update from verion 1.x to 2.0
+                    if ($update['previous_version'] == 1) : 
+                        //This is an update from version 1.x to 2.0
                         //We need to update the dts theme values stored in the database
                         //previously just the slug was kept, now we're storing a url encoded string of 3 values
                         include('updates/2.0.php');
                     endif;
-                    //We don't need to add any update routines for 2.0+ at this time
-                    //Only if we make a change in 2.1+ will we need to run an update script
+                    //In version 2.4 we changed an option name..
+                    if (intval($update['previous_version']) < 2.4) : 
+                        include('updates/2.4.php');
+                    endif;
                 break;
             endswitch;
         }//update

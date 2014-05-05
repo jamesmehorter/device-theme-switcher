@@ -77,53 +77,59 @@
 		//Called via add_filter('template', array('DTS_Switcher', 'deliver_template'), 10, 0); in dts_controller.php
 		public function deliver_theme () {
 			$this->theme_override = $requested_theme = "";
+
+			//Determine the 'slug' of the website name
+			//we'll use this for the cookie name so that it refernces the website not dts
+			$cookie_name = get_bloginfo('sitename');
+			$cookie_name = preg_replace('/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name); #remove special characters
+			$cookie_name = str_replace(' ', '-', $cookie_name); #change spaces to hyphens
+			$cookie_name = strtolower($cookie_name); #lowercase everything
+			$cookie_name = $cookie_name . '-alternate-theme';
+
 			//Is the user requesting a theme override?
 			//This is how users can 'view full website' and vice versa
-			if (isset($_GET['theme'])) : 
+			if (isset($_GET['theme'])) : //i.e. site.com?theme=active
 				//Clean the input data we're testing against
-				$requested_theme = mysql_real_escape_string($_GET['theme']);
-				//Both conditions below will need SESSION
-				if (session_id() == '') session_start();
+				$requested_theme = $_GET['theme'];				
 				//Does the requested theme match the detected device theme?
-				if ($requested_theme == $this->device) : unset($_SESSION['device-theme-switcher']); //The default/active theme is given back and their session is going to be removed
+				if ($requested_theme == $this->device) : 
+					//The default/active theme is given back and their cookie is going to be removed
+					//this condition typically exsits when someone is navigating "Back to Mobile"
+					setcookie($cookie_name, "", 1, COOKIEPATH, COOKIE_DOMAIN, false);
 				else : 
+					//No it does not
+					//this condition generally means that the user has just clicked "View full website"
 					//Kill the request if it isn't valid, i.e. don't try to load ?theme=fooeybear unless it really exists
 					if (isset($this->{$requested_theme . "_theme"})) :
-						if (!empty($this->{$requested_theme . "_theme"})) : 
-							//Store the requested theme in SESSION
-							//Check if there is an already existant override stored in SESSION
-							if (session_id() == '') session_start();
-							//if (empty(session_id())) session_start();
-							unset($_SESSION['device-theme-switcher']);
-							$_SESSION['device-theme-switcher'] = array(
-								'theme' => $requested_theme,
-								'device' => $this->device,
-								'start' => time()
-							);
+						//Only proceed if $this->requested_theme is not empty, hence it's a valid theme
+						if (!empty($this->{$requested_theme . "_theme"})) : 							
+							//Retrieve the stored cookie lifespan
+							//chosen in Appeance > Device Themes 
+							$cookie_lifespan = get_option('dts_cookie_lifespan');
+							//Build an array of the requested theme settings we'll need to know about when
+							//the user returns to the site (or navigates to another page)
+							//this way we can load the theme they previously requested
+							$cookie_settings = array('theme' => $requested_theme, 'device' => $this->device);
+							//Set a cookie in the users browser to identify the theme they've requested
+							setcookie($cookie_name, json_encode($cookie_settings), time() + $cookie_lifespan, COOKIEPATH, COOKIE_DOMAIN, false);
 							//Return the requested
 							$this->theme_override = $requested_theme;
 						endif;
 					endif;
 				endif;
-			else : 
+			else :			
 				//there is no new override being requested
-				//Check if there is an already existant override stored in SESSION
-				if (session_id() == '') session_start();
-				if (isset($_SESSION['device-theme-switcher'])) : 
-					if (isset($_SESSION['device-theme-switcher']['theme'])) : 
-						//echo "<pre>" . print_r($_SESSION, true) . "</pre>";
-
+				//Check if there is an already existant override stored in a cookie
+				if (isset($_COOKIE[$cookie_name])) : 
+					//The requested theme is an array so we stored it as a json encoded string
+					//lets decode that so we can see whats in it
+					//Note: once decoded we'll be working with an object not an array
+					$_COOKIE[$cookie_name] = json_decode($_COOKIE[$cookie_name]);
+					if (isset($_COOKIE[$cookie_name]->theme)) : 
 						//Kill the request if it isn't valid
-						if (isset($this->{$_SESSION['device-theme-switcher']['theme'] . "_theme"})) : 
-							//Only allow the override to continue if the session life is less than the desired lifetime
-							if ((time() - $_SESSION['device-theme-switcher']['start']) < get_option('dts_session_lifetime')) : 
-								//allow the override to continue
-								$this->theme_override = $_SESSION['device-theme-switcher']['theme'];
-							else :
-								//The session too old, and we're going to force it close
-								//remove the stored session 
-								unset($_SESSION['device-theme-switcher']);
-							endif;
+						if (isset($this->{$_COOKIE[$cookie_name]->theme . "_theme"})) : 
+							//allow the override to continue
+							$this->theme_override = $_COOKIE[$cookie_name]->theme;
 						endif;
 					endif;
 				endif;
