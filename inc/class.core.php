@@ -69,7 +69,7 @@
          * @param $links Contains an array of the current plugin links
          * @param $file Contains a string of the main plugin path/filename.php
          * @return $links After adding in our own
-         */        
+         */    
         static function device_theme_switcher_settings_link($links, $file) {
             if ($file == 'device-theme-switcher/dts_controller.php') :
                 //Insert the link at the end
