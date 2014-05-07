@@ -32,21 +32,27 @@
 	 * This is where Device Theme Switcher hooks into the WordPress
 	 * activation, deactivation, unintiall, init, and plugin_action_links
 	 */
+	//Include the core class
 	include('inc/class.core.php');
+	
 	//Activation: Install any initial settings
 	register_activation_hook(__FILE__, array('DTS_Core', 'activate'));
+	
 	//Deactivation: Run any special routines on deactivation
 	register_deactivation_hook(__FILE__, array('DTS_Core', 'deactivate'));
+	
 	//Uninstall: Remove anything stored in the database
 	register_uninstall_hook(__FILE__, array('DTS_Core', 'uninstall'));
+	
 	//Run any update actions (typically only the first time the plugin is updated)
 	add_action('init', array('DTS_Core', 'init'));
+	
 	//Display a 'Settings' link with the plugin in the plugins list
     add_filter('plugin_action_links', array('DTS_Core', 'device_theme_switcher_settings_link'), 10, 2);
 
 	//Only run the following in the admin, the REAL admin--not admin ajax
     if ( is_admin() && (!defined( 'DOING_AJAX' ) || !DOING_AJAX) ) :
-    	
+
 		/**
 		 * Load the plugin admin features
 		 *
@@ -54,6 +60,7 @@
 		 * 'Right Now' widget. They also create an admin page at Appearance > Device Themes
 		 * for the website admin to save the plugin settings 
 		 */
+		//include the wp-admin class
 		include('inc/class.wp-admin.php');
 		
 		//Add a notice about the selected device themes in the Dashboard Right Now widget
@@ -72,6 +79,7 @@
 		 * any necessary update routines. This only occurs once per version,
 		 * and ONLY in the admin.
 		 */
+		//include the updating class
     	include('inc/class.update.php');
 		add_action('admin_init', array('DTS_Update', 'do_update'));
     else : //is_admin()
@@ -115,12 +123,14 @@
 	 * The widgets create an option for capable users to place 'View Full Website'
 	 * and 'Return to Mobile Website' links in their theme sidebars.
 	 */
-	//Include our external widget class library
+	//Load the widget class 
 	include('inc/class.widgets.php');
+	
 	//Register our widgets for displaying a 'View Full Website' and 'Return to mobile website' links
 	function dts_register_widgets () {
 		//Register the 'View Full Website' widget
 		register_widget('DTS_View_Full_Website');
+		
 		//Register the 'Return to Mobile Website' widget
 		register_widget('DTS_Return_To_Mobile_Website');
 	}//END FUNCTION dts_register_widgets
@@ -133,6 +143,7 @@
 	 * 'Return to Mobile Website' links in their posts / pages. Register the 
 	 * [device-theme-switcher] shortcode and Include our external shortcodes class library
 	 */
+	//load the shortodes class
 	include('inc/class.shortcodes.php');
 
 	//Ex: [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
