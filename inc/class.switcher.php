@@ -133,14 +133,8 @@
 		 */
 		public function detect_requested_theme_override () {
 			$this->theme_override = $requested_theme = "";
-
-			//Determine the 'slug' of the website name
-			//we'll use this for the cookie name so that it refernces the website not dts
-			$cookie_name = get_bloginfo('sitename');
-			$cookie_name = preg_replace('/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name); #remove special characters
-			$cookie_name = str_replace(' ', '-', $cookie_name); #change spaces to hyphens
-			$cookie_name = strtolower($cookie_name); #lowercase everything
-			$cookie_name = $cookie_name . '-alternate-theme';
+			$cookie_name = get_option('dts_cookie_name') ;
+			$cookie_lifespan = 0 ;
 
 			//Is the user requesting a theme override?
 			//This is how users can 'view full website' and vice versa
@@ -162,12 +156,18 @@
 							//Retrieve the stored cookie lifespan
 							//chosen in Appeance > Device Themes 
 							$cookie_lifespan = get_option('dts_cookie_lifespan');
+							if ($cookie_lifespan == 0) : 
+								$cookie_expiration = 0 ;
+							else : 
+								$cookie_expiration = time() + $cookie_lifespan ;
+							endif;
+
 							//Build an array of the requested theme settings we'll need to know about when
 							//the user returns to the site (or navigates to another page)
 							//this way we can load the theme they previously requested
 							$cookie_settings = array('theme' => $requested_theme, 'device' => $this->device);
 							//Set a cookie in the users browser to identify the theme they've requested
-							setcookie($cookie_name, json_encode($cookie_settings), time() + $cookie_lifespan, COOKIEPATH, COOKIE_DOMAIN, false);
+							setcookie($cookie_name, json_encode($cookie_settings), $cookie_expiration, COOKIEPATH, COOKIE_DOMAIN, false);
 							//Return the requested
 							$this->theme_override = $requested_theme;
 						endif;
@@ -180,12 +180,12 @@
 					//The requested theme is an array so we stored it as a json encoded string
 					//lets decode that so we can see whats in it
 					//Note: once decoded we'll be working with an object not an array
-					$_COOKIE[$cookie_name] = json_decode($_COOKIE[$cookie_name]);
-					if (isset($_COOKIE[$cookie_name]->theme)) : 
+					$dts_cookie = json_decode($_COOKIE[$cookie_name]);
+					if (isset($dts_cookie->theme)) : 
 						//Kill the request if it isn't valid
-						if (isset($this->{$_COOKIE[$cookie_name]->theme . "_theme"})) : 
+						if (isset($this->{$dts_cookie->theme . "_theme"})) : 
 							//allow the override to continue
-							$this->theme_override = $_COOKIE[$cookie_name]->theme;
+							$this->theme_override = $dts_cookie->theme;
 						endif;
 					endif;
 				endif;
@@ -272,18 +272,22 @@
 		/**
 		 * Switch Theme Link Generation
 		 *
-		 * We have 2 different shotcodes and 2 different theme functions for users
-		 * to display 'View Full Website' and 'Return to mobile Theme' links. However,
-		 * internally we use the singular function below to generate these
-		 * @param  [type]  $link_type   [description]
-		 * @param  string  $link_text   [description]
-		 * @param  array   $css_classes [description]
-		 * @param  boolean $echo        [description]
-		 * @return [type]               [description]
+		 * Generate an html anchor link for the end user to click and 'View Full Website', or to go 'Back to Mobile Site'.
+		 * This function is called by the plugins template tags and shortcodes.
+		 * 
+		 * @param  string  $link_type valid values are 'active' or 'device'. E.g. generate a link to
+		 * view the active theme, aka 'View Full Website', or a link back to the device i.e. 'Back to Mobile Site'
+		 * @param  string  $link_text The text within the generated link, i.e. <a>View Full Website</a>
+		 * @param  array   $css_classes And array of additional css classes to be applied to the generated link. 
+		 * Note: the classes to-full-website and back-to-mobile are added by default
+		 * @param  boolean $echo 1 or 0 or true or false, by default the link is echoed to the screen. False will 
+		 * return it for use as a string.
 		 */
-		public static function build_html_link ($link_type, $link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) {
+		public static function build_html_link ($link_type = 'active', $link_text = "View Full Website", $css_classes = array(), $echo = true) {
 			global $dts;
+			$cookie_name = get_option('dts_cookie_name') ;
 			$html_output = $target_theme = "";
+
 			//The link_type will either be 'active' or 'device'
 			//'active' pertains to the link for devices to 'view the full website'\'active' theme
 			//'device' pertains to the link for devices which viewed the full website to go 'Back to the Mobile Theme'
@@ -299,21 +303,25 @@
 				break;
 				case 'device' : 
 					//add a css class to help identify the link type for developers to style the output how they please
-					array_unshift($css_classes, 'back-to-mobile');
-					//check for a current session amd start it up if one doesn't exist
-		            if (session_id() == '') : @session_start(); endif;
-		            //check for the dts array within session (this indicates the user has requested an alternate theme)
-					if (isset($_SESSION['device-theme-switcher']) && $dts->device != 'active') ## only show the link to return if the user is not viewing their default theme (they've requested another theme)
+					array_unshift($css_classes, 'back-to-mobile');	
+		            //check for the dts array within a cookie (this indicates the user has requested an alternate theme)
+					if (isset($_COOKIE[$cookie_name]) && $dts->device != 'active') : ## only show the link to return if the user is not viewing their default theme (they've requested another theme)
 						$target_theme = $dts->device; ## display the link under all other conditions
+					endif;
 				break;
 			endswitch;
+
 			if (!empty($target_theme)) : ## only output the html link if the above logic determines if a link should be shown or not
 				array_unshift($css_classes, 'dts-link'); ## ensure 'dts-link' is the first css class in the link
 				//Build the HTML link
 				$protocol = !empty($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
 				$html_output = "<a href='$protocol://" . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?') . "?theme=$target_theme' title='$link_text' class='" . implode(' ', $css_classes) . "'>$link_text</a>\n";
 			endif; 
-			if ($echo) : echo $html_output; ## Echo the HTML link
-			else : return $html_output; endif; ## Return the HTML link
-		}
+
+			if ($echo) : 
+				echo $html_output; ## Echo the HTML link
+			else : 
+				return $html_output; ## Return the HTML link
+			endif; 
+		}//build_html_link
 	} //END DTS_Switcher Class

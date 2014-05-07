@@ -55,6 +55,7 @@
             else :
                 $installed_themes = get_themes();
             endif;
+
             //Loop through each of the installed themes and build a cache array of themes the user can choose from below
             foreach ($installed_themes as $theme) : 
                 //Pre WordPress 3.4 $theme was an array with upper case keys
@@ -76,25 +77,37 @@
                 //Store the theme names so we can use array_multisort on $available_theme to sort by name
                 $available_theme_names[] = $name;
             endforeach;
+            
             //Alphabetically sort the theme name list for display in the selection dropdowns
             array_multisort($available_theme_names, SORT_ASC, $available_theme_names);
+            
             //Get the stored cookie lifespan option if it exists
             $dts['cookie_lifespan'] = get_option('dts_cookie_lifespan');
+            //And that there is a default value of 0..
+            if (empty($dts['cookie_lifespan'])) $dts['cookie_lifespan'] = 0 ;            
+
             //Retrieve any DTS theme options which were previously saved
             //The theme option is a url encoded string containing 3 values for name, template, and stylesheet
             parse_str(get_option('dts_handheld_theme'), $dts['themes']['handheld']);
             parse_str(get_option('dts_tablet_theme'), $dts['themes']['tablet']);
             parse_str(get_option('dts_low_support_theme'), $dts['themes']['low_support']);
+
             //Ensure there are default values in each of the $dts['themes']
             foreach ($dts['themes'] as $device => $theme) : 
-                if (empty($theme)) : $dts['themes'][$device] = array('name' => '', 'template' => '', 'stylesheet' => ''); endif;
+                if (empty($theme)) : 
+                    $dts['themes'][$device] = array(
+                        'name' => '', 
+                        'template' => '', 
+                        'stylesheet' => ''
+                    ); 
+                endif;
             endforeach ?>
+
             <style type="text/css">
                 div.wrap.device-theme-switcher-settings table td {
                     padding: 0 5px 0 5px ;
                 }
                     div.wrap.device-theme-switcher-settings select {
-                        width: 155px ;
                     }
                 .optional-settings-toggle, .help-and-support-toggle {
                     font-size: 0.9em ;
@@ -104,8 +117,7 @@
                     max-width: 850px ;
                     display: none ; /* We'll enable this via JavaScript */
                 }
-            </style>
-            
+            </style>            
             <div class="wrap device-theme-switcher-settings">
                 <div id="icon-themes" class="icon32"><br></div>
                 <h2>Device Themes<br /><br /></h2>
@@ -161,8 +173,8 @@
                                 </th><td valign="top"><?php 
                                     //Build a list of default cookie lifespans
                                     $dts_cookie_lifespans = array(                                        
-                                        array('value' => 300, 'text' => _("5 Minutes")),
-                                        array('value' => 900, 'text' => _("15 Minutes (Plugin Default)")),
+                                        array('value' => 0, 'text' => _("When the browser is closed (Default)")),
+                                        array('value' => 900, 'text' => _("15 Minutes")),
                                         array('value' => 1800, 'text' => _("30 Minutes")),
                                         array('value' => 2700, 'text' => _("45 Minutes")),
                                         array('value' => 3600, 'text' => _("60 Minutes")),
@@ -177,7 +189,7 @@
                                     </select>
                                 </td><td>
                                         <span class="description">
-                                        <?php _e("Length of time until a user is redirected back to their initial device theme <br />after they've requested the 'Desktop' Version.") ?><br />
+                                        <?php _e("Length of time until a user is redirected back to their initial device theme after they've requested the 'Desktop' Version.") ?><br />
                                     </span>
                                 </td>                 
                             </tr>

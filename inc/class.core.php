@@ -28,11 +28,14 @@
          * 15 minute cookie lifespan is stored in an option as well
          */
         static function activate () {
+            //Run the Core initialization
             DTS_Core::init();
+            //Set an option to store the plugin cookie name
+            update_option('dts_cookie_name', DTS_Core::build_cookie_name());
             //add the version to the database
             update_option('dts_version', DTS_VERSION);
             //Add new plugin options - but don't overwrite an old value 
-            if (!get_option('dts_cookie_lifespan')) add_option('dts_cookie_lifespan', 900);
+            if (!get_option('dts_cookie_lifespan')) add_option('dts_cookie_lifespan', 0);
         }
         
         /**
@@ -57,6 +60,7 @@
             delete_option('dts_handheld_theme');
             delete_option('dts_tablet_theme');
             delete_option('dts_low_support_theme');
+            delete_option('dts_cookie_name');
             delete_option('dts_cookie_lifespan');
         }
 
@@ -78,4 +82,29 @@
             endif;
             return $links;
         }
+
+        /**
+         * Build the name of the cookie DTS will create
+         *
+         * When a user clicks to 'View Full Website' we set a cookie so they can browse
+         * the website and retain the full website theme. The following builds the name of the
+         * cookie so that "My Magical Website" becomes 'my-magical-website-alternate-theme'
+         * 
+         * @return string the name of the cookie being used
+         */
+        static public function build_cookie_name () {
+            //we'll use this for the cookie name so that it refernces the website not dts
+            //Determine the 'slug' of the website name
+            $cookie_name = get_bloginfo('sitename');
+            //remove special characters
+            $cookie_name = preg_replace('/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name); 
+            //change spaces to hyphens
+            $cookie_name = str_replace(' ', '-', $cookie_name);
+            //lowercase everything
+            $cookie_name = strtolower($cookie_name);
+            //append some identifying text
+            $cookie_name = $cookie_name . '-alternate-theme';
+            //Return the assembled cookie name
+            return $cookie_name;
+        }//build_cookie_name
     }

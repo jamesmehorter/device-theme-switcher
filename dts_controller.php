@@ -51,12 +51,12 @@
 	 * and ONLY in the admin.
 	 */
 	if (is_admin()) : 
-		if (current_user_can('manage_options')) : 
+		//if (current_user_can('manage_options')) : 
 			include('inc/class.update.php');
 			//Run any update actions (typically only the first time the plugin is updated)
 			add_action('admin_init', array('DTS_Update', 'init'));
 			add_action('admin_notices', array('DTS_Update', 'update_notice'));
-		endif;
+		//endif;
 	endif;
 
 	/**
@@ -93,9 +93,9 @@
 		//This is the single class instance that is accessible via 'global $dts;'
 		$dts = new DTS_Switcher ;
 		//Hook into the template output function with a filter and change the template delivered if need be
-		add_filter('template', array('DTS_Switcher', 'deliver_template'), 10, 0);
+		add_filter('template', array($dts, 'deliver_template'), 10, 0);
 		//Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
-		add_filter('stylesheet', array('DTS_Switcher', 'deliver_stylesheet'), 10, 0);
+		add_filter('stylesheet', array($dts, 'deliver_stylesheet'), 10, 0);
 		//Include the template tags developers can access in their themes
 		include('inc/inc.template-tags.php');
 		//Load support for legacy classes, methods, functions, and variables
