@@ -1,6 +1,9 @@
 <?php
     /**
      * UPDATE VERSION 1.x to 2.0
+     *
+     * We need to update the dts theme values stored in the database
+     * previously just the slug was kept, now we're storing a url encoded string of 3 values
      */
         
     //Add new plugin options
