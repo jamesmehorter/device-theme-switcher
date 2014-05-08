@@ -1,53 +1,30 @@
 <?php
-    class DTS_Admin {
-        //Display some output in the WP Admin Dashboard 'Right Now' section
-        //      + Show what device these have been selected below what default theme is active
-        static function right_now () { 
-            parse_str(get_option('dts_handheld_theme'), $dts['themes']['handheld']);
-            parse_str(get_option('dts_tablet_theme'), $dts['themes']['tablet']) ?>
 
-            <br />Handheld Device Theme <a href="<?php echo admin_url('themes.php?page=device-themes') ?>"><strong><?php echo $dts['themes']['handheld']['name'] ?></strong></a> 
-            <br />Tablet Device Theme <a href="<?php echo admin_url('themes.php?page=device-themes') ?>"><strong><?php echo $dts['themes']['tablet']['name'] ?></strong></a><?php
-        }//right_now
+    /**
+     * Load the plugin admin features
+     *
+     * The admin features include the display of the status output in the Dashboard 
+     * 'Right Now' widget. They also create an admin page at Appearance > Device Themes
+     * for the website admin to save the plugin settings 
+     */
+    class DTS_Admin {
         
-        // ------------------------------------------------------------------------------
-        // CALLBACK MEMBER FUNCTION FOR: add_action('admin_menu', array('device_theme_switcher', 'admin_menu'));
-        // ------------------------------------------------------------------------------
+        /**
+         * Create the Appearance > Device Themes page
+         *
+         * Called via admin_menu in dts_controller.php
+         */
         static function admin_menu () {
             //Create the admin menu page
             add_submenu_page('themes.php',  __('Device Theme Switcher'), __('Device Themes'), 'manage_options', 'device-themes', array('DTS_Admin', 'generate_admin_settings_page'));
         }//admin_menu
-
-        // ------------------------------------------------------------------------------
-        // CALLED MEMBER FUNCTION FOR: if ($_POST) : $dts->update; ...
-        // ------------------------------------------------------------------------------
-        static function load () {
-            //Unfortunetly we can't use the settings api on a subpage, so we need to check for and update any options this plugin uses
-            if ($_POST) : 
-                if ($_POST['dts_settings_update'] == "true") :
-                    //Loop through the 3 device <select>ed <option>s in the admin form
-                    foreach ($_POST['dts_theme'] as $selected_device => $chosen_theme) : 
-                        if ($chosen_theme == "Use Handheld Setting") : 
-                            //The user is trying to disable the low support theme option
-                            //Go ahead and remove the option for it
-                            delete_option($selected_device);
-                        else :
-                            //Update each of the 3 dts database options with a urlencoded array of the selected theme 
-                            //The array contains 3 values: name, template, and stylesheet - these are all we need for use later on
-                            update_option($selected_device, $chosen_theme);
-                        endif;
-                    endforeach ; 
-                    //Save the chosen session lifetime
-                    update_option('dts_cookie_lifespan', $_POST['dts_cookie_lifespan']);
-                    //Display an admin notice letting the user know the save was successfull
-                    add_action('admin_notices', array('DTS_Admin', 'admin_save_settings_notice'));
-                endif; //$_POST['dts_settings_update'] == "true"
-            endif;//$_POST
-        }//update
         
-        // ------------------------------------------------------------------------------
-        // CALLBACK MEMBER FUNCTION SPECIFIED IN: add_options_page()
-        // ------------------------------------------------------------------------------
+        /**
+         * Generate the admin settings page
+         *
+         * This function is triggered as a callback via add_submenu_page() 
+         * run on the admin_menu hook
+         */
         static function generate_admin_settings_page() {
             //Gather all of the currently installed theme names so they can be displayed in the <select> boxes below
             if (function_exists('wp_get_themes')) : 
@@ -183,6 +160,7 @@
 
                                     <select name="dts_cookie_lifespan"><?php     
                                         foreach ($dts_cookie_lifespans as $cookie_lifespan) : ?>
+                                        
                                         <option value="<?php echo $cookie_lifespan['value'] ?>" <?php selected($dts['cookie_lifespan'], $cookie_lifespan['value']) ?>><?php echo $cookie_lifespan['text'] ?></option>
 
                                         <?php endforeach ?>
@@ -277,13 +255,43 @@
                 </script>
             </div><?php
         } //generate_admin_settings_page
-        // ------------------------------------------------------------------------------
-        // ADMIN NOTICES
-        // ------------------------------------------------------------------------------
-        static function admin_activation_notice(){
-            //Print a message to the admin window letting the user know thier settings have been saved
-            //echo '<div class="dts activated"><p>Welcome to Device Theme Switcher!</p></div>';
-        }//admin_activation_notice
+
+        /**
+         * Save the plugin settings
+         *
+         * Run via load-appearance_page_device-themes in dts_controller.php which
+         * fires on the settings form on Appearance > Device Themes
+         */
+        static function load () {
+            //Unfortunetly we can't use the settings api on a subpage, so we need to check for and update any options this plugin uses
+            if ($_POST) : 
+                if ($_POST['dts_settings_update'] == "true") :
+                    
+                    //Loop through the 3 device <select>ed <option>s in the admin form
+                    foreach ($_POST['dts_theme'] as $selected_device => $chosen_theme) : 
+                        if ($chosen_theme == "Use Handheld Setting") : 
+                            //The user is trying to disable the low support theme option
+                            //Go ahead and remove the option for it
+                            delete_option($selected_device);
+                        else :
+                            //Update each of the 3 dts database options with a urlencoded array of the selected theme 
+                            //The array contains 3 values: name, template, and stylesheet - these are all we need for use later on
+                            update_option($selected_device, $chosen_theme);
+                        endif;
+                    endforeach ; 
+                    
+                    //Save the chosen session lifetime
+                    update_option('dts_cookie_lifespan', $_POST['dts_cookie_lifespan']);
+
+                    //Display an admin notice letting the user know the save was successfull
+                    add_action('admin_notices', array('DTS_Admin', 'admin_save_settings_notice'));
+                endif; //$_POST['dts_settings_update'] == "true"
+            endif;//$_POST
+        }//update
+
+        /**
+         * Display a notice in the admin after settings have been saved
+         */
         static function admin_save_settings_notice(){
             //Print a message to the admin window letting the user know thier settings have been saved
             //The CSS used to style this message is located in dts_admin_output.php

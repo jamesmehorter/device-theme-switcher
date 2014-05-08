@@ -63,9 +63,6 @@
 		//include the wp-admin class
 		include('inc/class.wp-admin.php');
 		
-		//Add a notice about the selected device themes in the Dashboard Right Now widget
-		add_action('activity_box_end', array('DTS_Admin', 'right_now'));
-		
 		//Create our plugin admin page under the 'Appearance' menu
 		add_action('admin_menu', array('DTS_Admin', 'admin_menu'));
 		
