@@ -30,10 +30,13 @@
         static function activate () {
             //Run the Core initialization
             DTS_Core::init();
+            
             //Set an option to store the plugin cookie name
             update_option('dts_cookie_name', DTS_Core::build_cookie_name());
+            
             //add the version to the database
             update_option('dts_version', DTS_VERSION);
+            
             //Add new plugin options - but don't overwrite an old value 
             if (!get_option('dts_cookie_lifespan')) add_option('dts_cookie_lifespan', 0);
         }
@@ -80,6 +83,7 @@
                 unset($links['edit']);
                 $links['settings'] = sprintf( '<a href="%s" class="edit"> %s </a>', admin_url( 'themes.php?page=device-themes' ), __( 'Settings', 'device_theme_switcher' ) );
             endif;
+
             return $links;
         }
 
@@ -104,6 +108,7 @@
             $cookie_name = strtolower($cookie_name);
             //append some identifying text
             $cookie_name = $cookie_name . '-alternate-theme';
+            
             //Return the assembled cookie name
             return $cookie_name;
         }//build_cookie_name

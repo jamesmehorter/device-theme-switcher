@@ -21,6 +21,7 @@
                  'link_text' => __("View Full Website"),
                  'css_classes' => array()
             ), $atts ) );
+            
             //Globals the $dts variable created on load
             //This variable is created in /dts-controller.php around line 70
             global $dts;
@@ -41,6 +42,7 @@
                  'link_text' => __("Return to Mobile Website"),
                  'css_classes' => array()
             ), $atts ) );
+            
             //Globals the $dts variable created on load
             //This variable is created in /dts-controller.php around line 70
             global $dts;

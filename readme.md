@@ -189,6 +189,13 @@ Tablet theme page.php
 
 ## Changelog 
 
+* _Version 2.4 - Released 05/10/2014_
+    * IMPROVEMENT - Replaced the use of PHP Sessions with Cookies
+    * IMPROVEMENT - Refactored all plugin code to contain proper Docblock commenting and be more legible 
+    * FIX - Corrected an issue where X UA Device fallback was handheld, not active. Thanks @Dachande663!
+    * FIX - Corrected an issue where DTS_Switcher would not execute during an ajax request to admin_ajax. Thanks Ray @ qStudio!
+    * REMOVAL - Removed the Dashboard Right Now DTS Output, it wasn't that cool to begin with..
+
 * _Version 2.3 - Released 09/16/2013_
     * FIX - Corrected an issue which caused a PHP error to be thrown under odd conditions. Thanks Davis Wuolle! 
 

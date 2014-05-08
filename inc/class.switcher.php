@@ -45,6 +45,7 @@
 		    parse_str(get_option('dts_handheld_theme'), $this->handheld_theme);
 		    parse_str(get_option('dts_tablet_theme'), $this->tablet_theme);
 		    parse_str(get_option('dts_low_support_theme'), $this->low_support_theme);
+		    
 		    //Retrieve the current active theme
 		    $this->active_theme = array(
 		    	'name' => get_option('current_theme'),
@@ -65,6 +66,7 @@
 		public function detect_users_device () {
 			//Default is active (default computer theme set by the admin) until it's overridden
 			$device = 'active';
+
 			//Give the handheld theme to any low_support device
 			//UNLESS one has been set in the admin already
 			$low_support_device = 'handheld' ;
@@ -109,6 +111,7 @@
 				//Detect if the device is a low_support device (poor javascript and css support / text-only)
 				if ($ua->DetectBlackBerryLow() || $ua->DetectTierOtherPhones()) $device = $low_support_device ;
 			endif;
+			
 			//Return the user's device
 			return $device ;
 		}//deliver_theme_to_device
