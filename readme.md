@@ -189,7 +189,10 @@ Tablet theme page.php
 
 ## Changelog 
 
-* _Version 2.4 - Released 05/10/2014_
+* _Version 2.4 - Released 05/7/2014_
+    * FIX - Upon releasing 2.4 a bug was noticed which only affected some systems. 2.5 corrects this
+
+* _Version 2.4 - Released 05/7/2014_
     * IMPROVEMENT - Replaced the use of PHP Sessions with Cookies (This is gonna fix a lot of past issues!)
     * IMPROVEMENT - Refactored all plugin code to contain proper Docblock commenting and be more legible 
     * FIX - Corrected an issue where X UA Device fallback was handheld, not active. Thanks @Dachande663!

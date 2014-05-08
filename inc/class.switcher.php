@@ -137,6 +137,9 @@
 		public function detect_requested_theme_override () {
 			$this->theme_override = $requested_theme = "";
 			$cookie_name = get_option('dts_cookie_name') ;
+			if (empty($cookie_name)) $cookie_name = DTS_Core::build_cookie_name();
+			update_option('dts_cookie_name', $cookie_name); 
+
 			$cookie_lifespan = 0 ;
 
 			//Is the user requesting a theme override?
