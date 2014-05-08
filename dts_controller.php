@@ -26,6 +26,11 @@
 	*/
 
 	/**
+     * DTS_VERSION constant for user anywhere in WordPress 
+     */
+    define('DTS_VERSION', 2.4);
+
+	/**
 	 *	
 	 * Load the plugin core routines
 	 *
@@ -42,10 +47,7 @@
 	register_deactivation_hook(__FILE__, array('DTS_Core', 'deactivate'));
 	
 	//Uninstall: Remove anything stored in the database
-	register_uninstall_hook(__FILE__, array('DTS_Core', 'uninstall'));
-	
-	//Run any update actions (typically only the first time the plugin is updated)
-	add_action('init', array('DTS_Core', 'init'));
+	register_uninstall_hook(__FILE__, array('DTS_Core', 'uninstall'));	
 	
 	//Display a 'Settings' link with the plugin in the plugins list
     add_filter('plugin_action_links', array('DTS_Core', 'device_theme_switcher_settings_link'), 10, 2);

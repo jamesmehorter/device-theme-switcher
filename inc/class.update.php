@@ -54,6 +54,6 @@
             if (empty($current_version)) $current_version = 1;
 
             //return the currently installed plugin version
-            return $current_version ;
+            return intval($current_version) ;
         }//determine_previous_version
     }//DTS_Update

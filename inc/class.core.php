@@ -8,18 +8,6 @@
      */
     class DTS_Core {
         /**
-         * Plugin Initialization
-         * 
-         * This method is run statically in dts_controller.php 
-         * on the WordPress init hook. It creates a 
-         * DTS_VERSION constant for user anywhere in WordPress 
-         */
-        static function init () { 
-            //Define the DTS_VERSION constant
-            define('DTS_VERSION', 2.4);
-        }
-        
-        /**
          * Plugin Activation
          * 
          * This method is run statically in dts_controller.php 
@@ -28,9 +16,6 @@
          * 15 minute cookie lifespan is stored in an option as well
          */
         static function activate () {
-            //Run the Core initialization
-            DTS_Core::init();
-            
             //Set an option to store the plugin cookie name
             update_option('dts_cookie_name', DTS_Core::build_cookie_name());
             

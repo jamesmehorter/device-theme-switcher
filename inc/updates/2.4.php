@@ -10,7 +10,7 @@
     update_option('dts_cookie_name', DTS_Core::build_cookie_name());
 
     //Add the new option using the new name and existing dts_session_lifetime value
-    $dts_cookie_lifespan = get_option('dts_session_lifetime');
+    $dts_cookie_lifespan = intval(get_option('dts_session_lifetime'));
     //If the session is still 900 seconds / 15 minutes (the default set in version 2.0)
     //Change that to the new default (0 = until the user closes their browser)
     if ($dts_cookie_lifespan == 900) $dts_cookie_lifespan = 0 ;
