@@ -189,7 +189,10 @@ Tablet theme page.php
 
 ## Changelog 
 
-* _Version 2.4 - Released 05/7/2014_
+* _Version 2.6 - Released 05/8/2014_
+    * FIX - Upon releasing 2.5 a bug was noticed where the 2.4 update script magically vaniahed from the repo. This release corrects that.
+
+* _Version 2.5 - Released 05/7/2014_
     * FIX - Upon releasing 2.4 a bug was noticed which only affected some systems. 2.5 corrects this
 
 * _Version 2.4 - Released 05/7/2014_

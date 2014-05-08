@@ -30,7 +30,7 @@
                 if ($current_version == 1) include('updates/2.0.php');
                 
                 //Update pre version 2.4
-                if ($current_version < 2.4) include('updates/2.4.php');
+                if ($current_version < 2.6) include('updates/2.6.php');
                 
                 //Update the DB version to reflect the plugin files version
                 update_option('dts_version', DTS_VERSION);
