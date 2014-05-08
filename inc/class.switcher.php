@@ -1,4 +1,4 @@
-<?php
+ <?php
 	
 	/**
 	 * Device Theme Switcher - Load the plugin theme switching functionality
@@ -294,6 +294,8 @@
 			$cookie_name = get_option('dts_cookie_name') ;
 			$html_output = $target_theme = "";
 
+			
+
 			//The link_type will either be 'active' or 'device'
 			//'active' pertains to the link for devices to 'view the full website'\'active' theme
 			//'device' pertains to the link for devices which viewed the full website to go 'Back to the Mobile Theme'
@@ -310,18 +312,51 @@
 				case 'device' : 
 					//add a css class to help identify the link type for developers to style the output how they please
 					array_unshift($css_classes, 'back-to-mobile');	
-		            //check for the dts array within a cookie (this indicates the user has requested an alternate theme)
-					if (isset($_COOKIE[$cookie_name]) && $dts->device != 'active') : ## only show the link to return if the user is not viewing their default theme (they've requested another theme)
-						$target_theme = $dts->device; ## display the link under all other conditions
+					
+					/**
+					 * show the link..
+					 *
+					 * when the current device is not 'active' (not really a device)
+					 * when there is a cookie set and no GET theme variable
+					 * when there is a cookie set and and there is a GET theme variable which does not equal the current device
+					 * when there is no cookie set, but there is a GET theme variable which does not equal the current device
+					 */
+					if ($dts->device != 'active') :
+						if (isset($_COOKIE[$cookie_name])) : 
+							if (isset($_GET['theme'])) : 
+								if ($_GET['theme'] != $dts->device) : 
+									$target_theme = $dts->device;
+								endif;
+							else :
+								$target_theme = $dts->device;
+							endif;
+						else : 
+							if (isset($_GET['theme'])) : 
+								if ($_GET['theme'] != $dts->device) $target_theme = $dts->device;
+							endif;
+						endif;
 					endif;
 				break;
 			endswitch;
 
-			if (!empty($target_theme)) : ## only output the html link if the above logic determines if a link should be shown or not
-				array_unshift($css_classes, 'dts-link'); ## ensure 'dts-link' is the first css class in the link
+			//Only output the html link if the above logic determines if a link should be shown or not
+			if (!empty($target_theme)) :
+				//Start the link as protocolless and containing the current host address
+				$link_href  = "//" . $_SERVER['HTTP_HOST']; #ex //local.wordpress.dev or //www.site.com
+				//Next add on everything before a ?, i.e. any pretty url pages
+				$link_href .= strtok($_SERVER['REQUEST_URI'], '?'); #ex //local.wordpress.dev/sample-page/
+				
+				//Create an array $query_array which contains the current query vars in GET
+				parse_str($_SERVER['QUERY_STRING'], $query_array); #ex: array('page_id' => 2)
+				//Add the Device Theme Switcher 'theme=active' query var to the other existing vars
+				$query_array['theme'] = $target_theme; #ex: array('page_id' => 2, 'theme' => 'active')
+				//Add our assembled query vars onto the end of the link
+				$link_href .= "?" . http_build_query($query_array); #ex: //local.wordpress.dev/sample-page/?theme=active
+
+				//Ensure 'dts-link' is the first css class in the link
+				array_unshift($css_classes, 'dts-link');
 				//Build the HTML link
-				$protocol = !empty($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'http';
-				$html_output = "<a href='$protocol://" . $_SERVER['HTTP_HOST'] . strtok($_SERVER['REQUEST_URI'], '?') . "?theme=$target_theme' title='$link_text' class='" . implode(' ', $css_classes) . "'>$link_text</a>\n";
+				$html_output = "<a href='$link_href' title='$link_text' class='" . implode(' ', $css_classes) . "'>$link_text</a>\n";
 			endif; 
 
 			if ($echo) : 
