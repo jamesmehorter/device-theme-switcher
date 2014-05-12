@@ -189,11 +189,15 @@ Tablet theme page.php
 
 ## Changelog 
 
+* _Version 2.7 - Released 05/11/2014_
+    * IMPROVEMENT - Ensure the ?theme= GET variables added to each link via DTS_Switcher::build_html_link() preserve the existing GET variables already in place.
+    * FIX - An issue where the DTS Widgets would produce a PHP Warning
+
 * _Version 2.6 - Released 05/8/2014_
-    * FIX - Upon releasing 2.5 a bug was noticed where the 2.4 update script magically vaniahed from the repo. This release corrects that.
+    * FIX - An issue where the 2.4php update script wouldn't load properly on some setups
 
 * _Version 2.5 - Released 05/7/2014_
-    * FIX - Upon releasing 2.4 a bug was noticed which only affected some systems. 2.5 corrects this
+    * FIX - An issue where dts_cookie_name would not be set properly on update
 
 * _Version 2.4 - Released 05/7/2014_
     * IMPROVEMENT - Replaced the use of PHP Sessions with Cookies (This is gonna fix a lot of past issues!)

@@ -13,7 +13,7 @@
 		//Widget output
 		function widget($args, $instance) {
 			extract($args, EXTR_SKIP);
-			$link_text = empty($instance['link_text']) ? ' ' : apply_filters('widget_link_text', $instance['link_text']);
+			$link_text = empty($instance['link_text']) ? ' ' : apply_filters('dts_widget_link_text', $instance['link_text']);
 			echo $before_widget;			
 			//Globals the $dts variable created on load
 			//Use the DTS_Switcher::build_html_link() method
@@ -58,7 +58,7 @@
 		//Widget output
 		function widget($args, $instance) {
 			extract($args, EXTR_SKIP);
-			$link_text = empty($instance['link_text']) ? ' ' : apply_filters('widget_link_text', $instance['link_text']);
+			$link_text = empty($instance['link_text']) ? ' ' : apply_filters('dts_widget_link_text', $instance['link_text']);
 			echo $before_widget;			
 			//Globals the $dts variable created on load
 			//Use the DTS_Switcher::build_html_link() metho
