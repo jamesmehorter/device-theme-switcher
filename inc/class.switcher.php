@@ -294,8 +294,6 @@
 			$cookie_name = get_option('dts_cookie_name') ;
 			$html_output = $target_theme = "";
 
-			
-
 			//The link_type will either be 'active' or 'device'
 			//'active' pertains to the link for devices to 'view the full website'\'active' theme
 			//'device' pertains to the link for devices which viewed the full website to go 'Back to the Mobile Theme'

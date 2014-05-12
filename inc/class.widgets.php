@@ -19,7 +19,7 @@
 			//Use the DTS_Switcher::build_html_link() method
 	        //This variable is created in /dts-controller.php around line 70
 	        global $dts;
-	        return $dts->build_html_link('active', $link_text, $css_classes, $echo);
+	        return $dts->build_html_link('active', $link_text, array(), true);
 			echo $after_widget;	
 		}
 		//Save widget options	
@@ -64,7 +64,7 @@
 			//Use the DTS_Switcher::build_html_link() metho
 		    //This variable is created in /dts-controller.php around line 70
 		    global $dts;
-		    return $dts->build_html_link('device', $link_text, $css_classes, $echo);
+		    return $dts->build_html_link('device', $link_text, array(), true);
 			echo $after_widget;	
 		}
 		//Save widget options	
