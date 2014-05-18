@@ -189,6 +189,9 @@ Tablet theme page.php
 
 ## Changelog 
 
+* _Version 2.7.1 - Released 5/18/2014_
+    * FIX - Removed an empty space (whitespace) preceding <?php which caused numerous issues for people by PHP throwing PHP Warning: Cannot modify header information - headers already sent by (output started at /my-home/wp-content/plugins/device-theme-switcher/inc/class.switcher.php:1) in /my-home/wp-content/plugins/device-theme-switcher/inc/class.switcher.php on line 176 -- thanks @jontroth
+
 * _Version 2.7 - Released 05/11/2014_
     * IMPROVEMENT - Ensure the ?theme= GET variables added to each link via DTS_Switcher::build_html_link() preserve the existing GET variables already in place.
     * FIX - An issue where the DTS Widgets would produce a PHP Warning
