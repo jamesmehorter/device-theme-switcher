@@ -1,4 +1,4 @@
- <?php
+<?php
 	
 	/**
 	 * Device Theme Switcher - Load the plugin theme switching functionality
