@@ -9,21 +9,27 @@
      * ?dts_device=device
      * previously used to allow the handheld/tablet user return to their device's assigned theme 
      */
-    if (isset($_GET['dts_device'])) : 
-        switch ($_GET['dts_device']) : 
+    if ( isset( $_GET['dts_device'] ) ) {
+
+        switch ( $_GET['dts_device'] ) {
             //'active' now represents the 'full website'
             //'active' theme as in the active theme set by the admin within wp-admin/themes.php
-            case 'screen' : $_GET['theme'] = 'active'; break;
+            case 'screen' : 
+                $_GET['theme'] = 'active'; 
+            break;
+
             case 'device' : 
                 //The user's device is stored in a session while they browse the 'active' theme
                 //Let's grab that and use it to modify the get var
                 //This is a feature in the new code we can benefit from to preserve this legacy link form
                 @session_start(); //Lets not toss a warning if the session was already started during this code execution
-                if (isset($_SESSION['device-theme-switcher']['device'])) : 
+                if ( isset( $_SESSION['device-theme-switcher']['device'] ) ) {
                     $_GET['theme'] = $_SESSION['device-theme-switcher']['device'];
-                    unset($_SESSION['dts_device']);
-                endif;
+                    unset( $_SESSION['dts_device'] );
+                }
             break;
-        endswitch;
-        unset($_GET['dts_device']);
-    endif; 
+        } // end switch
+
+        unset( $_GET['dts_device'] );
+        
+    } // end if
