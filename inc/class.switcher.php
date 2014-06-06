@@ -145,7 +145,7 @@
 		}//deliver_theme_to_device
 		
 		/**
-		 * Default Theme Override
+		 * Detect Requested Theme Override
 		 *
 		 * Called when this DTS_Switcher class is instantiated, the following
 		 * logic determines if the user is requesting an alternate to the default theme. 
@@ -166,12 +166,11 @@
 		 */
 		public function detect_requested_theme_override () {
 			$this->theme_override = $requested_theme = "";
+
 			$cookie_name = get_option('dts_cookie_name') ;
-			
 			if ( empty( $cookie_name ) ) {
 				$cookie_name = DTS_Core::build_cookie_name();
 			}
-
 			update_option('dts_cookie_name', $cookie_name); 
 
 			$cookie_lifespan = 0 ;
@@ -417,7 +416,7 @@
 
 			//Only output the html link if the above logic determines if a link should be shown or not
 			if ( ! empty( $target_theme ) ) {
-				
+
 				//Start the link as protocolless and containing the current host address
 				$link_href  = "//" . $_SERVER['HTTP_HOST']; #ex //local.wordpress.dev or //www.site.com
 				
