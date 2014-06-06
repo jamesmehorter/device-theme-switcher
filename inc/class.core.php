@@ -14,16 +14,20 @@
          * on the register_activation_hook() function. It calls the Core init (above), 
          * makes sure the version is stored in an option, and that the default 
          * 15 minute cookie lifespan is stored in an option as well
+         *
+         * @return void
          */
         static function activate () {
             //Set an option to store the plugin cookie name
-            update_option('dts_cookie_name', DTS_Core::build_cookie_name());
+            update_option( 'dts_cookie_name', DTS_Core::build_cookie_name() );
             
             //add the version to the database
-            update_option('dts_version', DTS_VERSION);
+            update_option( 'dts_version', DTS_VERSION );
             
             //Add new plugin options - but don't overwrite an old value 
-            if (!get_option('dts_cookie_lifespan')) add_option('dts_cookie_lifespan', 0);
+            if ( !get_option( 'dts_cookie_lifespan' ) ) {
+                add_option( 'dts_cookie_lifespan', 0 );
+            }
         }
         
         /**
@@ -31,6 +35,8 @@
          * 
          * This method is run statically in dts_controller.php 
          * on the register_deactivation_hook() function
+         *
+         * @return void
          */
         static function deactivate () {
             //Do nothing on deactivation
@@ -40,16 +46,18 @@
          * Remove all plugin options stored in the database
          * 
          * This method is run statically in dts_controller.php 
-         * on the register_uninstall_hook() function        
+         * on the register_uninstall_hook() function
+         *
+         * @return void
          */
         static function uninstall () {
             //Remove the plugin's settings
-            delete_option('dts_version');
-            delete_option('dts_handheld_theme');
-            delete_option('dts_tablet_theme');
-            delete_option('dts_low_support_theme');
-            delete_option('dts_cookie_name');
-            delete_option('dts_cookie_lifespan');
+            delete_option( 'dts_version' );
+            delete_option( 'dts_handheld_theme' );
+            delete_option( 'dts_tablet_theme' );
+            delete_option( 'dts_low_support_theme' );
+            delete_option( 'dts_cookie_name' );
+            delete_option( 'dts_cookie_lifespan' );
         }
 
         /**
@@ -62,13 +70,20 @@
          * @param $file Contains a string of the main plugin path/filename.php
          * @return $links After adding in our own
          */    
-        static function device_theme_switcher_settings_link($links, $file) {
-            if ($file == 'device-theme-switcher/dts_controller.php') :
-                //Insert the link at the end
-                unset($links['edit']);
-                $links['settings'] = sprintf( '<a href="%s" class="edit"> %s </a>', admin_url( 'themes.php?page=device-themes' ), __( 'Settings', 'device_theme_switcher' ) );
-            endif;
+        static function device_theme_switcher_settings_link( $links, $file ) {
+            if ($file == 'device-theme-switcher/dts_controller.php') {
 
+                // Insert a new 'Settings' link which points to the 
+                // Appearance > Device Themes page
+                $links['settings'] = sprintf( 
+                    '<a href="%s" class="edit"> %s </a>', 
+                    admin_url( 'themes.php?page=device-themes' ), 
+                    __( 'Settings', 'device_theme_switcher' ) 
+                );
+
+            }// end if
+
+            //Return the links with our new 'Settings' link appended
             return $links;
         }
 
@@ -84,17 +99,23 @@
         static public function build_cookie_name () {
             //we'll use this for the cookie name so that it refernces the website not dts
             //Determine the 'slug' of the website name
-            $cookie_name = get_bloginfo('sitename');
+            $cookie_name = get_bloginfo( 'sitename' );
+            
             //remove special characters
-            $cookie_name = preg_replace('/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name); 
+            $cookie_name = preg_replace( '/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name ); 
+            
             //change spaces to hyphens
-            $cookie_name = str_replace(' ', '-', $cookie_name);
+            $cookie_name = str_replace( ' ', '-', $cookie_name );
+            
             //lowercase everything
-            $cookie_name = strtolower($cookie_name);
+            $cookie_name = strtolower( $cookie_name );
+            
             //append some identifying text
             $cookie_name = $cookie_name . '-alternate-theme';
             
             //Return the assembled cookie name
             return $cookie_name;
+
         }//build_cookie_name
-    }
+
+    }// Class DTS_Core
