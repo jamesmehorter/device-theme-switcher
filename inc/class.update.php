@@ -9,7 +9,6 @@
      * any necessary update routines. This only occurs once per version,
      * and ONLY in the admin.
      */
-    class DTS_Update {
     class DTS_Update extends DTS_Singleton {
         
         /**
@@ -20,44 +19,56 @@
          * versions do not match, run version updates per current version.
          * 
          * If the versions do not match the DB version is updated to match
-         */
-        static function do_update () {   
-            //fetch the current plugin version
-            $current_version = DTS_Update::get_current_version();
-
-            //determine if an update is required
-            if ($current_version != DTS_VERSION) :
-
-                //Conduct any needed update routines
-                
-                //Update pre version 2.0
-                if ($current_version == 1) include('updates/2.0.php');
-                
-                //Update pre version 2.4
-                if ($current_version < 2.6) include('updates/2.6.php');
-                
-                //Update the DB version to reflect the plugin files version
-                update_option('dts_version', DTS_VERSION);
-            endif;
-        }//update
-
-        /**
-         * Determine the current plugin version
          *
-         * This function grabs the version stored in a WordPress option, however,
-         * pre version 2.0 we never stored the plugin version in an option, so if 
-         * there is no stored version we specify it below as '1'
-         * 
-         * @return decimal plugin version ex. 2.4
+         * @uses  update_option
          */
-        static function get_current_version () {
-            //check for the dts_version option (New in Version 2.0)
-            $current_version = get_option('dts_version');
-            
-            //If there is no current version we'll just reference this as 'version 1'
-            if (empty($current_version)) $current_version = 1;
+        public function do_update () {   
 
-            //return the currently installed plugin version
-            return intval($current_version) ;
-        }//determine_previous_version
-    }//DTS_Update
+            // fetch the current plugin version
+            $current_version = DTS_Core::factory()->get_current_version();
+
+            // determine if an update is required
+            // Conduct any needed update routines
+            if ( version_compare( $current_version, DTS_VERSION, '<' ) ) {
+
+                /*
+                    some type of thingy that runs through all available updates in order?
+
+                    array of available update routines, array( '2.0.0', '2.6.0' )
+
+                    loop through and run any that are needed? instead of the conditional logic below?
+                 */
+
+
+                /**
+                 * 2.0.0 Update Routine
+                 */
+                if ( version_compare( $current_version, '2.0.0', '<' ) ) {
+
+                    // Include the 2.0.0 update routine, which will automatically run it's code
+                    //include( 'updates/2.0.0.php' );
+                    echo "updating to 2.0.0";
+                }
+                
+                /**
+                 * 2.6.0 Update Routine
+                 */
+                if ( version_compare( $current_version, '2.0.0', '>=' ) &&  
+                     version_compare( $current_version, '2.6.0', '<' ) ) {
+
+                    // Include the 2.0.0 update routine
+                    //include( 'updates/2.6.0.php' );
+                    echo "updating to 2.6.0";
+                }
+                
+                // Update the DB version to reflect the newly installed ersion of the plugin
+                //update_option( 'dts_version', DTS_VERSION );
+
+            } // if update
+
+        } // function do_update
+
+    } // Class DTS_Update
+    
+
+    // EOF
