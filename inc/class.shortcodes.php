@@ -7,6 +7,7 @@
      */
     class DTS_Shortcode {
         
+    class DTS_Shortcode extends DTS_Singleton {
         /**
          * Display a link to 'View Full Website'
          *

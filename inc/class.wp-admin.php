@@ -8,6 +8,7 @@
      * for the website admin to save the plugin settings 
      */
     class DTS_Admin {
+    class DTS_Admin extends DTS_Singleton {
         
         /**
          * Create the Appearance > Device Themes page

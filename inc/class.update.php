@@ -7,6 +7,7 @@
      * and ONLY in the admin.
      */
     class DTS_Update {
+    class DTS_Update extends DTS_Singleton {
         
         /**
          * Update the plugin

@@ -12,6 +12,7 @@
 	 * (only public, nothing is instantiated within the admin). 
 	 */
 	class DTS_Switcher {
+	class DTS_Switcher extends DTS_Singleton {
 		/**
 		 * Here we use the contructor more like the main controller
 		 * Below the three main facets of theme delivery occur;

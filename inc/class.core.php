@@ -7,6 +7,7 @@
      * activation, deactivation, unintiall, init, and plugin_action_links
      */
     class DTS_Core {
+    class DTS_Core extends DTS_Singleton {
         /**
          * Plugin Activation
          * 
