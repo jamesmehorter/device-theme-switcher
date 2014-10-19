@@ -3,12 +3,14 @@
     defined( 'ABSPATH' ) OR exit;
 
     /**
-     * Backwards compatibility for Device Theme Switcher v1.x URL $_GET Variables
+     * Backwards compatibility for Device Theme Switcher v1.0.0 URL $_GET Variables
      * 
      * This code only assists users who have hardcoded ?dts_device= links into thier themes
      * Captures the following $_GET variables and ports them to the new code logic: 
+     * 
      * ?dts_device=screen
      * Previously used allow the handheld/tablet user to view the full website
+     * 
      * ?dts_device=device
      * previously used to allow the handheld/tablet user return to their device's assigned theme 
      */
@@ -33,6 +35,7 @@
             break;
         } // end switch
 
+        // This really shouldn't be needed, but just to ensure it's been removed during runtime
         unset( $_GET['dts_device'] );
         
     } // end if

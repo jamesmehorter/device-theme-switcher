@@ -13,8 +13,8 @@
 	 * This class is instantiated in dts_controller.php on each WordPress load 
 	 * (only public, nothing is instantiated within the admin). 
 	 */
-	class DTS_Switcher {
 	class DTS_Switcher extends DTS_Singleton {
+		
 		/**
 		 * Here we use the contructor more like the main controller
 		 * Below the three main facets of theme delivery occur;
@@ -22,20 +22,21 @@
 		 * 2) Detect the device the current user is using
 		 * 3) Deliver the theme for their device, or an alternate (i.e. 'View Full Website')
 		 *
-		 * @return void
+		 * @param  null
+		 * @return null
 		 */
 		public function __construct() {
 			
-			//Retrieve the admin's saved device theme
+			// Retrieve the admin's saved device theme
 			$this->retrieve_saved_device_themes();
 			
-			//Detect the user's device			
+			// Detect the user's device			
 			$this->device = $this->detect_users_device();
 			
-			//Determine if a theme override is in order, i.e. 'View Full Website'
+			// Determine if a theme override is in order, i.e. 'View Full Website'
 			$this->detect_requested_theme_override();
 
-		}//__construct
+		} // function __construct
 		
 		/**
 		 * Retrive the saved device/theme selections (Appearance > Device Themes)
@@ -45,27 +46,24 @@
 		 * $this->low_support_theme, and $this->active_theme. These variables are used
 		 * during the detection of which theme is delivered to which device 
 		 *
-		 * @return void
+		 * @return null
 		 */
-		// ------------------------------------------------------------------------
-		// RETRIEVE DEVICE THEME SELECTION SET BY ADMIN
-		// ------------------------------------------------------------------------
 		public function retrieve_saved_device_themes () {			
 		    
-		    //The theme option is a url encoded string containing 3 values for name, template, and stylesheet
-		    //See the ->active_theme array below for an idea of what is within each 
+		    // The theme option is a url encoded string containing 3 values for name, template, and stylesheet
+		    // See the ->active_theme array below for an idea of what is within each 
 		    parse_str( get_option( 'dts_handheld_theme' ), $this->handheld_theme );
 		    parse_str( get_option( 'dts_tablet_theme' ), $this->tablet_theme );
 		    parse_str( get_option( 'dts_low_support_theme' ), $this->low_support_theme );
 		    
-		    //Retrieve the current active theme
+		    // Retrieve the current active theme
 		    $this->active_theme = array(
 				'name'       => get_option( 'current_theme' ),
 				'template'   => get_option( 'template' ),
 				'stylesheet' => get_option( 'stylesheet' )
 		   	);
 
-		}//retrieve_saved_device_themes
+		} // function retrieve_saved_device_themes
 		
 		/**
 		 * Device Detection
@@ -89,9 +87,9 @@
 					if ( ! empty( $low_support_theme['name'] ) ) {
 						//Detect if the device is a low support device (poor css and javascript rendering / older devices)
 						$low_support_device = 'low_support' ;
-					}// end if
-				}// end if
-			}// end if
+					} // end if
+				} // end if
+			} // end if
 
 			//Check for Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
 			//Thanks to Tim Broder for this addition! https://github.com/broderboy | http://timbroder.com/
@@ -107,45 +105,45 @@
 				'tablet-android'
 			);
 
-			//Determine if the HTTP X UA server variable is present
+			// Determine if the HTTP X UA server variable is present
 			if ( isset( $_SERVER['HTTP_X_UA_DEVICE'] ) ) {
 				
-				//if it is, determine which device type is being used
+				// if it is, determine which device type is being used
 				if ( in_array( $_SERVER['HTTP_X_UA_DEVICE'], $http_xua_handheld_devices ) ) {
 					$device = 'handheld' ;
 				} elseif ( in_array( $_SERVER['HTTP_X_UA_DEVICE'], $http_xua_tablet_devices ) ) {
 					$device = 'tablet' ;
 				}
 
-			} else { //DEFAULT ACTION - Use MobileESP to sniff the UserAgent string
+			} else { // DEFAULT ACTION - Use MobileESP to sniff the UserAgent string
 				
-				//Include the MobileESP code library for acertaining device user agents
+				// Include the MobileESP code library for acertaining device user agents
 				include_once('mobile-esp.php');
 				
-				//Setup the MobileESP Class
+				// Setup the MobileESP Class
 				$ua = new uagent_info;
 				
-				//Detect if the device is a handheld
+				// Detect if the device is a handheld
 				if ( $ua->DetectSmartphone() || $ua->DetectTierRichCss() ) { 
 					$device = 'handheld' ;
 				}
 				
-				//Detect if the device is a tablet
+				// Detect if the device is a tablet
 				if ( $ua->DetectTierTablet() || $ua->DetectKindle() || $ua->DetectAmazonSilk() ) {
 					$device = 'tablet' ;
 				}
 				
-				//Detect if the device is a low_support device (poor javascript and css support / text-only)
+				// Detect if the device is a low_support device (poor javascript and css support / text-only)
 				if ( $ua->DetectBlackBerryLow() || $ua->DetectTierOtherPhones() ) {
 					$device = $low_support_device ;
 				}
 
-			}// end if
+			} // end if
 			
-			//Return the user's device
+			// Return the user's device
 			return $device ;
 
-		}//deliver_theme_to_device
+		} // function deliver_theme_to_device
 		
 		/**
 		 * Detect Requested Theme Override
@@ -165,6 +163,8 @@
 		 * is requested, so the user can browse through the full website and the site 
 		 * 'knows' the user requested the full site even though their on an iPhone..
 		 *
+		 * @uses    get_option(), update_option()
+		 * @param   null
 		 * @return  null
 		 */
 		public function detect_requested_theme_override () {
@@ -172,7 +172,7 @@
 
 			$cookie_name = get_option('dts_cookie_name') ;
 			if ( empty( $cookie_name ) ) {
-				$cookie_name = DTS_Core::build_cookie_name();
+				$cookie_name = DTS_Core::factory()->build_cookie_name();
 			}
 			update_option('dts_cookie_name', $cookie_name); 
 
@@ -239,60 +239,64 @@
 							//Return the requested
 							$this->theme_override = $requested_theme;
 
-						}// end if
-					}// end if
-				}// end if
+						} // end if
+					} // end if
+				} // end if
 			} else { // isset( $_GET['theme'] )
 				
-				//there is no new override being requested
-				//Check if there is an already existant override stored in a cookie
+				// there is no new override being requested
+				// Check if there is an already existant override stored in a cookie
 				if ( isset( $_COOKIE[$cookie_name] ) ) {
 
-					//The requested theme is an array so we stored it as a json encoded string
-					//lets decode that so we can see whats in it
-					//Note: once decoded we'll be working with an object not an array
+					// The requested theme is an array so we stored it as a json encoded string
+					// lets decode that so we can see whats in it
+					// Note: once decoded we'll be working with an object not an array
 					$dts_cookie = json_decode( $_COOKIE[$cookie_name] );
 					
 					if ( isset( $dts_cookie->theme ) ) {
 					
-						//Kill the request if it isn't valid
+						// Kill the request if it isn't valid
 						if ( isset( $this->{$dts_cookie->theme . "_theme"} ) ) { 
 					
-							//allow the override to continue
+							// allow the override to continue
 							$this->theme_override = $dts_cookie->theme;
 
-						}// end if
-					}// end if
-				}// end if
-			}// end if
-			//
-			//!! If none of the above conditions triggered 
-			//!! the user is given their device-assigned theme
-			//
-		}//deliver_theme
-				
+						} // end if
+					} // end if
+				} // end if
+			} // end if
+			
+			/**
+			 * !! If none of the above conditions triggered
+			 * !! the user is given their device-assigned theme
+			 */
+			
+		} // function deliver_theme
+			
+
 		/**
 		 * Deliver Template
 		 * 
-		 * Called in dts_controller.php via the deliver_template WordPress filter
 		 * By default, the active theme, set in Appearance > Themes is given to the user
 		 * Secondly, if the user is visitng the site with a handheld or tablet they get
 		 * the themes set in Appearance > Device Themes. And lastly, if the user requested 
 		 * an alternate default theme (ex: 'View full Site'), give them that theme. 
 		 *
 		 * All the logic prior to this sets a few variables, the actual delivery is here..
+		 *
+		 * @internal     Called via 'stylesheet' filter setup in DTS_Core->hook_into_wordpress() 
 		 * @return array WordPress expected array containing the theme 'name', 'template', and 'stylesheet'
 		 */
 		static function deliver_template(){
 
-			return DTS_Switcher::deliver_theme_file( 'template' );
+			return DTS_Switcher::factory()->deliver_theme_file( 'template' );
 
-		}//deliver_template
+		} //deliver_template
 		
+
 		/**
 		 * Deliver Stylesheet
 		 * 
-		 * Called in dts_controller.php via the deliver_stylesheet WordPress filter
 		 * By default, the active theme, set in Appearance > Themes is given to the user
 		 * Secondly, if the user is visitng the site with a handheld or tablet they get
 		 * the themes set in Appearance > Device Themes. And lastly, if the user requested 
@@ -302,28 +306,30 @@
 		 * reason for two separate filters.
 		 *
 		 * All the logic prior to this sets a few variables, the actual delivery is here..
+		 *
+		 * @internal     Called via 'template' filter setup in DTS_Core->hook_into_wordpress() 
 		 * @return array WordPress expected array containing the theme 'name', 'template', and 'stylesheet'
 		 */
 		static function deliver_stylesheet(){
 
-			return DTS_Switcher::deliver_theme_file( 'stylesheet' );
+			return DTS_Switcher::factory()->deliver_theme_file( 'stylesheet' );
 
-		}//deliver_stylesheet
+		} //deliver_stylesheet
 
 		/**
 		 * Return a theme file, template or stylesheet. 
 		 *
 		 * This is a single wrapper function for two hooks. The $file argument passed
 		 * in determines which theme file is returned to the calling hook, 
-		 * 
-		 * @param  string $file the name of the theme asset being requested. Can be either 'name', 'template', or 'stylesheet'
-		 * @return string the theme directory name of the theme template or stylesheet. These names are rather
+		 *
+		 * @param  string $file The name of the theme asset being requested. Can be either 'name', 'template', or 'stylesheet'
+		 * @return string       The theme directory name of the theme template or stylesheet. These names are rather
 		 * anbiguous and not really descriptive of whats really being returned. The 'template' is the theme directory.
 		 * 'stylesheet' is also typically the theme directory, EXCEPT when using a parent theme. In which case
 		 * 'stylesheet' is actually the parent theme direcotry. 
 		 */
 		static function deliver_theme_file ( $file ) {
-			// see the dts::__contruct for a walkthrough on how this object is created
+			// see the DTS_Core __contruct for a walkthrough on how this object is created
 			global $dts; 
 
 			// Update the active theme setting 
@@ -338,47 +344,54 @@
 			if ( ! empty( $dts->{$dts->theme_override . "_theme"} ) ) {
 				
 				// 
-				return $dts->{$dts->theme_override . "_theme"}[$file]; 
+				return $dts->{$dts->theme_override . "_theme"}[ $file ]; 
 
 			} elseif ( ! empty( $dts->{$dts->device . "_theme"} ) ) {
 				
 				// If there is no theme override, return the users device assigned theme
-				return $dts->{$dts->device . "_theme"}[$file]; 
+				return $dts->{$dts->device . "_theme"}[ $file ]; 
 
 			} else {
 				
 				// And if all else fails, simply return the active / default theme
-				return $dts->active_theme[$file] ; 
-
+				return $dts->active_theme[ $file ] ; 
 			}
-		}// deliver_theme_file
+		} // deliver_theme_file
 
 		/**
 		 * Switch Theme Link Generation
 		 *
 		 * Generate an html anchor link for the end user to click and 'View Full Website', or to go 'Back to Mobile Site'.
 		 * This function is called by the plugins template tags and shortcodes.
-		 * 
-		 * @param  string  $link_type valid values are 'active' or 'device'. E.g. generate a link to
+		 *
+		 * @uses    get_option()
+		 * @param   string  $link_type valid values are 'active' or 'device'. E.g. generate a link to
 		 * view the active theme, aka 'View Full Website', or a link back to the device i.e. 'Back to Mobile Site'
-		 * @param  string  $link_text The text within the generated link, i.e. <a>View Full Website</a>
-		 * @param  array   $css_classes And array of additional css classes to be applied to the generated link. 
+		 * @param   string  $link_text The text within the generated link, i.e. <a>View Full Website</a>
+		 * @param   array   $css_classes And array of additional css classes to be applied to the generated link. 
 		 * Note: the classes to-full-website and back-to-mobile are added by default
-		 * @param  boolean $echo 1 or 0 or true or false, by default the link is echoed to the screen. False will 
+		 * @param   boolean $echo 1 or 0 or true or false, by default the link is echoed to the screen. False will 
 		 * return it for use as a string.
+		 * @return  string  HTML Anchor Link
 		 */
 		public static function build_html_link ( $link_type = 'active', $link_text = "View Full Website", $css_classes = array(), $echo = true ) {
-			global $dts;
-			$cookie_name = get_option( 'dts_cookie_name' ) ;
-			$html_output = $target_theme = "";
+
+			// Grab the single instance of our dts switcher for use below
+			$dts = DTS_Switcher::factory();
 			
+			// Grab the samed cookie name
+			$cookie_name = get_option( 'dts_cookie_name' ) ;
+
+			// Set some defaults
+			$html_output = $target_theme = "";
+
 			//The link_type will either be 'active' or 'device'
 			//'active' pertains to the link for devices to 'view the full website'\'active' theme
 			//'device' pertains to the link for devices which viewed the full website to go 'Back to the Mobile Theme'
 			switch ( $link_type ) : 
 				case 'active' : 
 					//add a css class to help identify the link type for developers to style the output how they please
-					array_unshift($css_classes, 'to-full-website');
+					array_unshift( $css_classes, 'to-full-website' );
 
 					//determine if the 'View Full Website' link should be displayed or not
 					if ( ( ( $dts->device != 'active' ) || ( $dts->device == 'active' && ! empty( $dts->theme_override ) ) ) ## don't show it if the user receives the active theme by default
@@ -387,6 +400,7 @@
 							$target_theme = "active"; ## display the link under all other conditions
 					}
 				break;
+
 				case 'device' : 
 					//add a css class to help identify the link type for developers to style the output how they please
 					array_unshift( $css_classes, 'back-to-mobile' );	
@@ -409,8 +423,10 @@
 								$target_theme = $dts->device;
 							}
 						} else {
-							if ( isset($_GET['theme'] ) ) {
-								if ( $_GET['theme'] != $dts->device ) $target_theme = $dts->device;
+							if ( isset( $_GET['theme'] ) ) {
+								if ( $_GET['theme'] != $dts->device ) {
+									$target_theme = $dts->device;
+								}
 							}
 						}
 					}
@@ -443,11 +459,16 @@
 			}
 
 			if ( $echo ) {
-				echo $html_output; ## Echo the HTML link
+				// Echo the HTML link
+				echo $html_output; 
 			} else {
-				return $html_output; ## Return the HTML link
+				// Return the HTML link
+				return $html_output; 
 			}
 
-		}//build_html_link
+		} // function build_html_link
 
-	} //END DTS_Switcher Class
+	} // Class DTS_Switcher
+	
+
+	// EOF
