@@ -1,4 +1,6 @@
 <?php
+    // Bail if this file is being accessed directly
+    defined( 'ABSPATH' ) OR exit;
 
     /**
      * Load the plugin admin features

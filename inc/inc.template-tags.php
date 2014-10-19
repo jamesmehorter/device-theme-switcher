@@ -1,4 +1,7 @@
 <?php
+    // Bail if this file is being accessed directly
+    defined( 'ABSPATH' ) OR exit;
+    
     /**
      * Tempalte Tag: Generate a link to the full website
      *

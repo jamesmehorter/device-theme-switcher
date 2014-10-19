@@ -1,5 +1,7 @@
 <?php
-
+    // Bail if this file is being accessed directly
+    defined( 'ABSPATH' ) OR exit;
+    
     /**
      * We renamed the primary class from Device_Theme_Switcher to DTS in version 1.9
      *

@@ -1,5 +1,7 @@
 <?php
-	
+	// Bail if this file is being accessed directly
+	defined( 'ABSPATH' ) OR exit;
+
 	/**
 	 * Device Theme Switcher - Load the plugin theme switching functionality
 	 *

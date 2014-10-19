@@ -1,4 +1,7 @@
-<?php    
+<?php  
+    // Bail if this file is being accessed directly
+    defined( 'ABSPATH' ) OR exit;
+
     /**
      * Backwards compatibility for Device Theme Switcher v1.x URL $_GET Variables
      * 

@@ -1,4 +1,7 @@
 <?php
+	// Bail if this file is being accessed directly
+	defined( 'ABSPATH' ) OR exit;
+	
 	/**
 	 * Widget - View Full Website Link
 	 *
