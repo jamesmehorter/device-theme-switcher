@@ -17,6 +17,7 @@
     if ( isset( $_GET['dts_device'] ) ) {
 
         switch ( $_GET['dts_device'] ) {
+            
             //'active' now represents the 'full website'
             //'active' theme as in the active theme set by the admin within wp-admin/themes.php
             case 'screen' : 
@@ -24,14 +25,8 @@
             break;
 
             case 'device' : 
-                //The user's device is stored in a session while they browse the 'active' theme
-                //Let's grab that and use it to modify the get var
-                //This is a feature in the new code we can benefit from to preserve this legacy link form
-                @session_start(); //Lets not toss a warning if the session was already started during this code execution
-                if ( isset( $_SESSION['device-theme-switcher']['device'] ) ) {
-                    $_GET['theme'] = $_SESSION['device-theme-switcher']['device'];
-                    unset( $_SESSION['dts_device'] );
-                }
+                // Set the get 'theme' variable to match what our newer code is expecting
+                $_GET['theme'] = DTS_Switcher::factory()->device;
             break;
         } // end switch
 
