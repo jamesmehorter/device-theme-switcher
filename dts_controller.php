@@ -36,7 +36,9 @@
      * DTS_VERSION constant for use anywhere in WordPress 
      */
     define( 'DTS_VERSION', '2.9.0' );
-
+    define( 'DTS_URL',     plugin_dir_url( __FILE__ ) );
+	define( 'DTS_PATH',    dirname( __FILE__ ) . '/' );
+	
     /**
      * Create one globally-accessible access point for the DTS_Switcher class
      *
