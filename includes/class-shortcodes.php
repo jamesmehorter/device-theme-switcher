@@ -11,7 +11,7 @@
     class DTS_Shortcode extends DTS_Singleton {
 
         /**
-         * [add_shortcodes description]
+         * Add Shortcodes to WordPress
          */
         public function add_shortcodes () {
             
