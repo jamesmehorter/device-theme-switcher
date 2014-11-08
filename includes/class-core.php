@@ -19,8 +19,10 @@
          * @internal  Called via plugins_loaded action
          */
         public function __construct () {
+
             // Are we in the admin?
             if ( is_admin() ) {
+
                 // Do we need to perform an update routine?
                 if ( $this->need_update() ) {
 
@@ -80,7 +82,7 @@
          */
         static function deactivate () {
             
-            //Do nothing on deactivation
+            // Do nothing on deactivation
             
         } // function deactivate
 
@@ -110,14 +112,22 @@
          * @return null
          */
         public function install () {
+            // Add the version to the database
+            add_option( 'dts_version', DTS_VERSION );
 
-            //Set an option to store the plugin cookie name
+            // Set an option to store the plugin cookie name
+            // A cookie is stored in your visitors browser when they've
+            //  access the website via a device and have since chosen to
             add_option( 'dts_cookie_name', $this->build_cookie_name() );
             
-            //add the version to the database
-            add_option( 'dts_version', DTS_VERSION );
-            
-            //Add new plugin options
+            // When storing the cookie we set a lifespan for it as well.
+            // Within the plugin settings admins can adjust this lifespan.
+            // By default, with a lifespan of 0, the cookie decays when the
+            //  browser window is closed. However, an admin may wish for the
+            //  visitors choice to remain longer? This 'feature' was retained
+            //  back from the days when we used sessions and admins could adjust
+            //  the session length. Though maybe this no longer makes sense and
+            //  could be deprecated????
             add_option( 'dts_cookie_lifespan', 0 );
 
         } // function install
