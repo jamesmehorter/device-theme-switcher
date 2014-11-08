@@ -109,21 +109,6 @@
                 }
             } // foreach ?>
 
-            <style type="text/css">
-                div.wrap.device-theme-switcher-settings table td {
-                    padding: 0 5px 0 5px ;
-                }
-                    div.wrap.device-theme-switcher-settings select {
-                    }
-                .optional-settings-toggle, .help-and-support-toggle {
-                    font-size: 0.9em ;
-                    outline: none ;
-                }
-                .optional-settings, .help-and-support {
-                    max-width: 850px ;
-                    display: none ; /* We'll enable this via JavaScript */
-                }
-            </style>            
             <div class="wrap device-theme-switcher-settings">
                 <div id="icon-themes" class="icon32"><br></div>
                 <h2>Device Themes<br /><br /></h2>
