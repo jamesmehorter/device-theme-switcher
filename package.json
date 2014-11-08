@@ -1,0 +1,22 @@
+{
+  "name": "device-theme-switcher",
+  "title": "Device Theme Switcher",
+  "description": "Set a separate theme for handheld and tablet devices under Appearance > Device Themes",
+  "version": "2.9.0",
+  "homepage": "https://github.com/jamesmehorter/device-theme-switcher",
+  "author": {
+    "name": "James Mehorter",
+    "email": "jamesmehorter@gmail.com",
+    "url": "http://www.jamesmehorter.com/"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.1.1",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-watch": "~0.2.0",
+    "grunt-contrib-compass": "~1.0.1",
+    "grunt-contrib-sass": "~0.8.1",
+    "load-grunt-tasks": "^0.4.0"
+  },
+  "keywords": []
+}
