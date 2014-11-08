@@ -24,7 +24,7 @@
             //Globals the $dts variable created on load
             //This variable is created in /dts-controller.php around line 70
             global $dts;
-            return esc_html( $dts->build_html_link('active', $link_text, array(), $echo = true ) );
+            return $dts->build_html_link('active', $link_text, array(), $echo = true );
 
         }// generate_link_to_full_website
         
@@ -39,7 +39,7 @@
             //Globals the $dts variable created on load
             //This variable is created in /dts-controller.php around line 70
             global $dts;
-            return esc_html( $dts->build_html_link( 'device', $link_text, array(), $echo = true ) );
+            return $dts->build_html_link( 'device', $link_text, array(), $echo = true );
 
         }// generate_link_back_to_mobile
 
