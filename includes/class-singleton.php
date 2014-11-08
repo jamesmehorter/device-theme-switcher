@@ -1,4 +1,6 @@
 <?php
+	// Bail if this file is being accessed directly
+	defined( 'ABSPATH' ) OR exit;
 
 	/**
 	 * Reusable Singleton Class
@@ -59,11 +61,11 @@
 			if ( ! isset( static::$_instance[ $class ] ) ) {
 				
 				// If not, instantiate a new instance
-				self::$_instance[$class] = new $class();
+				self::$_instance[ $class ] = new $class();
 			}
 
 			// Return the single instance of the class
-			return self::$_instance[$class];
+			return self::$_instance[ $class ];
 
 		} // function factory
 

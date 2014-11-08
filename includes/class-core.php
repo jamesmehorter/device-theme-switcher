@@ -7,7 +7,7 @@
      * Load the plugin core routines
      *
      * This is where Device Theme Switcher hooks into the WordPress
-     * activation, deactivation, unintiall, init, and plugin_action_links
+     * activation, deactivation, uninstall, init, and plugin_action_links
      */
     class DTS_Core extends DTS_Singleton {
 
@@ -16,8 +16,7 @@
          *
          * Load plugin includes and hook into WordPress
          *
-         * @access self::factory // plugins_loaded action
-         * @return null
+         * @internal  Called via plugins_loaded action
          */
         public function __construct () {
             // Are we in the admin?
@@ -44,9 +43,9 @@
          * This method is run statically in dts_controller.php 
          * on the register_activation_hook() function.
          *
-         * @see    class-core.php DTS_Core->build_cookie_name
-         * @uses   update_option(), get_option(), add_option()
-         * @return void
+         * @internal  Called via register_activation_hook
+         * @uses      update_option, get_option, add_option
+         * @return    void
          */
         static function activate () {
 
@@ -389,13 +388,13 @@
          * This method is run statically in dts_controller.php 
          * on the 'plugin_action_links' hook
          *
-         * @uses  admin_url()
-         * @param $links Contains an array of the current plugin links
-         * @param $file Contains a string of the main plugin path/filename.php
-         * @return $links After adding in our own
+         * @uses    admin_url
+         * @param   array $links   The current plugin links
+         * @param   string $file   The main plugin path/filename.php
+         * @return  array  $links  After adding in our own
          */    
         static function device_theme_switcher_settings_link( $links, $file ) {
-            if ( $file == 'device-theme-switcher/dts_controller.php' ) {
+            if ( 'device-theme-switcher/dts_controller.php' == $file ) {
 
                 // Insert a new 'Settings' link which points to the 
                 // Appearance > Device Themes page
@@ -420,7 +419,7 @@
          * the website and retain the full website theme. The following builds the name of the
          * cookie so that "My Magical Website" becomes 'my-magical-website-alternate-theme'
          *
-         * @uses   get_bloginfo()
+         * @uses   get_bloginfo
          * @param  null
          * @return string the name of the cookie being used
          */
