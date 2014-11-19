@@ -6,10 +6,28 @@
 	 * Reusable Singleton Class
 	 *
 	 * This class is meant to be extended
+	 * 
 	 * Example: 
+	 * ```
+	 * <?php
 	 *
+	 * /**
+	 * 	* My Class..
+	 * *\/
 	 * class DTS_MyClass extends DTS_Singleton {
+	 * 		public function foo () {
+	 * 			echo 'foo';
+	 * 		}
 	 * }
+	 *
+	 * // Fetch the instance of our class
+	 * $dts_myclass_instance = DTS::MyClass->factory();
+	 *
+	 * // outputs 'foo'
+	 * $dts_myclass_instance->foo();
+	 * 
+	 * ?>
+	 * ```
 	 */
 	abstract class DTS_Singleton {
 
