@@ -156,114 +156,6 @@
 
 
         /**
-         * Do we need to run an update
-         *
-         * @param  null
-         * @return bool  truthy do we need to update?
-         */
-        public function need_update () {
-
-            // get_current_version returns an string version when a version has been set
-            $current_version = $this->get_current_version();
-
-            // Is a version installed?
-            if ( false === $current_version ) {
-                // No version has been installed
-                // Careful! This could mean one of two scenarios:
-                // Scenario 1) This is a fresh install with no version yet
-                // Scenario 2) This is an a pre version 2.0.0 install and an update to 2.0.0 is needed
-                // 
-                // Determine if this is a pre 2.0.0 install
-                // In the first iterations of this plugin, 
-                // before 2.0.0 we used an option titled 'dts_device'
-                // We can check for it's presence..
-                if ( false === get_option( 'dts_device' ) ) {
-                    // No, this is not a pre 2.0.0 install, 
-                    // That means this is a clean fresh install, no update needed
-                    return false ;
-                } else {
-                    // The pre 2.0.0 option exists, we do need to update
-                    return true ;
-                }
-            } else {
-                // Is the installed version less than the current version?
-                if ( version_compare( $current_version, DTS_VERSION, '<' ) ) {
-                    // Installed version is less than the current version
-                    // Yes, an update is needed
-                    return true ;
-                } else {
-                    // Installed and current version match
-                    // No update required
-                    return false ;
-                }
-            }
-        } // function need update
-
-
-        /**
-         * Update the plugin
-         *
-         * This routine checks if the current plugin version (stored in a WordPress option)
-         * is equal to the hardcoded plugin version in dts_controller.php. If the plugin and DB
-         * versions do not match, run version updates per current version.
-         *
-         * @uses  update_option
-         */
-        public function update () {
-            // Fetch the current plugin version
-            $current_version = $this->get_current_version();
-
-            // If no version has been set already that means we're 
-            // updating from the version 1.x series when we did not 
-            // store the plugin version in the database
-            if ( false === $current_version ) {
-                $current_version = '1.0';
-            }
-
-            // Array of versions and update routines
-            $plugin_versions = array(
-                '1.0'   => '',
-                '2.0'   => 'dts-2.0.php', // Update to version 2.0.0
-                '2.1'   => '',
-                '2.2'   => '',
-                '2.3'   => '',
-                '2.4'   => '',
-                '2.5'   => '',
-                '2.6'   => 'dts-2.6.php', // Update to version 2.6.0
-                '2.7'   => '',
-                '2.8'   => '',
-                '2.9.0' => '',
-            );
-
-            // Loop through the available updates
-            // This looping logic will perform any missed updates since the last update was run
-            foreach ( $plugin_versions as $version => $version_update_routine_filename ) {
-                
-                // Check if the current version is less than the available version
-                if ( version_compare( $current_version, $version, '<' ) ) {
-
-                    // Is there an update routine for this version?
-                    if ( ! empty( $version_update_routine_filename ) ) {
-
-                        // Yes, this update has a routine we need to run
-                        // we need only include the update routine 
-                        // The update file will run automatically
-                        include_once( DTS_PATH . 'updates/' . $version_update_routine_filename );  
-                    }
-                    
-                    // Update the current version to reflect the update
-                    $current_version = $version;
-                }
-
-            } // foreach
-
-            // Update the DB version to reflect the newly installed version of the plugin
-            update_option( 'dts_version', $current_version );
-
-        } // function update
-
-
-        /**
          * Load all the files the plugin will need 
          *
          * @see    self::__construct
@@ -513,6 +405,114 @@
             }
 
         } // function get_current_version
+
+
+        /**
+         * Do we need to run an update
+         *
+         * @param  null
+         * @return bool  truthy do we need to update?
+         */
+        public function need_update () {
+
+            // get_current_version returns an string version when a version has been set
+            $current_version = $this->get_current_version();
+
+            // Is a version installed?
+            if ( false === $current_version ) {
+                // No version has been installed
+                // Careful! This could mean one of two scenarios:
+                // Scenario 1) This is a fresh install with no version yet
+                // Scenario 2) This is an a pre version 2.0.0 install and an update to 2.0.0 is needed
+                // 
+                // Determine if this is a pre 2.0.0 install
+                // In the first iterations of this plugin, 
+                // before 2.0.0 we used an option titled 'dts_device'
+                // We can check for it's presence..
+                if ( false === get_option( 'dts_device' ) ) {
+                    // No, this is not a pre 2.0.0 install, 
+                    // That means this is a clean fresh install, no update needed
+                    return false ;
+                } else {
+                    // The pre 2.0.0 option exists, we do need to update
+                    return true ;
+                }
+            } else {
+                // Is the installed version less than the current version?
+                if ( version_compare( $current_version, DTS_VERSION, '<' ) ) {
+                    // Installed version is less than the current version
+                    // Yes, an update is needed
+                    return true ;
+                } else {
+                    // Installed and current version match
+                    // No update required
+                    return false ;
+                }
+            }
+        } // function need update
+
+
+        /**
+         * Update the plugin
+         *
+         * This routine checks if the current plugin version (stored in a WordPress option)
+         * is equal to the hardcoded plugin version in dts_controller.php. If the plugin and DB
+         * versions do not match, run version updates per current version.
+         *
+         * @uses  update_option
+         */
+        public function update () {
+            // Fetch the current plugin version
+            $current_version = $this->get_current_version();
+
+            // If no version has been set already that means we're 
+            // updating from the version 1.x series when we did not 
+            // store the plugin version in the database
+            if ( false === $current_version ) {
+                $current_version = '1.0';
+            }
+
+            // Array of versions and update routines
+            $plugin_versions = array(
+                '1.0'   => '',
+                '2.0'   => 'dts-2.0.php', // Update to version 2.0.0
+                '2.1'   => '',
+                '2.2'   => '',
+                '2.3'   => '',
+                '2.4'   => '',
+                '2.5'   => '',
+                '2.6'   => 'dts-2.6.php', // Update to version 2.6.0
+                '2.7'   => '',
+                '2.8'   => '',
+                '2.9.0' => '',
+            );
+
+            // Loop through the available updates
+            // This looping logic will perform any missed updates since the last update was run
+            foreach ( $plugin_versions as $version => $version_update_routine_filename ) {
+                
+                // Check if the current version is less than the available version
+                if ( version_compare( $current_version, $version, '<' ) ) {
+
+                    // Is there an update routine for this version?
+                    if ( ! empty( $version_update_routine_filename ) ) {
+
+                        // Yes, this update has a routine we need to run
+                        // we need only include the update routine 
+                        // The update file will run automatically
+                        include_once( DTS_PATH . 'updates/' . $version_update_routine_filename );  
+                    }
+                    
+                    // Update the current version to reflect the update
+                    $current_version = $version;
+                }
+
+            } // foreach
+
+            // Update the DB version to reflect the newly installed version of the plugin
+            update_option( 'dts_version', $current_version );
+
+        } // function update
 
     } // Class DTS_Core
 
