@@ -6,11 +6,14 @@
      * UPDATE VERSION to 2.6
      *
      * In 2.6 we changed the previous usage of PHP $_SESSION's to browser cookies
-     * As such, on update, lets rename the previous dts_session_lifetime option (which also stored seconds)
+     * for the use of recalling which theme ('View Full Website') the user has chosen
+     * 
+     * On update, lets rename the previous dts_session_lifetime option (which also stored seconds)
      * to a new name which better represents the new convension; dts_cookie_lifespan
      */
     
     // Set an option to store the plugin cookie name
+    // We'll reference this throughout the cookie setting/managing/removal process
     update_option( 'dts_cookie_name', DTS_Core::build_cookie_name() );
 
     // Add the new option using the new name and existing dts_session_lifetime value
