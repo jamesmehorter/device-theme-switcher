@@ -346,7 +346,10 @@
 
                 // Display a 'Settings' link with the plugin in the plugins list
                 add_filter( 'plugin_action_links', array( $this, 'device_theme_switcher_settings_link' ), 10, 2 );
-         
+                
+                // Add admin scripts and styles used to display the admin settings view
+                add_action( 'admin_init', array( $this, 'admin_enqueue_scripts' ) );
+
             } else { // is_admin()
 
                 // Grab the single instance of the switcher class
@@ -369,6 +372,36 @@
             DTS_Shortcode::factory()->add_shortcodes();
 
         } // function hook_into_wordpress
+
+
+        /**
+         * Enqueue admin scripts
+         *
+         * @uses    wp_enquque_scipt
+         * @param   null
+         * @return  null
+         */
+        function admin_enqueue_scripts () {
+
+            // Enqueue our JavaScript
+            wp_enqueue_script( 
+                'device-theme-switcher-admin-scripts', // handle
+                DTS_URL . 'assets/js/device-theme-switcher-admin-scripts.min.js', // srouce
+                array( 'jquery' ), // dependencies
+                DTS_VERSION, // version
+                true // in footer
+            );
+
+            // Enqueue our Stylesheet
+            wp_enqueue_style( 
+                'device-theme-switcher-admin-styles', //handle
+                DTS_URL . 'assets/css/device-theme-switcher-admin-styles.css', // source
+                array(), // dependencies
+                DTS_VERSION, //version
+                'all' // media 
+            );
+
+        } // function admin_enqueue_scripts
 
 
         /**

@@ -35,7 +35,7 @@ module.exports = function(grunt) {
 		uglify: {
 			all: {
 				files: {
-					'assets/js/device-theme-switcher.min.js': ['assets/js/source/device-theme-switcher.js']
+					'assets/js/device-theme-switcher-admin-scripts.min.js': ['assets/js/source/device-theme-switcher-admin-scripts.js']
 				},
 				options: {
 					banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
