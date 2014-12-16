@@ -35,7 +35,7 @@
          */
         static function link_to_full_website_shortcode ( $atts, $content, $name ) {
             extract( shortcode_atts( array(
-                 'link_text' => __( "View Full Website" ),
+                 'link_text' => __( 'View Full Website', 'device-theme-switcher' ),
                  'css_classes' => array()
             ), $atts ) );
             
@@ -62,7 +62,7 @@
          */
         static function link_back_to_device_shortcode ( $atts, $content, $name ) {
             extract( shortcode_atts( array(
-                 'link_text' => __( "Return to Mobile Website" ),
+                 'link_text' => __( 'Return to Mobile Website', 'device-theme-switcher' ),
                  'css_classes' => array()
             ), $atts ) );
             

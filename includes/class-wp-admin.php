@@ -22,12 +22,12 @@
             
             // Create the admin menu page
             add_submenu_page(
-                'themes.php',  
-                __( 'Device Theme Switcher' ), 
-                __( 'Device Themes' ), 
-                'manage_options', 
-                'device-themes', 
-                array( $this, 'generate_admin_settings_page' ) 
+                'themes.php',
+                __( 'Device Theme Switcher', 'device-theme-switcher' ),
+                __( 'Device Themes', 'device-theme-switcher' ),
+                'manage_options',
+                'device-themes',
+                array( $this, 'generate_admin_settings_page' )
             );
 
         } // function admin_menu
@@ -116,7 +116,7 @@
                     <table>
                         <tr>
                             <th scope="row" align="right" width="150px">
-                                <label for="dts_handheld_theme"><?php echo esc_html_e( 'Handheld Theme' ); ?></label>
+                                <label for="dts_handheld_theme"><?php echo esc_html_e( 'Handheld Theme', 'device-theme-switcher' ); ?></label>
                             </th><td>
                                 <select name="dts_theme[dts_handheld_theme]"><?php 
 
@@ -125,36 +125,36 @@
                                         <option 
                                             value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php 
                                             selected( $theme['name'], $dts['themes']['handheld']['name'] ); ?>>
-                                                <?php echo esc_html( $theme['name'] ); ?> &nbsp;
-                                        </option><?php 
+                                                <?php echo esc_html( $theme['name'], 'device-theme-switcher' ); ?> &nbsp;
+                                        </option><?php
 
                                     } // foreach ?>
 
                                 </select>
                             </td>
-                            <td><span class="description"><?php esc_html_e( 'Handheld devices like Apple iPhone, Android, BlackBerry, and more.' ); ?></span></td>                 
+                            <td><span class="description"><?php esc_html_e( 'Handheld devices like Apple iPhone, Android, BlackBerry, and more.', 'device-theme-switcher' ); ?></span></td>
                         </tr><tr>
                             <th scope="row" align="right">
-                                <label for="dts_tablet_theme"><?php esc_html_e( 'Tablet Theme' ); ?></label>
+                                <label for="dts_tablet_theme"><?php esc_html_e( 'Tablet Theme', 'device-theme-switcher' ); ?></label>
                             </th><td>
-                                <select name="dts_theme[dts_tablet_theme]"><?php 
+                                <select name="dts_theme[dts_tablet_theme]"><?php
 
                                     foreach ( $available_themes as $theme ) { ?>
 
-                                        <option 
-                                            value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php 
-                                            selected( $theme['name'], $dts['themes']['tablet']['name'] ); ?>><?php 
-                                                echo esc_html_e( $theme['name'] ); ?> &nbsp; 
-                                        </option><?php 
+                                        <option
+                                            value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
+                                            selected( $theme['name'], $dts['themes']['tablet']['name'] ); ?>><?php
+                                                echo esc_html_e( $theme['name'], 'device-theme-switcher' ); ?> &nbsp;
+                                        </option><?php
 
                                     } // foreach ?>
 
                                 </select>
                             </td>
-                            <td><span class="description"><?php esc_html_e( 'Tablet devices like Apple iPad, Galaxy Tab, Kindle Fire, and more.' ); ?></span></td>
+                            <td><span class="description"><?php esc_html_e( 'Tablet devices like Apple iPad, Galaxy Tab, Kindle Fire, and more.', 'device-theme-switcher' ); ?></span></td>
                         </tr><tr>
                             <th scope="row" align="right">
-                                <a href="#" class="optional-settings-toggle"><?php esc_html_e( 'Show Optional Settings' ); ?></a> 
+                                <a href="#" class="optional-settings-toggle"><?php esc_html_e( 'Show Optional Settings', 'device-theme-switcher' ); ?></a>
                             </th><td colspan="2"></td>
                         </tr>
                     </table>
@@ -162,55 +162,55 @@
                         <table>
                             <tr>
                                 <th scope="row" align="right" width="150px">
-                                    <label for="dts_low_support_theme"><?php esc_html_e( 'Low-Support Theme' ); ?> </label>
+                                    <label for="dts_low_support_theme"><?php esc_html_e( 'Low-Support Theme', 'device-theme-switcher' ); ?> </label>
                                 </th><td>
                                     <select name="dts_theme[dts_low_support_theme]">
-                                        <option><?php echo esc_html_e( 'Use Handheld Setting' ); ?></option><?php 
+                                        <option><?php echo esc_html_e( 'Use Handheld Setting', 'device-theme-switcher' ); ?></option><?php
 
                                         foreach ( $available_themes as $theme ) { ?>
-        
-                                            <option 
-                                                value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php 
-                                                selected( $theme['name'], $dts['themes']['low_support']['name'] ); ?>><?php 
-                                                    echo esc_html_e( $theme['name'] ); ?> &nbsp; 
-                                            </option><?php 
+
+                                            <option
+                                                value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
+                                                selected( $theme['name'], $dts['themes']['low_support']['name'] ); ?>><?php
+                                                    echo esc_html_e( $theme['name'], 'device-theme-switcher' ); ?> &nbsp;
+                                            </option><?php
 
                                         } // foreach ?>
 
                                     </select>
                                 </td><td>
-                                    <span class="description"><?php esc_html_e( 'Devices which lack complete CSS & JavaScipt Support.' ); ?></span>
+                                    <span class="description"><?php esc_html_e( 'Devices which lack complete CSS & JavaScipt Support.', 'device-theme-switcher' ); ?></span>
                                 </td>
                             </tr><tr>
                                 <th scope="row" align="right" valign="top">
-                                    <label for="dts_cookie_lifespan"><?php esc_html_e( 'Cookie Lifespan' ); ?></label>
-                                </th><td valign="top"><?php 
+                                    <label for="dts_cookie_lifespan"><?php esc_html_e( 'Cookie Lifespan', 'device-theme-switcher' ); ?></label>
+                                </th><td valign="top"><?php
 
                                     // Build a list of default cookie lifespans
-                                    $dts_cookie_lifespans = array(                                        
-                                        array( 'value' => 0,    'text' => esc_html( 'When the browser is closed (Default)' ) ),
-                                        array( 'value' => 900,  'text' => esc_html( '15 Minutes' ) ),
-                                        array( 'value' => 1800, 'text' => esc_html( '30 Minutes' ) ),
-                                        array( 'value' => 2700, 'text' => esc_html( '45 Minutes' ) ),
-                                        array( 'value' => 3600, 'text' => esc_html( '60 Minutes' ) ),
-                                        array( 'value' => 4500, 'text' => esc_html( '75 Minutes' ) ),
-                                        array( 'value' => 5400, 'text' => esc_html( '90 Minutes' ) ),
+                                    $dts_cookie_lifespans = array(
+                                        array( 'value' => 0,    'text' => esc_html_e( 'When the browser is closed (Default)', 'device-theme-switcher' ) ),
+                                        array( 'value' => 900,  'text' => esc_html_e( '15 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 1800, 'text' => esc_html_e( '30 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 2700, 'text' => esc_html_e( '45 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 3600, 'text' => esc_html_e( '60 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 4500, 'text' => esc_html_e( '75 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 5400, 'text' => esc_html_e( '90 Minutes', 'device-theme-switcher' ) ),
                                     ); ?>
 
                                     <select name="dts_cookie_lifespan"><?php     
                                         foreach ( $dts_cookie_lifespans as $cookie_lifespan ) { ?>
-                                        
-                                        <option 
-                                            value="<?php echo esc_attr( $cookie_lifespan['value'] ); ?>" <?php 
-                                            selected( $dts['cookie_lifespan'], $cookie_lifespan['value'] ); ?>><?php 
-                                                esc_html_e( $cookie_lifespan['text'] ); ?>
-                                        </option><?php 
+
+                                        <option
+                                            value="<?php echo esc_attr( $cookie_lifespan['value'] ); ?>" <?php
+                                            selected( $dts['cookie_lifespan'], $cookie_lifespan['value'] ); ?>><?php
+                                                esc_html_e( $cookie_lifespan['text'], 'device-theme-switcher' ); ?>
+                                        </option><?php
 
                                         } // foreach ?>
                                     </select>
                                 </td><td>
-                                        <span class="description"><?php 
-                                        esc_html_e( 'Length of time until a user is redirected back to their initial device theme after they\'ve requested the \'Desktop\' Version.' ); ?></span>
+                                        <span class="description"><?php
+                                        esc_html_e( 'Length of time until a user is redirected back to their initial device theme after they\'ve requested the \'Desktop\' Version.', 'device-theme-switcher' ); ?></span>
                                         <br />
                                     </span>
                                 </td>                 
@@ -221,7 +221,7 @@
                         <tr>
                             <th scope="row" align="right" width="150px">
                                 <input type="hidden" name="dts_settings_update" value="true" />
-                                <input type="submit" value="<?php esc_html_e( 'Save Settings' ); ?>" class="button button-primary" /> 
+                                <input type="submit" value="<?php esc_html_e( 'Save Settings', 'device-theme-switcher' ); ?>" class="button button-primary" />
                             </th></td colspan="2"></td>
                         </tr>
                     </table>
@@ -230,7 +230,7 @@
                 <table>
                     <tr>
                         <th scope="row" align="right" width="150px">
-                            <a href="#" class="help-and-support-toggle"><?php esc_html_e( 'Help & Support' ); ?></a> 
+                            <a href="#" class="help-and-support-toggle"><?php esc_html_e( 'Help & Support', 'device-theme-switcher' ); ?></a>
                         </th><td colspan="2"></td>
                     </tr>
                 </table>
@@ -238,26 +238,26 @@
                     <table>
                         <tr>
                             <th scope="row" align="right" width="150px">
-                                <?php esc_html_e( 'Helpful Links' ); ?>
+                                <?php esc_html_e( 'Helpful Links', 'device-theme-switcher' ); ?>
                             </th><td align="left">
-                                <a 
-                                    href="http://wordpress.org/support/plugin/device-theme-switcher" 
-                                    title="Device Theme Switcher Support Forum" 
-                                    target="_blank"><?php 
-                                        esc_html_e( 'Support Forum' ); ?>
-                                </a> | 
-                                <a 
-                                    href="http://wordpress.org/plugins/device-theme-switcher/faq/" 
-                                    title="Device Theme Switcher FAQ" 
-                                    target="_blank"><?php 
-                                        esc_html_e( 'FAQ' ); ?>
+                                <a
+                                    href="http://wordpress.org/support/plugin/device-theme-switcher"
+                                    title="Device Theme Switcher Support Forum"
+                                    target="_blank"><?php
+                                        esc_html_e( 'Support Forum', 'device-theme-switcher' ); ?>
+                                </a> |
+                                <a
+                                    href="http://wordpress.org/plugins/device-theme-switcher/faq/"
+                                    title="Device Theme Switcher FAQ"
+                                    target="_blank"><?php
+                                        esc_html_e( 'FAQ', 'device-theme-switcher' ); ?>
                                 </a>
                             </td>
                         </tr><tr>
                             <th scope="row" align="right" width="150px" valign="top">
-                                <?php esc_html_e( 'Shortcodes' ); ?> 
+                                <?php esc_html_e( 'Shortcodes', 'device-theme-switcher' ); ?>
                             </th><td align="left">
-                                <span class="description"><?php esc_html_e( 'Display a link to \'View Full Website\'' ); ?></span>
+                                <span class="description"><?php esc_html_e( 'Display a link to \'View Full Website\'', 'device-theme-switcher' ); ?></span>
 
                                 <br />
                                 
@@ -275,58 +275,58 @@
                             </td>
                         </tr><tr>
                             <th scope="row" align="right" valign="top">
-                                <?php esc_html_e( 'Template Tags' ); ?> 
+                                <?php esc_html_e( 'Template Tags', 'device-theme-switcher' ); ?>
                             </th><td align="left" >
-                                <span class="description"><?php esc_html_e( 'Display a link to \'View Full Website\'') ?></span>
-                                
-                                <br /><?php 
-                                
+                                <span class="description"><?php esc_html_e( 'Display a link to \'View Full Website\'', 'device-theme-switcher' ) ?></span>
+
+                                <br /><?php
+
                                 // Output the example php output for the link_to_full_website() function
                                 echo htmlentities( '<?php' ); ?> link_to_full_website($link_text = "View Full Website", $css_classes = array("blue-text", "alignleft"), $echo = true); <?php echo htmlentities( '?>' ); ?>
-                                
-                                <br /><br />
-                                
-                                <span class="description"><?php esc_html_e( 'Display a link to \'Return to Mobile Website\'' ); ?></span>
 
-                                <br /><?php 
+                                <br /><br />
+
+                                <span class="description"><?php esc_html_e( 'Display a link to \'Return to Mobile Website\'', 'device-theme-switcher' ); ?></span>
+
+                                <br /><?php
 
                                 // Output the example php output for the link_back_to_device() function
                                 echo htmlentities( '<?php' ); ?> link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array("red-text", "alignright"), $echo = true); <?php echo htmlentities( '?>' ); ?>
-                                
+
                                 <br /><br />
                             </td>
                         </tr><tr>
-                            <th scope="row" align="right" valign="top"><?php 
-                                esc_html_e( 'URL Paramaters' ); ?>
+                            <th scope="row" align="right" valign="top"><?php
+                                esc_html_e( 'URL Paramaters', 'device-theme-switcher' ); ?>
 
                             </th><td align="left">
-                                <span class="description"><?php esc_html_e( "Helpful for developers to view a specific device theme") ?></span>
+                                <span class="description"><?php esc_html_e( 'Helpful for developers to view a specific device theme', 'device-theme-switcher' ) ?></span>
                                 <br />
-                                <a 
-                                    href="<?php echo esc_attr( get_bloginfo('url') . '/?theme=handheld' ); ?>" 
-                                    title="<?php echo esc_attr_e( 'View Handheld Theme' ); ?>" 
-                                    target="_blank"><?php 
+                                <a
+                                    href="<?php echo esc_attr( get_bloginfo('url') . '/?theme=handheld' ); ?>"
+                                    title="<?php echo esc_attr_e( 'View Handheld Theme', 'device-theme-switcher' ); ?>"
+                                    target="_blank"><?php
                                         echo esc_attr( get_bloginfo( 'url' ) . '/?theme=handheld' ); ?></a>
 
                                 <br />
-                                <a 
+                                <a
                                     href="<?php echo esc_attr( get_bloginfo( 'url' ) . '/?theme=tablet' ); ?>"
-                                    title="<?php echo esc_attr_e( 'View Tablet Theme' ); ?>" 
-                                    target="_blank"><?php 
+                                    title="<?php echo esc_attr_e( 'View Tablet Theme', 'device-theme-switcher' ); ?>"
+                                    target="_blank"><?php
                                         echo esc_html( get_bloginfo( 'url' ) . '/?theme=tablet' ); ?>
                                 </a>
                                 <br />
-                                <a 
-                                    href="<?php echo esc_attr( get_bloginfo( 'url' ) . '/?theme=low_support' ); ?>" 
-                                    title="<?php echo esc_attr_e( 'View Low-Support Theme' ); ?>" 
-                                    target="_blank"><?php 
+                                <a
+                                    href="<?php echo esc_attr( get_bloginfo( 'url' ) . '/?theme=low_support' ); ?>"
+                                    title="<?php echo esc_attr_e( 'View Low-Support Theme', 'device-theme-switcher' ); ?>"
+                                    target="_blank"><?php
                                         echo esc_html( get_bloginfo( 'url' ) . '/?theme=low_support' ); ?>
                                 </a>
                                 <br />
-                                <a 
+                                <a
                                     href="<?php echo esc_attr( get_bloginfo( 'url' ) . '/?theme=active' ); ?>"
-                                    title="<?php echo esc_attr_e( 'View Active Theme' ); ?>" 
-                                    target="_blank"><?php 
+                                    title="<?php echo esc_attr_e( 'View Active Theme', 'device-theme-switcher' ); ?>"
+                                    target="_blank"><?php
                                         echo esc_html( get_bloginfo('url') . '/?theme=active' ); ?>
                                 </a>
                             </td>
@@ -386,7 +386,7 @@
         public function admin_save_settings_notice(){
             // Print a message to the admin window letting the user know thier settings have been saved
             // The CSS used to style this message is located in dts_admin_output.php ?>
-            <div class="dts updated"><p><?php echo esc_html_e( 'Settings saved.' ); ?></p></div><?php
+            <div class="dts updated"><p><?php echo esc_html_e( 'Settings saved.', 'device-theme-switcher' ); ?></p></div><?php
 
         } // admin_save_settings_notice
     } // Class DTS_Admin

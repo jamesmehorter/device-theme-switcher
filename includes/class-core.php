@@ -336,7 +336,7 @@
                 $links['settings'] = sprintf(
                     '<a href="%s" class="edit"> %s </a>',
                     admin_url( 'themes.php?page=device-themes' ),
-                    __( 'Settings', 'device_theme_switcher' )
+                    __( 'Settings', 'device-theme-switcher' )
                 );
 
             } // end if

@@ -84,19 +84,19 @@
 
 			//set a default
 			if ( $link_text == "" ) {
-				$link_text = __("View Full Website");
+				$link_text = __( 'View Full Website', 'device-theme-switcher' );
 			}
 			
 			//Output our widget contents ?>	
 			<p>
 				<label for="<?php echo esc_attr( $this->get_field_id('link_text') ); ?>">
-					<?php echo esc_html_e( 'Link Text:' ); ?>
-					<small><em><?php echo esc_html_e( 'Ex: View Full Website' ); ?></em></small>
-					<input 
-						class="widefat" 
-						id="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>" 
-						name="<?php echo esc_attr( $this->get_field_name( 'link_text' ) ); ?>" 
-						type="text" 
+					<?php echo esc_html_e( 'Link Text:', 'device-theme-switcher' ); ?>
+					<small><em><?php echo esc_html_e( 'Ex: View Full Website', 'device-theme-switcher' ); ?></em></small>
+					<input
+						class="widefat"
+						id="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>"
+						name="<?php echo esc_attr( $this->get_field_name( 'link_text' ) ); ?>"
+						type="text"
 						value="<?php echo esc_attr( esc_attr( $link_text ) ); ?>" />
 
 				</label>
@@ -185,19 +185,19 @@
 
 			//set a default
 			if ( $link_text == "" ) {
-				$link_text = __("Return to Mobile Website");
+				$link_text = __( 'Return to Mobile Website', 'device-theme-switcher' );
 			}
 			
 			//Output our widget contents ?>	
 			<p>
 				<label for="<?php echo esc_attr( $this->get_field_id('link_text') ); ?>">
-					<?php echo esc_html_e( 'Link Text:' ); ?>
-					<small><em><?php echo esc_html_e( 'Ex: Return to Mobile Website' ); ?></em></small>
-					<input 
-						class="widefat" 
-						id="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>" 
-						name="<?php echo esc_attr( $this->get_field_name( 'link_text' ) ); ?>" 
-						type="text" 
+					<?php echo esc_html_e( 'Link Text:', 'device-theme-switcher' ); ?>
+					<small><em><?php echo esc_html_e( 'Ex: Return to Mobile Website', 'device-theme-switcher' ); ?></em></small>
+					<input
+						class="widefat"
+						id="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>"
+						name="<?php echo esc_attr( $this->get_field_name( 'link_text' ) ); ?>"
+						type="text"
 						value="<?php echo esc_attr( esc_attr( $link_text ) ); ?>" />
 
 				</label>
