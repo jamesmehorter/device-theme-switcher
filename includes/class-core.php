@@ -94,9 +94,9 @@
          */
         public function need_install () {
 
-            // get_current_version returns false when no version is set
+            // get_installed_version returns false when no version is set
             // this is our indicator that we need to run the fresh install routine
-            if ( false === $this->get_current_version() ) {
+            if ( false === $this->get_installed_version() ) {
                 return true ;
             } else {
                 return false ;
@@ -381,30 +381,27 @@
 
 
         /**
-         * Determine the current plugin version
+         * Determine the installed plugin version
          *
-         * This function grabs the version stored in a WordPress option, however,
-         * pre version 2.0 we never stored the plugin version in an option, so if
-         * there is no stored version we specify it below as '1'
+         * This function grabs the version stored in a WordPress option
          *
          * @uses   get_option
          * @return string plugin version ex. '2.4.0'
          */
-        public function get_current_version () {
+        public function get_installed_version () {
 
             // check for the dts_version option (New in Version 2.0)
-            $current_version = get_option('dts_version');
+            $installed_version = get_option('dts_version');
 
-            // If there is no current version we'll just reference
-            // this as version 0.0.0 for the installation process which will
-            if ( empty( $current_version ) ) {
+            // If there is no current version we'll just return false
+            if ( empty( $installed_version ) ) {
                 return false ;
             } else {
                 // return the currently installed plugin version
-                return $current_version ;
+                return $installed_version ;
             }
 
-        } // function get_current_version
+        } // function get_installed_version
 
 
         /**
@@ -415,11 +412,11 @@
          */
         public function need_update () {
 
-            // get_current_version returns an string version when a version has been set
-            $current_version = $this->get_current_version();
+            // get_installed_version returns an string version when a version has been set
+            $installed_version = $this->get_installed_version();
 
             // Is a version installed?
-            if ( false === $current_version ) {
+            if ( false === $installed_version ) {
                 // No version has been installed
                 // Careful! This could mean one of two scenarios:
                 // Scenario 1) This is a fresh install with no version yet
@@ -439,7 +436,7 @@
                 }
             } else {
                 // Is the installed version less than the current version?
-                if ( version_compare( $current_version, DTS_VERSION, '<' ) ) {
+                if ( version_compare( $installed_version, DTS_VERSION, '<' ) ) {
                     // Installed version is less than the current version
                     // Yes, an update is needed
                     return true ;
@@ -463,13 +460,13 @@
          */
         public function update () {
             // Fetch the current plugin version
-            $current_version = $this->get_current_version();
+            $installed_version = $this->get_installed_version();
 
             // If no version has been set already that means we're
             // updating from the version 1.x series when we did not
             // store the plugin version in the database
-            if ( false === $current_version ) {
-                $current_version = '1.0';
+            if ( false === $installed_version ) {
+                $installed_version = '1.0';
             }
 
             // Array of versions and update routines
@@ -496,9 +493,11 @@
             // This looping logic will perform any missed updates since the last update was run
             foreach ( $plugin_versions as $version => $version_update_routine_filename ) {
 
-                // Check if the current version is less than the available version
-                if ( version_compare( $current_version, $version, '<' ) ) {
+                // Is the current version lower than the
+                if ( version_compare( $installed_version, $version, '<' ) ) {
 
+                    // Yes, an update is required
+                    //
                     // Is there an update routine for this version?
                     if ( ! empty( $version_update_routine_filename ) ) {
 
@@ -509,13 +508,13 @@
                     }
 
                     // Update the current version to reflect the update
-                    $current_version = $version;
+                    $installed_version = $version;
                 }
 
             } // foreach
 
             // Update the DB version to reflect the newly installed version of the plugin
-            update_option( 'dts_version', $current_version );
+            update_option( 'dts_version', $installed_version );
 
         } // function update
 
