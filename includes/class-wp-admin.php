@@ -5,21 +5,21 @@
     /**
      * Load the plugin admin features
      *
-     * The admin features include the display of the status output in the Dashboard 
+     * The admin features include the display of the status output in the Dashboard
      * 'Right Now' widget. They also create an admin page at Appearance > Device Themes
-     * for the website admin to save the plugin settings 
+     * for the website admin to save the plugin settings
      *
      * @todo Build and check nonce for admin form, sanitize user input
      */
     class DTS_Admin extends DTS_Singleton {
-        
+
         /**
          * Create the Appearance > Device Themes page
          *
          * Called via admin_menu in dts_controller.php
          */
         public function admin_menu () {
-            
+
             // Create the admin menu page
             add_submenu_page(
                 'themes.php',
@@ -31,11 +31,11 @@
             );
 
         } // function admin_menu
-        
+
         /**
          * Generate the admin settings page
          *
-         * This function is triggered as a callback via add_submenu_page() 
+         * This function is triggered as a callback via add_submenu_page()
          * run on the admin_menu hook
          *
          * @uses   wp_get_themes(), get_themes(), get_option()
@@ -46,7 +46,7 @@
             global $dts;
 
             // Gather all of the currently installed theme names so they can be displayed in the <select> boxes below
-            if ( function_exists( 'wp_get_themes' ) ) { 
+            if ( function_exists( 'wp_get_themes' ) ) {
                 $installed_themes = wp_get_themes();
             } else {
                 $installed_themes = get_themes();
@@ -54,42 +54,42 @@
 
             // Loop through each of the installed themes and build a cache array of themes the user can choose from below
             foreach ( $installed_themes as $theme ) {
-                
+
                 // Pre WordPress 3.4 $theme was an array with upper case keys
-                if ( is_array( $theme ) ) { 
+                if ( is_array( $theme ) ) {
                     $name       = $theme['Name'];
                     $template   = $theme['Template'];
                     $stylesheet = $theme['Stylesheet'];
                 }
 
                 // Post WordPress 3.4 $theme is an instance of the WP_Theme object with lowercase variables
-                if ( is_object( $theme ) ) { 
+                if ( is_object( $theme ) ) {
                     $name       = $theme->name;
                     $template   = $theme->template;
                     $stylesheet = $theme->stylesheet;
                 }
-                
+
                 // Aslo add each theme to the list of available themes
                 $available_themes[] = array(
                     'name'       => $name,
                     'template'   => $template,
                     'stylesheet' => $stylesheet
                 );
-                
+
                 // Store the theme names so we can use array_multisort on $available_theme to sort by name
                 $available_theme_names[] = $name;
 
             } // foreach
-            
+
             // Alphabetically sort the theme name list for display in the selection dropdowns
             array_multisort( $available_theme_names, SORT_ASC, $available_theme_names );
-            
+
             // Get the stored cookie lifespan option if it exists
             $dts['cookie_lifespan'] = get_option( 'dts_cookie_lifespan' );
 
             // And that there is a default value of 0..
             if ( empty( $dts['cookie_lifespan'] ) ) {
-                $dts['cookie_lifespan'] = 0 ;            
+                $dts['cookie_lifespan'] = 0 ;
             }
 
             // Retrieve any DTS theme options which were previously saved
@@ -100,12 +100,12 @@
 
             // Ensure there are default values in each of the $dts['themes']
             foreach ( $dts['themes'] as $device => $theme ) {
-                if ( empty( $theme ) ) { 
+                if ( empty( $theme ) ) {
                     $dts['themes'][$device] = array(
                         'name'       => '',
                         'template'   => '',
                         'stylesheet' => ''
-                    ); 
+                    );
                 }
             } // foreach ?>
 
@@ -118,12 +118,12 @@
                             <th scope="row" align="right" width="150px">
                                 <label for="dts_handheld_theme"><?php echo esc_html_e( 'Handheld Theme', 'device-theme-switcher' ); ?></label>
                             </th><td>
-                                <select name="dts_theme[dts_handheld_theme]"><?php 
+                                <select name="dts_theme[dts_handheld_theme]"><?php
 
                                     foreach ( $available_themes as $theme ) { ?>
-                                        
-                                        <option 
-                                            value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php 
+
+                                        <option
+                                            value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
                                             selected( $theme['name'], $dts['themes']['handheld']['name'] ); ?>>
                                                 <?php echo esc_html( $theme['name'], 'device-theme-switcher' ); ?> &nbsp;
                                         </option><?php
@@ -197,7 +197,7 @@
                                         array( 'value' => 5400, 'text' => esc_html_e( '90 Minutes', 'device-theme-switcher' ) ),
                                     ); ?>
 
-                                    <select name="dts_cookie_lifespan"><?php     
+                                    <select name="dts_cookie_lifespan"><?php
                                         foreach ( $dts_cookie_lifespans as $cookie_lifespan ) { ?>
 
                                         <option
@@ -213,7 +213,7 @@
                                         esc_html_e( 'Length of time until a user is redirected back to their initial device theme after they\'ve requested the \'Desktop\' Version.', 'device-theme-switcher' ); ?></span>
                                         <br />
                                     </span>
-                                </td>                 
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -260,17 +260,17 @@
                                 <span class="description"><?php esc_html_e( 'Display a link to \'View Full Website\'', 'device-theme-switcher' ); ?></span>
 
                                 <br />
-                                
+
                                 [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
 
                                 <br /><br />
-                                
-                                <span class="description"><?php esc_html_e( 'Display a link to \'Return to Mobile Website\''); ?></span>
+
+                                <span class="description"><?php esc_html_e( 'Display a link to \'Return to Mobile Website\'', 'device-theme-switcher' ); ?></span>
 
                                 <br />
-                                
+
                                 [link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]
-                                
+
                                 <br /><br />
                             </td>
                         </tr><tr>
@@ -349,10 +349,10 @@
             // Unfortunetly we can't use the settings api on a subpage, so we need to check for and update any options this plugin uses
             if ( $_POST ) {
                 if ( 'true' == $_POST['dts_settings_update'] ) {
-                    
+
                     // Loop through the 3 device <select>ed <option>s in the admin form
                     foreach ( $_POST['dts_theme'] as $selected_device => $chosen_theme ) {
-                        
+
                         if ( 'Use Handheld Setting' == $chosen_theme ) {
                             // The user is trying to disable the low support theme option
                             // Go ahead and remove the option for it
@@ -360,13 +360,13 @@
 
                         } else {
 
-                            // Update each of the 3 dts database options with a urlencoded array of the selected theme 
+                            // Update each of the 3 dts database options with a urlencoded array of the selected theme
                             // The array contains 3 values: name, template, and stylesheet - these are all we need for use later on
                             update_option( $selected_device, $chosen_theme );
                         }
 
                     } // foreach
-                    
+
                     // Save the chosen session lifetime
                     update_option( 'dts_cookie_lifespan', $_POST['dts_cookie_lifespan'] );
 

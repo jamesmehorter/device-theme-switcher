@@ -1,14 +1,14 @@
 <?php
 	// Bail if this file is being accessed directly
 	defined( 'ABSPATH' ) OR exit;
-	
+
 	/**
 	 * Widget - View Full Website Link
 	 *
 	 * Option to specificy the link text, by default: 'View Full Website'
 	 */
 	class DTS_View_Full_Website extends WP_Widget {
-		
+
 		/**
 		 * Construct our new widget
 		 *
@@ -29,7 +29,7 @@
 
 		/**
 		 * Widget Output
-		 * 
+		 *
 		 * @param  array  $args     The widget arguments from the sidebar
 		 * @param  object $instance The widget instance
 		 * @return null
@@ -43,22 +43,22 @@
 				$link_text = apply_filters( 'dts_widget_to_full_website_link_text', $instance['link_text'] );
 			}
 
-			echo $before_widget;			
-			
+			echo $before_widget;
+
 			//Globals the $dts variable created on load
 			//Use the DTS_Switcher::build_html_link() method
 	        //This variable is created in /dts-controller.php around line 70
 	        global $dts;
 	        return $dts->build_html_link( 'active', $link_text, array(), true );
 
-			echo $after_widget;	
+			echo $after_widget;
 
 		} // function widget
 
 
 		/**
 		 * Save widget form data on update
-		 * 
+		 *
 		 * @param  array $new_instance The instance of the current widget data
 		 * @param  array $old_instance The instance of the new widget data
 		 * @return array               The new widget data
@@ -72,7 +72,7 @@
 
 		/**
 		 * Display the widget edit form in the admin
-		 * 
+		 *
 		 * @param  $array $instance The widget data
 		 * @return null
 		 */
@@ -86,8 +86,8 @@
 			if ( $link_text == "" ) {
 				$link_text = __( 'View Full Website', 'device-theme-switcher' );
 			}
-			
-			//Output our widget contents ?>	
+
+			//Output our widget contents ?>
 			<p>
 				<label for="<?php echo esc_attr( $this->get_field_id('link_text') ); ?>">
 					<?php echo esc_html_e( 'Link Text:', 'device-theme-switcher' ); ?>
@@ -101,10 +101,10 @@
 
 				</label>
 			</p><?php
-		} // function form 
+		} // function form
 
 	} // class DTS_View_Full_Website
-	
+
 
 	/**
 	 * Widget - Return to Device Link
@@ -112,7 +112,7 @@
 	 * Option to specificy the link text, by default: 'Return to Mobile Website'
 	 */
 	class DTS_Return_To_Mobile_Website extends WP_Widget {
-		
+
 		/**
 		 * Construct our new widget
 		 *
@@ -133,7 +133,7 @@
 
 		/**
 		 * Widget Output
-		 * 
+		 *
 		 * @param  array  $args     The widget arguments from the sidebar
 		 * @param  object $instance The widget instance
 		 * @return null
@@ -152,14 +152,14 @@
 		    //This variable is created in /dts-controller.php around line 70
 		    global $dts;
 		    return $dts->build_html_link( 'device', $link_text, array(), true );
-			echo $after_widget;	
+			echo $after_widget;
 
-		} // function widget 
+		} // function widget
 
 
 		/**
 		 * Save widget form data on update
-		 * 
+		 *
 		 * @param  array $new_instance The instance of the current widget data
 		 * @param  array $old_instance The instance of the new widget data
 		 * @return array               The new widget data
@@ -172,13 +172,13 @@
 
 		/**
 		 * Display the widget edit form in the admin
-		 * 
+		 *
 		 * @param  $array $instance The widget data
 		 * @return null
 		 */
 		function form ( $instance ) {
 
-			
+
 			//Output admin widget options form
 			$instance 	= wp_parse_args( (array) $instance, array( 'link_text' => '' ) );
 			$link_text	= $instance['link_text'];
@@ -187,8 +187,8 @@
 			if ( $link_text == "" ) {
 				$link_text = __( 'Return to Mobile Website', 'device-theme-switcher' );
 			}
-			
-			//Output our widget contents ?>	
+
+			//Output our widget contents ?>
 			<p>
 				<label for="<?php echo esc_attr( $this->get_field_id('link_text') ); ?>">
 					<?php echo esc_html_e( 'Link Text:', 'device-theme-switcher' ); ?>
