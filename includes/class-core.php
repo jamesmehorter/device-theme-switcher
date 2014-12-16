@@ -24,7 +24,7 @@
             if ( is_admin() ) {
 
                 // Do we need to perform an update routine?
-                if ( $this->need_update() ) {
+                if ( $this->does_need_update() ) {
 
                     // Yes, let's perform the update
                     $this->update();
@@ -56,7 +56,7 @@
                 $dts_core = DTS_Core::factory();
 
                 // Do we need to run an update routine?
-                if ( $dts_core->need_update() ) {
+                if ( $dts_core->does_need_update() ) {
 
                     // Yes, let's run the update
                     $dts_core->update();
@@ -410,7 +410,7 @@
          * @param  null
          * @return bool  truthy do we need to update?
          */
-        public function need_update () {
+        public function does_need_update () {
 
             // get_installed_version returns an string version when a version has been set
             $installed_version = $this->get_installed_version();
