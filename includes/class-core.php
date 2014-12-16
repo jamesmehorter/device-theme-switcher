@@ -19,6 +19,8 @@
          * @internal  Called via plugins_loaded action
          */
         public function __construct () {
+            // Load our text domain
+            load_plugin_textdomain( 'device-theme-switcher', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
             // Are we in the admin?
             if ( is_admin() ) {
