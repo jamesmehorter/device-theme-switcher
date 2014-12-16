@@ -489,29 +489,34 @@
                 '2.9.0' => '',
             );
 
-            // Loop through the available updates
-            // This looping logic will perform any missed updates since the last update was run
-            foreach ( $plugin_versions as $version => $version_update_routine_filename ) {
+            // Only update if we need to
+            if ( $this->does_need_update() ) {
 
-                // Is the current version lower than the
-                if ( version_compare( $installed_version, $version, '<' ) ) {
+                // Loop through the available updates
+                // This looping logic will perform any missed updates since the last update was run
+                foreach ( $plugin_versions as $version => $version_update_routine_filename ) {
 
-                    // Yes, an update is required
-                    //
-                    // Is there an update routine for this version?
-                    if ( ! empty( $version_update_routine_filename ) ) {
+                    // Is the current version lower than the
+                    if ( version_compare( $installed_version, $version, '<' ) ) {
 
-                        // Yes, this update has a routine we need to run
-                        // we need only include the update routine
-                        // The update file will run automatically
-                        include_once( DTS_PATH . 'updates/' . $version_update_routine_filename );
+                        // Yes, an update is required
+                        //
+                        // Is there an update routine for this version?
+                        if ( ! empty( $version_update_routine_filename ) ) {
+
+                            // Yes, this update has a routine we need to run
+                            // we need only include the update routine
+                            // The update file will run automatically
+                            include_once( DTS_PATH . 'updates/' . $version_update_routine_filename );
+                        }
+
+                        // Update the current version to reflect the update
+                        $installed_version = $version;
                     }
 
-                    // Update the current version to reflect the update
-                    $installed_version = $version;
-                }
+                } // foreach
 
-            } // foreach
+            } // if need update
 
             // Update the DB version to reflect the newly installed version of the plugin
             update_option( 'dts_version', $installed_version );
