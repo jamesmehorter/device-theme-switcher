@@ -120,7 +120,7 @@ The $dts global contains all the run-time device theme switcher settings and the
 == Frequently Asked Questions ==
 
 = Which devices are considered 'handheld' and which are 'tablet'? =
-'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities-often these are older devices.
+'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen handhelds. 'Low Support' devices include those which have poor CSS & JavaScript rendering capabilities-often these are older devices.
 
 = Are WordPress child themes supported? =
 Yes!
@@ -129,7 +129,7 @@ Yes!
 If your theme does not work as expected on any of the devices-**the issue is with the theme, NOT with the plugin!** Follow [typical WordPress debugging practices](http://codex.wordpress.org/Debugging_in_WordPress) to find and correct the issue in your theme (Or possibly another plugin). The only theme-requirement this plugin relies on is that you have [properly-written WordPress themes](http://codex.wordpress.org/Theme_Development#Theme_Development_Standards). If your theme activates in Appearance > Themes and you can preview the theme in your computer's browser-then it is 'properly-written' as far as Device Theme Switcher is concerned.
 
 = How do Menus and Widgets work?! =
-All Device Theme Switcher really does is change which theme is delivered to the visitor based on the deivce they're using-*but WordPress still thinks the active theme is 'active' the whole time*. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
+All Device Theme Switcher really does is change which theme is delivered to the visitor based on the device they're using-*but WordPress still thinks the active theme is 'active' the whole time*. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
 
 = How do I show the same menu in each theme? =
 Simply place you register_nav_menu('my-menu-location', 'My Menu Location Name'); function in both of your primary/active and handheld/tablet theme functions.php files. Then, while your primary theme is 'active' go into Appearance > Menus-create your menu and assign it to the menu location-and populate it with some menu items. That's it!
@@ -187,10 +187,10 @@ Tablet theme page.php
 
 == Changelog ==
 
-= Version 2.9.0 - Released 2014 Hopefully?!? =
-* IMPROVRMENT - Rewrites/Modifications throughout the plugin code to improve overall stability, maintainability, and adherance to WordPress Coding Standards.
+= Version 2.9.0 - Released 12/18/2014 =
+* IMPROVRMENT - Rewrites/Modifications throughout the plugin code to improve overall stability, maintainability, and adherence to WordPress Coding Standards.
 * IMPROVEMENT - Rewrote the updating routine to be far more stable, logical, and to allow 3 digit version numbers (ex: 2.9.0).
-* IMPROVEMENT - Added initial .mo and .po translation files
+* IMPROVEMENT - Added initial .pot for i18n. Users can now provide translations via .po files by using the .pot.
 * FIX - Corrected an issue reported by QStudio (https://wordpress.org/support/topic/small-bug-in-28?replies=2#post-6238900) whereby the plugin update routine would fail and run on each page load. Ouch. Thanks QStudio!
 
 = Version 2.8 - Released 5/18/2014 =
