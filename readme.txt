@@ -2,11 +2,10 @@
 Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
 Requires at least: 3.0
-Tested up to: 3.9.1
-Stable tag: 2.8
+Tested up to: 4.2-alpha
+Stable tag: 2.9.0
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, iPad, iPhone, Android, Blackberry, Tablet Theme, Different Themes, Device Theme
 Author URI: http://www.jamesmehorter.com/
-Donate Link: http://www.jamesmehorter.com/donate/
 Plugin URI: https://github.com/jamesmehorter/device-theme-switcher
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,7 +23,7 @@ Device Theme Switcher is a WordPress plugin which delivers one of your WordPress
 
 == Installation ==
 
-= How to Install = 
+= How to Install =
 
 Install and activate in your WordPress Dashboard 'Plugins > Add New' section by searching for 'Device Theme Switcher'.
 
@@ -41,7 +40,7 @@ www.mywebsite.com/?theme=active`
 
 = Template Tags, Shortcodes, and Widgets - NEW in Version 2.0! =
 
-Template Tags, Shortcodes, and Widgets all output a simple HTML anchor tag which links to the mobile/active theme for the website by using URL Switching (See Above). 
+Template Tags, Shortcodes, and Widgets all output a simple HTML anchor tag which links to the mobile/active theme for the website by using URL Switching (See Above).
 
 Template tags can be used in any theme or plugin file. Shortcodes can be used in the content of any post, page, or custom-post-type.
 
@@ -57,9 +56,9 @@ Template tags can be used in any theme or plugin file. Shortcodes can be used in
 //Shortcode -  - Display a link to 'Return to Mobile Website'
 [link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]`
 
-The anchor tags that output have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file. 
+The anchor tags that output have a CSS class of 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
 
-Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes): 
+Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes):
 
 `<style type="text/css">
     .dts-link {
@@ -77,10 +76,10 @@ Link Styling Example (For Tempalte Tags, Widgets, or Shortcodes):
 
 The $dts global contains all the run-time device theme switcher settings and the current visitor device. You can access the $dts global anywhere in your theme or plugin.
 
-`<?php 
+`<?php
     //Access the device theme switcher object anywhere in your theme or plugin
     global $dts
-    
+
     //use it..
     if ($dts->device == 'tablet') do_something() ;
 
@@ -121,16 +120,16 @@ The $dts global contains all the run-time device theme switcher settings and the
 == Frequently Asked Questions ==
 
 = Which devices are considered 'handheld' and which are 'tablet'? =
-'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen hand helds. 'Low Support' devices include those which have poor CSS & Javascript rendering capabilities-often these are older devices.
+'Handheld' devices include Android, BlackBerry, iPod, iPhone, Windows Mobile, and other various 'hand held' smart phones. 'Tablet' devices include iPad, Android tablets, Kindle Fire and other large-screen handhelds. 'Low Support' devices include those which have poor CSS & JavaScript rendering capabilities-often these are older devices.
 
 = Are WordPress child themes supported? =
 Yes!
 
-= Help!? My theme isn't working! = 
+= Help!? My theme isn't working! =
 If your theme does not work as expected on any of the devices-**the issue is with the theme, NOT with the plugin!** Follow [typical WordPress debugging practices](http://codex.wordpress.org/Debugging_in_WordPress) to find and correct the issue in your theme (Or possibly another plugin). The only theme-requirement this plugin relies on is that you have [properly-written WordPress themes](http://codex.wordpress.org/Theme_Development#Theme_Development_Standards). If your theme activates in Appearance > Themes and you can preview the theme in your computer's browser-then it is 'properly-written' as far as Device Theme Switcher is concerned.
 
 = How do Menus and Widgets work?! =
-All Device Theme Switcher really does is change which theme is delivered to the visitor based on the deivce they're using-*but WordPress still thinks the active theme is 'active' the whole time*. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
+All Device Theme Switcher really does is change which theme is delivered to the visitor based on the device they're using-*but WordPress still thinks the active theme is 'active' the whole time*. This means you need to have your `register_nav_menu()` or `register_widget()` functions in all your themes! See below for details and examples.
 
 = How do I show the same menu in each theme? =
 Simply place you register_nav_menu('my-menu-location', 'My Menu Location Name'); function in both of your primary/active and handheld/tablet theme functions.php files. Then, while your primary theme is 'active' go into Appearance > Menus-create your menu and assign it to the menu location-and populate it with some menu items. That's it!
@@ -146,7 +145,7 @@ In each theme's functions.php file:
     'tablet-menu-location' => 'Tablet Theme Menu Location',
 ));`
 
-Then, while your primary theme is 'active' go into Appearance > Menus-create your 3 menus-assign each one to their designated menu location-and populate each with some menu items. 
+Then, while your primary theme is 'active' go into Appearance > Menus-create your 3 menus-assign each one to their designated menu location-and populate each with some menu items.
 
 Lastly we just need to display each menu in each theme:
 
@@ -188,8 +187,14 @@ Tablet theme page.php
 
 == Changelog ==
 
+= Version 2.9.0 - Released 12/18/2014 =
+* IMPROVRMENT - Rewrites/Modifications throughout the plugin code to improve overall stability, maintainability, and adherence to WordPress Coding Standards.
+* IMPROVEMENT - Rewrote the updating routine to be far more stable, logical, and to allow 3 digit version numbers (ex: 2.9.0).
+* IMPROVEMENT - Added initial .pot for i18n. Users can now provide translations via .po files by using the .pot.
+* FIX - Corrected an issue reported by QStudio (https://wordpress.org/support/topic/small-bug-in-28?replies=2#post-6238900) whereby the plugin update routine would fail and run on each page load. Ouch. Thanks QStudio!
+
 = Version 2.8 - Released 5/18/2014 =
-* FIX - Removed an empty space (whitespace) preceding <?php which caused numerous issues for people by PHP throwing PHP Warning: Cannot modify header information - headers already sent by (output started at /my-home/wp-content/plugins/device-theme-switcher/inc/class.switcher.php:1) in /my-home/wp-content/plugins/device-theme-switcher/inc/class.switcher.php on line 176 -- thanks @jontroth
+* FIX - Removed an empty space (whitespace) preceding <?php which caused numerous issues for people by PHP throwing PHP Warning: Cannot modify header information - headers already sent by (output started at /my-home/wp-content/plugins/device-theme-switcher/inc/class.switcher.php:1) in /my-home/wp-content/plugins/device-theme-switcher/inc/class.switcher.php on line 176 -- thanks @jontroth!
 
 = Version 2.7 - Released 05/11/2014 =
 * IMPROVEMENT - Ensure the ?theme= GET variables added to each link via DTS_Switcher::build_html_link() preserve the existing GET variables already in place.
@@ -203,23 +208,23 @@ Tablet theme page.php
 
 = Version 2.4 - Released 05/10/2014 =
 * IMPROVEMENT - Replaced the use of PHP Sessions with Cookies (This is gonna fix a lot of past issues!)
-* IMPROVEMENT - Refactored all plugin code to contain proper Docblock commenting and be more legible 
+* IMPROVEMENT - Refactored all plugin code to contain proper Docblock commenting and be more legible
 * FIX - Corrected an issue where X UA Device fallback was handheld, not active. Thanks @Dachande663!
 * FIX - Corrected an issue where DTS_Switcher would not execute during an ajax request to admin_ajax. Thanks Ray @ qStudio!
 * REMOVAL - Removed the Dashboard Right Now DTS Output, it wasn't that cool to begin with..
 
-= Version 2.3 - Released 09/16/2013 = 
-* FIX - Corrected an issue which caused a PHP error to be thrown under odd conditions. Thanks Davis Wuolle! 
+= Version 2.3 - Released 09/16/2013 =
+* FIX - Corrected an issue which caused a PHP error to be thrown under odd conditions. Thanks Davis Wuolle!
 
-= Version 2.2 - Released 08/28/2013 = 
+= Version 2.2 - Released 08/28/2013 =
 * FIX - Corrected an issue which caused folks running WordPress Version Pre 3.4 to not see themes in the admin theme select lists. Thanks jstroem for 346b5ec (https://github.com/jstroem/device-theme-switcher/commit/346b5ec1582539b621ef4583153a7dbc6c9423b9)
 
-= Version 2.1 - Released 08/26/2013 = 
-* FIX - Corrected an issue (http://wordpress.org/support/topic/version-20-compatibilities-problems-with-jonradio-multiple-themes) where plugins which modify pre_option_template or pre_option_stylesheet would be overridden by Device Theme Switcher. Thanks EmuZone for pointing this out! 
+= Version 2.1 - Released 08/26/2013 =
+* FIX - Corrected an issue (http://wordpress.org/support/topic/version-20-compatibilities-problems-with-jonradio-multiple-themes) where plugins which modify pre_option_template or pre_option_stylesheet would be overridden by Device Theme Switcher. Thanks EmuZone for pointing this out!
 * FIX - Corrected an issue with the Admin Dashboard 'Right Now' to properly display the active device themes.
 
-= Version 2.0 - Released 08/24/2013 = 
-* Complete code rewrites to improve overall performance, redundancy, and improve extensibility. 
+= Version 2.0 - Released 08/24/2013 =
+* Complete code rewrites to improve overall performance, redundancy, and improve extensibility.
 * NEW - DTS Class access for use in themes; obtain info on the current user's device and saved dts settings. Examples in the FAQ.
 * NEW - URL Switching - Easily check what other devices see. Examples in the FAQ.
 * NEW - Session Timeout, so users who visit the 'Desktop' theme are bumped back to their device theme after 15 minutes
@@ -237,14 +242,14 @@ Tablet theme page.php
 
 = Version 1.7 =
 * Updated the plugin to provide backwards compatible support for WordPress < v3.4 (Pre the new Themes API)
-* Added a 3rd theme selection option for older/non-compliant devices, so theme authors can also supply a text-only version to those devices if they like. 
+* Added a 3rd theme selection option for older/non-compliant devices, so theme authors can also supply a text-only version to those devices if they like.
 * Revised some language in the plugin readme file
 
 = Version 1.6 =
 * Updated the plugin to use the new Theme API within WordPress 3.4
-* Updated MobileESP Library to the latest verion (April 23, 2012) which adds support for BlackBerry Curve Touch, e-Ink Kindle, and Kindle Fire in Silk mode. And fixed many other bugs. 
-* Updated the Device Theme Switcher widgets so they only display to the devices they should, e.g. The 'View Full Website' widget will only display in the handheld theme. 
-* Revised readme language and added a WordPress Plugin Repository banner graphic. 
+* Updated MobileESP Library to the latest verion (April 23, 2012) which adds support for BlackBerry Curve Touch, e-Ink Kindle, and Kindle Fire in Silk mode. And fixed many other bugs.
+* Updated the Device Theme Switcher widgets so they only display to the devices they should, e.g. The 'View Full Website' widget will only display in the handheld theme.
+* Revised readme language and added a WordPress Plugin Repository banner graphic.
 
 = Version 1.5 =
 * Modified the way themes are deliveried so the process is more stable for users with odd WordPress setups, by detecting where their theme folders are located instead of assuming wp-content/themes
@@ -253,7 +258,7 @@ Tablet theme page.php
 * Updated to the latest version of the MobileESP library which now detects some newer phones like the BlackBerry Bold Touch (9900 and 9930)
 
 = Version 1.3 =
-* Changed the admin page to submit to admin_url() for those who have changed /wp-admin/ 
+* Changed the admin page to submit to admin_url() for those who have changed /wp-admin/
 * Added a warning suppresor to session_start() in case another plugin has already called it
 * Updated language in the WordPress readme file
 
@@ -266,10 +271,10 @@ Tablet theme page.php
 = Version 1.1 =
 * Bug fixes
 * Efficency improvements
-    
+
 = Version 1.0 =
 * First Public Stable Release
-    
+
 == Upgrade Notice ==
 
 = 2.0 =
@@ -277,8 +282,8 @@ Major Improvements, New Features, and even prettier!
 
 == Credits ==
 
-This plugin is powered by the MobileESP PHP library created by Anthony Hand (http://blog.mobileesp.com/). 
+This plugin is powered by the MobileESP PHP library created by Anthony Hand (http://blog.mobileesp.com/).
 
-This plugin is based on the concepts provided by Jonas Vorwerk's (http://www.jonasvorwerk.com/) Mobile theme switcher plugin, and Jeremy Arntz's (http://www.jeremyarntz.com/) Mobile Theme Switcher plugin. 
+This plugin is based on the concepts provided by Jonas Vorwerk's (http://www.jonasvorwerk.com/) Mobile theme switcher plugin, and Jeremy Arntz's (http://www.jeremyarntz.com/) Mobile Theme Switcher plugin.
 
-Copyright (C) 2012 James Mehorter
+Copyright (C) 2014 James Mehorter

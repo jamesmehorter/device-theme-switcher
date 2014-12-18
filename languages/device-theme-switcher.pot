@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: device-theme-switcher 2.9.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-17 22:48-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: includes/class-core.php:341
+msgid "Settings"
+msgstr ""
+
+#: includes/class-shortcodes.php:38 includes/class-widgets.php:87
+msgid "View Full Website"
+msgstr ""
+
+#: includes/class-shortcodes.php:65 includes/class-widgets.php:188
+msgid "Return to Mobile Website"
+msgstr ""
+
+#: includes/class-widgets.php:93 includes/class-widgets.php:194
+msgid "Link Text:"
+msgstr ""
+
+#: includes/class-widgets.php:94
+msgid "Ex: View Full Website"
+msgstr ""
+
+#: includes/class-widgets.php:195
+msgid "Ex: Return to Mobile Website"
+msgstr ""
+
+#: includes/class-wp-admin.php:26
+msgid "Device Theme Switcher"
+msgstr ""
+
+#: includes/class-wp-admin.php:27
+msgid "Device Themes"
+msgstr ""
+
+#: includes/class-wp-admin.php:119
+msgid "Handheld Theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:135
+msgid "Handheld devices like Apple iPhone, Android, BlackBerry, and more."
+msgstr ""
+
+#: includes/class-wp-admin.php:138
+msgid "Tablet Theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:154
+msgid "Tablet devices like Apple iPad, Galaxy Tab, Kindle Fire, and more."
+msgstr ""
+
+#: includes/class-wp-admin.php:157
+msgid "Show Optional Settings"
+msgstr ""
+
+#: includes/class-wp-admin.php:165
+msgid "Low-Support Theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:168
+msgid "Use Handheld Setting"
+msgstr ""
+
+#: includes/class-wp-admin.php:182
+msgid "Devices which lack complete CSS & JavaScipt Support."
+msgstr ""
+
+#: includes/class-wp-admin.php:186
+msgid "Cookie Lifespan"
+msgstr ""
+
+#: includes/class-wp-admin.php:213
+msgid ""
+"Length of time until a user is redirected back to their initial device theme "
+"after they've requested the 'Desktop' Version."
+msgstr ""
+
+#: includes/class-wp-admin.php:224
+msgid "Save Settings"
+msgstr ""
+
+#: includes/class-wp-admin.php:233
+msgid "Help & Support"
+msgstr ""
+
+#: includes/class-wp-admin.php:241
+msgid "Helpful Links"
+msgstr ""
+
+#: includes/class-wp-admin.php:247
+msgid "Support Forum"
+msgstr ""
+
+#: includes/class-wp-admin.php:253
+msgid "FAQ"
+msgstr ""
+
+#: includes/class-wp-admin.php:258
+msgid "Shortcodes"
+msgstr ""
+
+#: includes/class-wp-admin.php:260 includes/class-wp-admin.php:280
+msgid "Display a link to 'View Full Website'"
+msgstr ""
+
+#: includes/class-wp-admin.php:268 includes/class-wp-admin.php:289
+msgid "Display a link to 'Return to Mobile Website'"
+msgstr ""
+
+#: includes/class-wp-admin.php:278
+msgid "Template Tags"
+msgstr ""
+
+#: includes/class-wp-admin.php:300
+msgid "URL Paramaters"
+msgstr ""
+
+#: includes/class-wp-admin.php:303
+msgid "Helpful for developers to view a specific device theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:307
+msgid "View Handheld Theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:314
+msgid "View Tablet Theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:321
+msgid "View Low-Support Theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:328
+msgid "View Active Theme"
+msgstr ""
+
+#: includes/class-wp-admin.php:389
+msgid "Settings saved."
+msgstr ""
+
+#: includes/updates/dts-2.0.php:92
+msgid ""
+"Thanks for upgrading! We've compeltely rewritten Device Theme Switcher and "
+"added lots of new goodies! Read about the changes <a href=\"http://wordpress."
+"org/plugins/device-theme-switcher/faq/\" target=\"_blank\">here</a>."
+msgstr ""
