@@ -67,6 +67,64 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		po2mo: {
+			files: {
+				src: 'languages/*.po',
+				expand: true
+			}
+		},
+		pot: {
+			options:{
+				text_domain: 'device-theme-switcher', //Your text domain. Produces my-text-domain.pot
+				dest: 'languages/', //directory to place the pot file
+				keywords: [ //WordPress localisation functions
+					'__:1',
+					'_e:1',
+					'_x:1,2c',
+					'esc_html__:1',
+					'esc_html_e:1',
+					'esc_html_x:1,2c',
+					'esc_attr__:1',
+					'esc_attr_e:1',
+					'esc_attr_x:1,2c',
+					'_ex:1,2c',
+					'_n:1,2',
+					'_nx:1,2,4c',
+					'_n_noop:1,2',
+					'_nx_noop:1,2,3c'
+				]
+			},
+			files:{
+				src:  [ '**/*.php' ], //Parse all php files
+				expand: true
+			}
+		},
+		checktextdomain: {
+			options:{
+				text_domain: 'device-theme-switcher',
+				correct_domain: true, //Will correct missing/variable domains
+				keywords: [ //WordPress localisation functions
+					'__:1,2d',
+					'_e:1,2d',
+					'_x:1,2c,3d',
+					'esc_html__:1,2d',
+					'esc_html_e:1,2d',
+					'esc_html_x:1,2c,3d',
+					'esc_attr__:1,2d',
+					'esc_attr_e:1,2d',
+					'esc_attr_x:1,2c,3d',
+					'_ex:1,2c,3d',
+					'_n:1,2,4d',
+					'_nx:1,2,4c,5d',
+					'_n_noop:1,2,3d',
+					'_nx_noop:1,2,3c,4d'
+				]
+			},
+			files: {
+				src:  [ '**/*.php', '!**/node_modules/**' ], //All php files except those within node_modules
+				expand: true
+			}
+		},
 		watch:  {
 			sass: {
 				files: ['assets/css/sass/*.scss'],
@@ -86,7 +144,7 @@ module.exports = function(grunt) {
 	});
 
 	// Default task.
-	grunt.registerTask('default', ['jshint', 'uglify', 'compass']);
+	grunt.registerTask('default', ['jshint', 'uglify', 'compass', 'po2mo', 'pot', 'checktextdomain']);
 
 	grunt.util.linefeed = '\n';
 };
