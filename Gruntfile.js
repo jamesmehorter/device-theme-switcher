@@ -95,7 +95,7 @@ module.exports = function(grunt) {
 				]
 			},
 			files:{
-				src:  [ '**/*.php' ], //Parse all php files
+				src:  [ '**/*.php', '!**/node_modules/**' ], //Parse all php files
 				expand: true
 			}
 		},
