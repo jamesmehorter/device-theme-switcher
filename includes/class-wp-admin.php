@@ -125,7 +125,7 @@
                                         <option
                                             value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
                                             selected( $theme['name'], $dts['themes']['handheld']['name'] ); ?>>
-                                                <?php echo esc_html( $theme['name'], 'device-theme-switcher' ); ?> &nbsp;
+                                                <?php printf( esc_html( '%s', 'device-theme-switcher'), $theme['name'] ); ?> &nbsp;
                                         </option><?php
 
                                     } // foreach ?>
@@ -144,7 +144,7 @@
                                         <option
                                             value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
                                             selected( $theme['name'], $dts['themes']['tablet']['name'] ); ?>><?php
-                                                printf( esc_html_e( '%d', 'device-theme-switcher' ), $theme['name'] ); ?> &nbsp;
+                                                printf( esc_html( '%s', 'device-theme-switcher' ), $theme['name'] ); ?> &nbsp;
                                         </option><?php
 
                                     } // foreach ?>
@@ -172,7 +172,7 @@
                                             <option
                                                 value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
                                                 selected( $theme['name'], $dts['themes']['low_support']['name'] ); ?>><?php
-                                                    printf( esc_html_e( '%d', 'device-theme-switcher' ), $theme['name'] ); ?> &nbsp;
+                                                    printf( esc_html( '%s', 'device-theme-switcher' ), $theme['name'] ); ?> &nbsp;
                                             </option><?php
 
                                         } // foreach ?>
@@ -188,13 +188,13 @@
 
                                     // Build a list of default cookie lifespans
                                     $dts_cookie_lifespans = array(
-                                        array( 'value' => 0,    'text' => esc_html_e( 'When the browser is closed (Default)', 'device-theme-switcher' ) ),
-                                        array( 'value' => 900,  'text' => esc_html_e( '15 Minutes', 'device-theme-switcher' ) ),
-                                        array( 'value' => 1800, 'text' => esc_html_e( '30 Minutes', 'device-theme-switcher' ) ),
-                                        array( 'value' => 2700, 'text' => esc_html_e( '45 Minutes', 'device-theme-switcher' ) ),
-                                        array( 'value' => 3600, 'text' => esc_html_e( '60 Minutes', 'device-theme-switcher' ) ),
-                                        array( 'value' => 4500, 'text' => esc_html_e( '75 Minutes', 'device-theme-switcher' ) ),
-                                        array( 'value' => 5400, 'text' => esc_html_e( '90 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 0,    'text' => esc_html( 'When the browser is closed (Default)', 'device-theme-switcher' ) ),
+                                        array( 'value' => 900,  'text' => esc_html( '15 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 1800, 'text' => esc_html( '30 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 2700, 'text' => esc_html( '45 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 3600, 'text' => esc_html( '60 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 4500, 'text' => esc_html( '75 Minutes', 'device-theme-switcher' ) ),
+                                        array( 'value' => 5400, 'text' => esc_html( '90 Minutes', 'device-theme-switcher' ) ),
                                     ); ?>
 
                                     <select name="dts_cookie_lifespan"><?php
@@ -203,7 +203,7 @@
                                         <option
                                             value="<?php echo esc_attr( $cookie_lifespan['value'] ); ?>" <?php
                                             selected( $dts['cookie_lifespan'], $cookie_lifespan['value'] ); ?>><?php
-                                                printf( esc_html_e( '%d', 'device-theme-switcher' ), $cookie_lifespan['text'] ); ?>
+                                                printf( esc_html( '%s', 'device-theme-switcher' ), $cookie_lifespan['text'] ); ?>
                                         </option><?php
 
                                         } // foreach ?>
