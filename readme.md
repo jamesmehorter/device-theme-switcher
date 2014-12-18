@@ -30,12 +30,14 @@ Template tags can be used in any theme or plugin file.
 
     //Display a link to 'View Full Website'
     <?php link_to_full_website($link_text = "View Full Website", $css_classes = array(), $echo = true) ?>
+
     //Display a link to 'Return to Mobile Website'
     <?php link_back_to_device($link_text = "Return to Mobile Website", $css_classes = array(), $echo = true) ?>
 
 Shortcodes can be used in the content of any post, page, or custom-post-type.
 
     [link_to_full_website link_text="View Full Website" css_classes="blue-text, alignleft"]
+
     [link_back_to_device link_text="Return to Mobile Website" css_classes="red-text, alignright"]
 
 The anchor tags that output both have a CSS class: 'dts-link'. The 'View Full Website' anchor tag also has a class of 'to-full-website' and the 'Return to the Mobile Website' link has an additional class of 'back-to-mobile'. This CSS can be used anywhere in your theme or style.css file.
@@ -190,7 +192,7 @@ Tablet theme page.php
 
 ## Changelog
 
-* _Version 2.9.0 - Released 12/18/2014
+* _Version 2.9.0 - Released 12/18/2014_
     * IMPROVRMENT - Rewrites/Modifications throughout the plugin code to improve overall stability, maintainability, and adherence to WordPress Coding Standards.
     * IMPROVEMENT - Rewrote the updating routine to be far more stable, logical, and to allow 3 digit version numbers (ex: 2.9.0).
     * IMPROVEMENT - Added initial .pot for i18n. Users can now provide translations via .po files by using the .pot.
@@ -282,4 +284,4 @@ This plugin is powered by the [MobileESP PHP library created by Anthony Hand](ht
 
 This plugin is based on the [concepts provided by Jonas Vorwerk's Mobile theme switcher plugin](http://www.jonasvorwerk.com/) , and [Jeremy Arntz's Mobile Theme Switcher plugin](http://www.jeremyarntz.com/).
 
-Copyright (C) 2013 James Mehorter
+Copyright (C) 2014 James Mehorter
