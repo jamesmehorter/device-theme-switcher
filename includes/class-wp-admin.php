@@ -144,7 +144,7 @@
                                         <option
                                             value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
                                             selected( $theme['name'], $dts['themes']['tablet']['name'] ); ?>><?php
-                                                echo esc_html_e( $theme['name'], 'device-theme-switcher' ); ?> &nbsp;
+                                                printf( esc_html_e( '%d', 'device-theme-switcher' ), $theme['name'] ); ?> &nbsp;
                                         </option><?php
 
                                     } // foreach ?>
@@ -172,7 +172,7 @@
                                             <option
                                                 value="<?php echo esc_attr( build_query( $theme ) ); ?>" <?php
                                                 selected( $theme['name'], $dts['themes']['low_support']['name'] ); ?>><?php
-                                                    echo esc_html_e( $theme['name'], 'device-theme-switcher' ); ?> &nbsp;
+                                                    printf( esc_html_e( '%d', 'device-theme-switcher' ), $theme['name'] ); ?> &nbsp;
                                             </option><?php
 
                                         } // foreach ?>
@@ -203,7 +203,7 @@
                                         <option
                                             value="<?php echo esc_attr( $cookie_lifespan['value'] ); ?>" <?php
                                             selected( $dts['cookie_lifespan'], $cookie_lifespan['value'] ); ?>><?php
-                                                esc_html_e( $cookie_lifespan['text'], 'device-theme-switcher' ); ?>
+                                                printf( esc_html_e( '%d', 'device-theme-switcher' ), $cookie_lifespan['text'] ); ?>
                                         </option><?php
 
                                         } // foreach ?>
