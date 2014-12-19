@@ -76,8 +76,8 @@
 			$class = get_called_class();
 
 			// Is there already an instance of the class?
-			if ( ! isset( static::$_instance[ $class ] ) ) {
-				
+			if ( ! isset( self::$_instance[ $class ] ) ) {
+
 				// If not, instantiate a new instance
 				self::$_instance[ $class ] = new $class();
 			}
