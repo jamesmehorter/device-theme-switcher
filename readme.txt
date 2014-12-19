@@ -3,7 +3,7 @@ Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
 Requires at least: 3.0
 Tested up to: 4.2-alpha
-Stable tag: 2.9.0
+Stable tag: 2.9.1
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, iPad, iPhone, Android, Blackberry, Tablet Theme, Different Themes, Device Theme
 Author URI: http://www.jamesmehorter.com/
 Plugin URI: https://github.com/jamesmehorter/device-theme-switcher
@@ -186,6 +186,9 @@ Tablet theme page.php
 `dynamic_sidebar('Tablet Theme Sidebar');`
 
 == Changelog ==
+
+= Version 2.9.1 - Released 12/18/2013 =
+* HOTFIX - Removed use of Late Static Binding which is a PHP 5.3 feature, though WordPress supports back to PHP 5.2.4. Thank you Craig S. for pointing this out!
 
 = Version 2.9.0 - Released 12/18/2014 =
 * IMPROVRMENT - Rewrites/Modifications throughout the plugin code to improve overall stability, maintainability, and adherence to WordPress Coding Standards.

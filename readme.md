@@ -1,5 +1,5 @@
 # Device Theme Switcher
-##### Version 2.9.0 (Released 12/18/2014)
+##### Version 2.9.1 (Released 12/18/2014)
 
 [Installation](https://github.com/jamesmehorter/device-theme-switcher/#installation) | [Features](https://github.com/jamesmehorter/device-theme-switcher/#features) | [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/#screenshots) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/#faq) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/#changelog) | [Credits](https://github.com/jamesmehorter/device-theme-switcher/#credits)
 
@@ -191,6 +191,8 @@ Tablet theme page.php
     dynamic_sidebar('Tablet Theme Sidebar');
 
 ## Changelog
+* _Version 2.9.1 - Released 12/18/2014_
+    * HOTFIX - Removed use of Late Static Binding which is a PHP 5.3 feature, though WordPress supports back to PHP 5.2.4. Thank you Craig S. for pointing this out!
 
 * _Version 2.9.0 - Released 12/18/2014_
     * IMPROVRMENT - Rewrites/Modifications throughout the plugin code to improve overall stability, maintainability, and adherence to WordPress Coding Standards.
