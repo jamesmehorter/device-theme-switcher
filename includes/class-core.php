@@ -9,7 +9,28 @@
      * This is where Device Theme Switcher hooks into the WordPress
      * activation, deactivation, uninstall, init, and plugin_action_links
      */
-    class DTS_Core extends DTS_Singleton {
+    class DTS_Core {
+
+        /**
+         * Internally stored reference to the single instance of this class
+         * @var object
+         */
+        private static $_instance;
+
+        /**
+         * Return the single instance of this class
+         *
+         * @return object Instance of this class
+         */
+        static function get_instance () {
+
+            if ( ! isset( self::$_instance ) ) {
+                self::$_instance = new self();
+            }
+
+            return self::$_instance;
+
+        } // function get_instance
 
         /**
          * Instance Construction
@@ -55,7 +76,7 @@
 
             if ( is_admin() ) {
                 // Grab the single instace of this class
-                $dts_core = DTS_Core::factory();
+                $dts_core = DTS_Core::get_instance();
 
                 // Do we need to run an update routine?
                 if ( $dts_core->does_need_update() ) {
@@ -230,7 +251,7 @@
             if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
                 // Grab the single instance of the admin class
-                $dts_admin = DTS_Admin::factory();
+                $dts_admin = DTS_Admin::get_instance();
 
                 // Create our plugin admin page under the 'Appearance' menu
                 add_action( 'admin_menu', array( $dts_admin, 'admin_menu' ), 10, 0 );
@@ -249,7 +270,7 @@
                 // Grab the single instance of the switcher class
                 // And make it available globally for use in themes/other plugins
                 global $dts;
-                $dts = DTS_Switcher::factory();
+                $dts = DTS_Switcher::get_instance();
 
                 // Hook into the template output function with a filter and change the template delivered if need be
                 add_filter( 'template', array( $dts, 'deliver_template' ), 10, 0 );
@@ -263,7 +284,7 @@
             add_action( 'widgets_init', array( $this, 'register_widgets' ), 10, 0 );
 
             // Add our shortcodes
-            DTS_Shortcode::factory()->add_shortcodes();
+            DTS_Shortcode::get_instance()->add_shortcodes();
 
         } // function hook_into_wordpress
 
