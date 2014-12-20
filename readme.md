@@ -1,5 +1,5 @@
 # Device Theme Switcher
-##### Version 2.9.1 (Released 12/18/2014)
+##### Version 2.9.2 (Released 12/19/2014)
 
 [Installation](https://github.com/jamesmehorter/device-theme-switcher/#installation) | [Features](https://github.com/jamesmehorter/device-theme-switcher/#features) | [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/#screenshots) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/#faq) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/#changelog) | [Credits](https://github.com/jamesmehorter/device-theme-switcher/#credits)
 
@@ -191,6 +191,9 @@ Tablet theme page.php
     dynamic_sidebar('Tablet Theme Sidebar');
 
 ## Changelog
+* _Version 2.9.2 - Released 12/19/2013_
+    * HOTFIX - Completed removed the use of a singleton base class. It just doesn't work for PHP <= 5.2 which we still have to support unfortunately.
+
 * _Version 2.9.1 - Released 12/18/2014_
     * HOTFIX - Removed use of Late Static Binding which is a PHP 5.3 feature, though WordPress supports back to PHP 5.2.4. Thank you Craig S. for pointing this out!
 

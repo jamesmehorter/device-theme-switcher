@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: device-theme-switcher 2.9.0\n"
+"Project-Id-Version: device-theme-switcher 2.9.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-17 22:48-0500\n"
+"POT-Creation-Date: 2014-12-19 23:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: includes/class-core.php:341
+#: includes/class-core.php:362
 msgid "Settings"
 msgstr ""
 
-#: includes/class-shortcodes.php:38 includes/class-widgets.php:87
+#: includes/class-shortcodes.php:59 includes/class-widgets.php:87
 msgid "View Full Website"
 msgstr ""
 
-#: includes/class-shortcodes.php:65 includes/class-widgets.php:188
+#: includes/class-shortcodes.php:86 includes/class-widgets.php:188
 msgid "Return to Mobile Website"
 msgstr ""
 
@@ -41,117 +41,117 @@ msgstr ""
 msgid "Ex: Return to Mobile Website"
 msgstr ""
 
-#: includes/class-wp-admin.php:26
+#: includes/class-wp-admin.php:47
 msgid "Device Theme Switcher"
 msgstr ""
 
-#: includes/class-wp-admin.php:27
+#: includes/class-wp-admin.php:48
 msgid "Device Themes"
 msgstr ""
 
-#: includes/class-wp-admin.php:119
+#: includes/class-wp-admin.php:140
 msgid "Handheld Theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:135
+#: includes/class-wp-admin.php:156
 msgid "Handheld devices like Apple iPhone, Android, BlackBerry, and more."
 msgstr ""
 
-#: includes/class-wp-admin.php:138
+#: includes/class-wp-admin.php:159
 msgid "Tablet Theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:154
+#: includes/class-wp-admin.php:175
 msgid "Tablet devices like Apple iPad, Galaxy Tab, Kindle Fire, and more."
 msgstr ""
 
-#: includes/class-wp-admin.php:157
+#: includes/class-wp-admin.php:178
 msgid "Show Optional Settings"
 msgstr ""
 
-#: includes/class-wp-admin.php:165
+#: includes/class-wp-admin.php:186
 msgid "Low-Support Theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:168
+#: includes/class-wp-admin.php:189
 msgid "Use Handheld Setting"
 msgstr ""
 
-#: includes/class-wp-admin.php:182
+#: includes/class-wp-admin.php:203
 msgid "Devices which lack complete CSS & JavaScipt Support."
 msgstr ""
 
-#: includes/class-wp-admin.php:186
+#: includes/class-wp-admin.php:207
 msgid "Cookie Lifespan"
 msgstr ""
 
-#: includes/class-wp-admin.php:213
+#: includes/class-wp-admin.php:234
 msgid ""
 "Length of time until a user is redirected back to their initial device theme "
 "after they've requested the 'Desktop' Version."
 msgstr ""
 
-#: includes/class-wp-admin.php:224
+#: includes/class-wp-admin.php:245
 msgid "Save Settings"
 msgstr ""
 
-#: includes/class-wp-admin.php:233
+#: includes/class-wp-admin.php:254
 msgid "Help & Support"
 msgstr ""
 
-#: includes/class-wp-admin.php:241
+#: includes/class-wp-admin.php:262
 msgid "Helpful Links"
 msgstr ""
 
-#: includes/class-wp-admin.php:247
+#: includes/class-wp-admin.php:268
 msgid "Support Forum"
 msgstr ""
 
-#: includes/class-wp-admin.php:253
+#: includes/class-wp-admin.php:274
 msgid "FAQ"
 msgstr ""
 
-#: includes/class-wp-admin.php:258
+#: includes/class-wp-admin.php:279
 msgid "Shortcodes"
 msgstr ""
 
-#: includes/class-wp-admin.php:260 includes/class-wp-admin.php:280
+#: includes/class-wp-admin.php:281 includes/class-wp-admin.php:301
 msgid "Display a link to 'View Full Website'"
 msgstr ""
 
-#: includes/class-wp-admin.php:268 includes/class-wp-admin.php:289
+#: includes/class-wp-admin.php:289 includes/class-wp-admin.php:310
 msgid "Display a link to 'Return to Mobile Website'"
 msgstr ""
 
-#: includes/class-wp-admin.php:278
+#: includes/class-wp-admin.php:299
 msgid "Template Tags"
 msgstr ""
 
-#: includes/class-wp-admin.php:300
+#: includes/class-wp-admin.php:321
 msgid "URL Paramaters"
 msgstr ""
 
-#: includes/class-wp-admin.php:303
+#: includes/class-wp-admin.php:324
 msgid "Helpful for developers to view a specific device theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:307
+#: includes/class-wp-admin.php:328
 msgid "View Handheld Theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:314
+#: includes/class-wp-admin.php:335
 msgid "View Tablet Theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:321
+#: includes/class-wp-admin.php:342
 msgid "View Low-Support Theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:328
+#: includes/class-wp-admin.php:349
 msgid "View Active Theme"
 msgstr ""
 
-#: includes/class-wp-admin.php:389
+#: includes/class-wp-admin.php:410
 msgid "Settings saved."
 msgstr ""
 
