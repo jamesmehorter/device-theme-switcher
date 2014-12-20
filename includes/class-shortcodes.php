@@ -8,7 +8,28 @@
      * The shortcodes allow capable users to place 'View Full Website' and
      * 'Return to Mobile Website' links in their posts / pages.
      */
-    class DTS_Shortcode extends DTS_Singleton {
+    class DTS_Shortcode {
+
+        /**
+         * Internally stored reference to the single instance of this class
+         * @var object
+         */
+        private static $_instance;
+
+        /**
+         * Return the single instance of this class
+         *
+         * @return object Instance of this class
+         */
+        static function get_instance () {
+
+            if ( ! isset( self::$_instance ) ) {
+                self::$_instance = new self();
+            }
+
+            return self::$_instance;
+
+        } // function get_instance
 
         /**
          * Add Shortcodes to WordPress
@@ -40,7 +61,7 @@
             ), $atts ) );
 
             // Generate the html anchor link
-            $html_output = DTS_Switcher::factory()->build_html_link(
+            $html_output = DTS_Switcher::get_instance()->build_html_link(
                 'active',   // anchor link destination theme
                 $link_text, // anchor link inner text
                 explode( ',', str_replace( ' ', '', $css_classes ) ), // anchor link css classes
@@ -67,7 +88,7 @@
             ), $atts ) );
 
             // Generate the html anchor link
-            $html_output = DTS_Switcher::factory()->build_html_link(
+            $html_output = DTS_Switcher::get_instance()->build_html_link(
                 'device',   // anchor link destination theme
                 $link_text, // anchor link inner text
                 explode( ',', str_replace( ' ', '', $css_classes ) ), // anchor link css classes
