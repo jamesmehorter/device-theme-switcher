@@ -55,9 +55,6 @@
 	 * and other WordPress hooks to build all the plugin functionality.
 	 */
 
-	// Include our reusable singleton class used throughout the plugin
-	include_once( 'includes/class-singleton.php' );
-
 	// Include the core class
 	// Make available all the main plugin functionality (we won't run anything quite yet though..)
 	include_once( 'includes/class-core.php' );
@@ -75,10 +72,10 @@
 	//
 	// This is where it all starts on each load..
 	//
-	// DTS_Core::factory() calls init() on itself,
+	// DTS_Core::get_instance() calls init() on itself,
 	// wherein the main plugin functionality is included,
 	// hooks into WordPress, and is executed when needed.
-	add_action( 'plugins_loaded', array( 'DTS_Core', 'factory' ) );
+	add_action( 'plugins_loaded', array( 'DTS_Core', 'get_instance' ) );
 
 
 	// EOF

@@ -11,7 +11,28 @@
      *
      * @todo Build and check nonce for admin form, sanitize user input
      */
-    class DTS_Admin extends DTS_Singleton {
+    class DTS_Admin {
+
+        /**
+         * Internally stored reference to the single instance of this class
+         * @var object
+         */
+        private static $_instance;
+
+        /**
+         * Return the single instance of this class
+         *
+         * @return object Instance of this class
+         */
+        static function get_instance () {
+
+            if ( ! isset( self::$_instance ) ) {
+                self::$_instance = new self();
+            }
+
+            return self::$_instance;
+
+        } // function get_instance
 
         /**
          * Create the Appearance > Device Themes page
