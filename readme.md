@@ -5,6 +5,17 @@
 
 Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme in 'Appearance > Themes'.
 
+## Contributing / Cloning / Forking
+
+Upon cloning this repository you must run the following commands/setup in order to work on the plugin code:
+
+1) Clone repository into wp-content/plugins/device-theme-switcher
+2) Change directory into the newly downloaded plugin: `cd wp-content/plugins/device-theme-switcher`
+3) Download node modules for Grunt: `npm install`
+4) Install temp WP for testing, read this first: https://github.com/wp-cli/wp-cli/wiki/Plugin-Unit-Tests `bash bin/install-wp-tests.sh wordpress_test root '' localhost latest`
+5) Then you can run `phpunit` to load the tests
+6) Then you can run `grunt` or `grunt watch` to run Grunt, which compiles the SCSS and source JS, generates the .pot file for i18n, and if present, converts .po translations to .mo files.
+
 ## Installation
 
 Install and activate in your WordPress Dashboard 'Plugins > Add New' section by searching for 'Device Theme Switcher'.
