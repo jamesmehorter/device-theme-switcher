@@ -382,6 +382,7 @@
          * @return string the name of the cookie being used
          */
         static public function build_cookie_name () {
+
             // Start with the site name for the cookie name
             $cookie_name = get_bloginfo( 'sitename' );
 

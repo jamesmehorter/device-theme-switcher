@@ -201,7 +201,7 @@
 			// Ensure our dts_cookie_name option is set
 			$cookie_name = get_option( 'dts_cookie_name' ) ;
 			if ( empty( $cookie_name ) ) {
-				$cookie_name = DTS_Core::get_instance()->build_cookie_name();
+				$cookie_name = DTS_Core::build_cookie_name();
 				update_option( 'dts_cookie_name', $cookie_name );
 			}
 
