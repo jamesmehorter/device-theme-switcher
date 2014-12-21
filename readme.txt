@@ -188,7 +188,7 @@ Tablet theme page.php
 == Changelog ==
 
 = Version 2.9.2 - Released 12/19/2013 =
-* HOTFIX - Completed removed the use of a singleton base class. It just doesn't work for PHP <= 5.2 which we still have to support unfortunately.
+* HOTFIX - Completely removed the use of a singleton base class. It just doesn't work for PHP <= 5.2 which we still have to support unfortunately.
 
 = Version 2.9.1 - Released 12/18/2013 =
 * HOTFIX - Removed use of Late Static Binding which is a PHP 5.3 feature, though WordPress supports back to PHP 5.2.4. Thank you Craig S. for pointing this out!
