@@ -5,20 +5,6 @@
 
 Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme in 'Appearance > Themes'.
 
-## Contributing / Cloning / Forking
-
-After cloning this repository into your wp-content/plugins/ directory you'll need to do the following:
-
-**Running Unit Tests**
-1. Install temporary WP for testing - Follow step 3 here https://github.com/wp-cli/wp-cli/wiki/Plugin-Unit-Tests (we've already done steps 1 and 2 for you :))
-2. Then you can run `phpunit` to load the tests
-
-**Running Grunt**
-We use Grunt tasks to compile Sass and JavaScript, generate the i18n *.pot file, and if present; create *.mo files for each *.po translation file.
-
-1. Download node modules for Grunt: `npm install`
-2. Then you can run `grunt` or `grunt watch` to process each task
-
 ## Installation
 
 Install and activate in your WordPress Dashboard 'Plugins > Add New' section by searching for 'Device Theme Switcher'.
@@ -203,6 +189,22 @@ Handheld theme page.php
 Tablet theme page.php
 
     dynamic_sidebar('Tablet Theme Sidebar');
+
+## Contributing
+
+After cloning this repository into your wp-content/plugins/ directory you can immediately activate it and begin using the plugin. However, if you wish to contribute to the development of this plugin you'll also need to do the following.
+
+**Running Grunt** - We use Grunt tasks to compile Sass and JavaScript, generate the i18n *.pot file, and if present; create *.mo files for each *.po translation file.
+
+1. Navigate to the plugin directory within your shell
+1. Download node modules for Grunt: `npm install`
+2. Run `grunt` to process each task, or `grunt watch` to compile when changes are noticed
+
+**Running Unit Tests** - We use phpunit tests to verify our code is quality assured. You can build and/or run the tests locally by doing the following.
+
+1. Install temporary WP for testing - Follow step 3 here https://github.com/wp-cli/wp-cli/wiki/Plugin-Unit-Tests (we've already done steps 1 and 2 for you :))
+2. Install [phpunit](https://phpunit.de/)
+2. Then you can run `phpunit` to run the tests
 
 ## Changelog
 * _Version 2.9.2 - Released 12/19/2013_
