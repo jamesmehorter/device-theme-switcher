@@ -7,14 +7,17 @@ Device Theme Switcher is a WordPress plugin which delivers one of your WordPress
 
 ## Contributing / Cloning / Forking
 
-Upon cloning this repository you must run the following commands/setup in order to work on the plugin code:
+After cloning this repository into your wp-content/plugins/ directory you'll need to do the following:
 
-1) Clone repository into wp-content/plugins/device-theme-switcher
-2) Change directory into the newly downloaded plugin: `cd wp-content/plugins/device-theme-switcher`
-3) Download node modules for Grunt: `npm install`
-4) Install temp WP for testing, read this first: https://github.com/wp-cli/wp-cli/wiki/Plugin-Unit-Tests `bash bin/install-wp-tests.sh wordpress_test root '' localhost latest`
-5) Then you can run `phpunit` to load the tests
-6) Then you can run `grunt` or `grunt watch` to run Grunt, which compiles the SCSS and source JS, generates the .pot file for i18n, and if present, converts .po translations to .mo files.
+**Running Unit Tests**
+1. Install temporary WP for testing - Follow step 3 here https://github.com/wp-cli/wp-cli/wiki/Plugin-Unit-Tests (we've already done steps 1 and 2 for you :))
+2. Then you can run `phpunit` to load the tests
+
+**Running Grunt**
+We use Grunt tasks to compile Sass and JavaScript, generate the i18n *.pot file, and if present; create *.mo files for each *.po translation file.
+
+1. Download node modules for Grunt: `npm install`
+2. Then you can run `grunt` or `grunt watch` to process each task
 
 ## Installation
 
