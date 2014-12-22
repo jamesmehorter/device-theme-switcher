@@ -85,7 +85,11 @@
                     $dts_core->update();
                 } else {
                     // Check if an install is needed
-                    if ( $dts_core->need_install() ) {
+                    // get_installed_version returns false when no version is set
+                    // this is our indicator that we need to run the fresh install routine
+                    $installed_version = $dts_core->get_installed_version();
+
+                    if ( $dts_core->does_need_install( $installed_version ) ) {
 
                         // Yes, we need to run the install routine
                         $dts_core->install();
@@ -115,17 +119,15 @@
          * @param  null
          * @return bool  truthy do we need to install?
          */
-        public function need_install () {
+        public function does_need_install ( $installed_version ) {
 
-            // get_installed_version returns false when no version is set
-            // this is our indicator that we need to run the fresh install routine
-            if ( false === $this->get_installed_version() ) {
+            if ( false === $installed_version ) {
                 return true ;
             } else {
                 return false ;
             }
 
-        } // function need_install
+        } // function does_need_install
 
 
         /**
