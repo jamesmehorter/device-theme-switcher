@@ -20,11 +20,12 @@
         /**
          * Return the single instance of this class
          *
-         * @return object Instance of this class
+         * @param  bool   $force_new_instance Set to true to force a new instance of the class to be created
+         * @return object                     Instance of this class
          */
-        static function get_instance () {
+        static function get_instance ( $force_new_instance = false ) {
 
-            if ( ! isset( self::$_instance ) ) {
+            if ( ! isset( self::$_instance ) || $force_new_instance ) {
                 self::$_instance = new self();
             }
 
@@ -70,9 +71,10 @@
          *
          * @internal  Called via register_activation_hook
          * @uses      update_option, get_option, add_option
+         * @param     bool $force_new_instance Force DTS_Core singleton to build anew
          * @return    void
          */
-        static function activate () {
+        static function activate ( $force_new_instance = false ) {
 
             if ( is_admin() ) {
                 // Grab the single instace of this class
