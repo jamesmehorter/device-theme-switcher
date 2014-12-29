@@ -136,8 +136,9 @@
          * @return null
          */
         public function install () {
+
             // Add the version to the database
-            add_option( 'dts_version', DTS_VERSION );
+            update_option( 'dts_version', DTS_VERSION );
 
             // Set an option to store the plugin cookie name
             // A cookie is stored in your visitors browser when they've
@@ -152,7 +153,7 @@
             //  back from the days when we used sessions and admins could adjust
             //  the session length. Though maybe this no longer makes sense and
             //  could be deprecated????
-            add_option( 'dts_cookie_lifespan', 0 );
+            update_option( 'dts_cookie_lifespan', 0 );
 
         } // function install
 
