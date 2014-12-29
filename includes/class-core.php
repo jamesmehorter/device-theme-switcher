@@ -79,7 +79,7 @@
          * on the register_activation_hook() function.
          *
          * @internal  Called via register_activation_hook
-         * @uses      update_option, get_option, add_option
+         * @uses      is_admin
          * @param     bool $force_new_instance Force DTS_Core singleton to build anew
          * @return    void
          */
@@ -417,7 +417,7 @@
         public function get_installed_version () {
 
             // check for the dts_version option (New in Version 2.0)
-            $installed_version = get_option('dts_version');
+            $installed_version = get_option( 'dts_version' );
 
             // If there is no current version we'll just return false
             if ( ! empty( $installed_version ) ) {
@@ -448,11 +448,11 @@
                 // No version has been installed
                 // Careful! This could mean one of two scenarios:
                 // Scenario 1) This is a fresh install with no version yet
-                // Scenario 2) This is an a pre version 2.0.0 install and an update to 2.0.0 is needed
+                // Scenario 2) This is an a pre version 2.0 install and an update to 2.0 is needed
                 //
-                // Determine if this is a pre 2.0.0 install
+                // Determine if this is a pre 2.0 install
                 // In the first iterations of this plugin,
-                // before 2.0.0 we used an option titled 'dts_device'
+                // before 2.0 we used an option titled 'dts_device'
                 // We can check for it's presence..
                 if ( false === get_option( 'dts_device' ) ) {
                     // No, this is not a pre 2.0.0 install,
