@@ -14,7 +14,7 @@
     
     // Set an option to store the plugin cookie name
     // We'll reference this throughout the cookie setting/managing/removal process
-    update_option( 'dts_cookie_name', DTS_Core::build_cookie_name() );
+    update_option( 'dts_cookie_name', DTS_Core::build_cookie_name( get_bloginfo( 'sitename' ) ) );
 
     // Add the new option using the new name and existing dts_session_lifetime value
     $dts_cookie_lifespan = intval( get_option( 'dts_session_lifetime' ) );

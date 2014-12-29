@@ -143,7 +143,7 @@
             // Set an option to store the plugin cookie name
             // A cookie is stored in your visitors browser when they've
             //  access the website via a device and have since chosen to
-            add_option( 'dts_cookie_name', $this->build_cookie_name() );
+            update_option( 'dts_cookie_name', $this->build_cookie_name( get_bloginfo( 'sitename' ) ) );
 
             // When storing the cookie we set a lifespan for it as well.
             // Within the plugin settings admins can adjust this lifespan.
@@ -383,10 +383,10 @@
          * @param  null
          * @return string the name of the cookie being used
          */
-        static public function build_cookie_name () {
+        static public function build_cookie_name ( $site_name = "" ) {
 
             // Start with the site name for the cookie name
-            $cookie_name = get_bloginfo( 'sitename' );
+            $cookie_name = $site_name;
 
             // Remove special characters
             $cookie_name = preg_replace( '/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name );
