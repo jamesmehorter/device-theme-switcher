@@ -48,7 +48,7 @@
 	 * We've got our action set up, so we can load this now,
 	 * and viola, the tests begin.
 	 */
-	require WP_TESTS_DIR . 'includes/bootstrap.php';
+	require WP_TESTS_DIR . '/includes/bootstrap.php';
 
 
 	// EOF
