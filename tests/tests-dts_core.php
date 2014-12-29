@@ -1,4 +1,7 @@
 <?php
+	// DTS_VERSION constant for use anywhere in WordPress
+	if ( ! defined ( 'DTS_VERSION' ) ) define( 'DTS_VERSION', '2.9.2' );
+
 	/**
 	 * Tests against the DTS_Core class to verify it's legitimacy to
 	 * the external world and QA all it's methods.
@@ -21,45 +24,110 @@
 		 */
 
 		/**
-		 * Test the activate method
+		 * Test the activate method's install functionality
+		 *
+		 * Activation should install when no install is present
+		 *
+		 * @return void
 		 */
-		function test_activate () {
+		function test_install () {
+			// Make WP believe we're in site.com/wp-admin/
+			if ( ! defined( 'WP_ADMIN' ) ) define( 'WP_ADMIN', true );
+
+			// Run the plugin activation routine
+			// The activate method is typically called statically via register_activation_hook
+			// so we'll also call it statically
+			// sending true argument to force a new instance of our singleton class to be created
+			DTS_Core::activate( true );
+
+			// Test that the 'dts_version' option was installed accurately
+			$current_plugin_version = DTS_VERSION ;
+			$installed_version = get_option( 'dts_version' );
+			$this->assertEquals( $current_plugin_version, $installed_version );
+
+			// Test that the plugin cookie name was installed accurately
+			$dts_cookie_name = get_option( 'dts_cookie_name' );
+			$this->assertEquals( DTS_Core::build_cookie_name( get_bloginfo( 'sitename' ) ), $dts_cookie_name );
+
+			// Test that the plugin cookie lifetime was install accurately
+			$dts_lifespan = get_option( 'dts_cookie_lifespan' );
+			$this->assertEquals( 0, $dts_lifespan );
 
 		} // function test_activate
 
 
 		/**
-		 * Test the does_need_install method
+		 * Test the activate method's update functionality
+		 *
+		 * Activation should update when an update is available
+		 *
+		 * @return void
 		 */
-		function test_does_need_install () {
+		function test_activation_update () {
 
-			// Fetch an instance of the DTS_Core class
-			$dts_core = DTS_Core::get_instance();
+			// Make WP believe we're in site.com/wp-admin/
+			if ( ! defined( 'WP_ADMIN' ) ) define( 'WP_ADMIN', true );
 
-			// Reproduce conditions where dts has not been installed
-			$installed_version = false;
-			$this->assertTrue( $dts_core->does_need_install( $installed_version ) );
+			// Test update via activation
 
-			// Reproduce any installed version
-			// anything other than false
-			$installed_version = 'anything';
-			$this->assertFalse( $dts_core->does_need_install( $installed_version ) );
+			// test by setting $installed_version to an old version number
+			// ..running the update routine, and then testing for the new version
+			$installed_version = '2.0';
 
-		} // function test_does_need_install
+			// Add the version to the database
+            update_option( 'dts_version', $installed_version );
+
+			// Run the plugin activation routine
+			// The activate method is typically called statically via register_activation_hook
+			// so we'll also call it statically
+			// sending true argument to force a new instance of our singleton class to be created
+			DTS_Core::activate( true );
+
+			// Fetch the plugin version to verify that it was updated
+			$installed_version = get_option( 'dts_version' );
+			$this->assertEquals( DTS_VERSION, $installed_version );
+
+		} // function test_activate
 
 
 		/**
-		 * Test the install method
+		 * Test typical runtime execution update, which should occur
+		 * whenever an admin loads an admin page
+		 *
+		 * test by setting $installed_version to an old version number
+		 * ..running the update routine, and then testing for the new version
+		 *
+		 * @return void
 		 */
-		function test_install () {
+		function test_runtime_update () {
 
-		} // function test_install
+			// Make WP believe we're in site.com/wp-admin/
+			if ( ! defined( 'WP_ADMIN' ) ) define( 'WP_ADMIN', true );
 
+			// Add the version to the database
+            update_option( 'dts_version', '2.0' );
+
+			// Test update via typical runtime
+			// sending true argument to force a new instance of our singleton class to be created
+			$dts_core = DTS_Core::get_instance( true );
+
+			// Fetch the plugin version to verify that it was updated
+			$this->assertEquals( DTS_VERSION, get_option( 'dts_version' ) );
+
+		} // function test_runtime_update
 
 		/**
 		 * Test the uninstall method
 		 */
 		function test_uninstall () {
+
+			// should remove the following options
+            // 'dts_version'
+            // 'dts_handheld_theme'
+            // 'dts_tablet_theme'
+            // 'dts_low_support_theme'
+            // 'dts_cookie_name'
+            // 'dts_cookie_lifespan'
 
 		} // function test_uninstall
 
@@ -77,6 +145,12 @@
 		 */
 		function test_build_cookie_name () {
 
+			// pass build_cookie_name a fake site name, ex: "James' Website"
+			// returned cookie name should contain three items when exploded on '-'
+			// the first item should equal the 'slugized' fake site name, ex: "jameswebsite"
+			// the last two should be 'alternate' and 'theme'
+			// e.g. 'jameswebsite-alternate-theme'
+
 		} // function test_build_cookie_name
 
 
@@ -84,6 +158,9 @@
 		 * Test the get_installed_version method
 		 */
 		function test_get_installed_version () {
+
+			// if there is a version in the DB that version should be returned
+			// if there is no version in the DB false should be returned
 
 		} // function test_get_installed_version
 
