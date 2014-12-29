@@ -87,26 +87,30 @@
 
             if ( is_admin() ) {
 
-                // Do we need to run an update routine?
-                if ( $dts_core->does_need_update() ) {
                 // Grab the single instance of this class
                 $dts_core = DTS_Core::get_instance( $force_new_instance );
 
-                    // Yes, let's run the update
-                    $dts_core->update();
+                if ( ! $dts_core->installed_version ) {
+
+                    // Yes, we need to run the install routine
+                    $dts_core->install();
+
                 } else {
-                    // Check if an install is needed
-                    // get_installed_version returns false when no version is set
-                    // this is our indicator that we need to run the fresh install routine
-                    $installed_version = $dts_core->get_installed_version();
 
-                    if ( $dts_core->does_need_install( $installed_version ) ) {
+                    if ( $dts_core->does_need_update() ) {
 
-                        // Yes, we need to run the install routine
-                        $dts_core->install();
+                        // Yes, let's run the update
+                        $dts_core->update();
+
+                    } else {
+
+                        // plugin is installed and up-to-date already
+
                     }
                 }
+
             } // if is_admin
+
         } // function activate
 
 
