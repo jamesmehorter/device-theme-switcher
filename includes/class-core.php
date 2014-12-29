@@ -534,7 +534,7 @@
                             // Yes, this update has a routine we need to run
                             // we need only include the update routine
                             // The update file will run automatically
-                            include_once( DTS_PATH . 'updates/' . $version_update_routine_filename );
+                            include_once( DTS_PATH . 'includes/updates/' . $version_update_routine_filename );
                         }
 
                         // Update the current version to reflect the update
