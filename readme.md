@@ -1,4 +1,5 @@
-# Device Theme Switcher
+# Device Theme Switcher [![Build Status](https://travis-ci.org/jamesmehorter/device-theme-switcher.svg?branch=feature%2Funit-testing-development)](https://travis-ci.org/jamesmehorter/device-theme-switcher)
+
 ##### Version 2.9.2 (Released 12/19/2014)
 
 [Installation](https://github.com/jamesmehorter/device-theme-switcher/#installation) | [Features](https://github.com/jamesmehorter/device-theme-switcher/#features) | [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/#screenshots) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/#faq) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/#changelog) | [Credits](https://github.com/jamesmehorter/device-theme-switcher/#credits)
