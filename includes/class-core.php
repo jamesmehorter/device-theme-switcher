@@ -86,11 +86,11 @@
         static function activate ( $force_new_instance = false ) {
 
             if ( is_admin() ) {
-                // Grab the single instace of this class
-                $dts_core = DTS_Core::get_instance();
 
                 // Do we need to run an update routine?
                 if ( $dts_core->does_need_update() ) {
+                // Grab the single instance of this class
+                $dts_core = DTS_Core::get_instance( $force_new_instance );
 
                     // Yes, let's run the update
                     $dts_core->update();
