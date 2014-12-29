@@ -420,11 +420,16 @@
             $installed_version = get_option('dts_version');
 
             // If there is no current version we'll just return false
-            if ( empty( $installed_version ) ) {
-                return false ;
-            } else {
+            if ( ! empty( $installed_version ) ) {
+
                 // return the currently installed plugin version
                 return $installed_version ;
+
+            } else {
+
+                // return false when there is no version installed
+                return false ;
+
             }
 
         } // function get_installed_version
