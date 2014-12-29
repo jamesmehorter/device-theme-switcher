@@ -298,7 +298,7 @@
          * @param   null
          * @return  null
          */
-        function admin_enqueue_scripts () {
+        static function admin_enqueue_scripts () {
 
             // Enqueue our JavaScript
             wp_enqueue_script(
@@ -331,7 +331,7 @@
          * @param     null
          * @return    null
          */
-        public function register_widgets () {
+        static function register_widgets () {
 
             // Register the 'View Full Website' widget
             register_widget( 'DTS_View_Full_Website' );
