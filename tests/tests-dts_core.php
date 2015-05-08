@@ -97,6 +97,9 @@
 		 * test by setting $installed_version to an old version number
 		 * ..running the update routine, and then testing for the new version
 		 *
+		 * @todo test for all incremental updates
+		 * @todo For updates with an update routine test routine success/failure
+		 *
 		 * @return void
 		 */
 		function test_runtime_update () {
@@ -121,7 +124,7 @@
 		 */
 		function test_uninstall () {
 
-			// should remove the following options
+			// @todo should remove the following options
             // 'dts_version'
             // 'dts_handheld_theme'
             // 'dts_tablet_theme'
@@ -133,7 +136,7 @@
 
 
 		/**
-		 * Test the hook_into_wordpress method
+		 * @todo Test the hook_into_wordpress method
 		 */
 		function test_hook_into_wordpress () {
 
@@ -141,7 +144,7 @@
 
 
 		/**
-		 * Test the build_cookie_name method
+		 * @todo Test the build_cookie_name method
 		 */
 		function test_build_cookie_name () {
 
@@ -166,7 +169,7 @@
 
 
 		/**
-		 * Test the does_need_update method
+		 * @todo Test the does_need_update method
 		 */
 		function test_does_need_update () {
 
@@ -174,7 +177,7 @@
 
 
 		/**
-		 * Test the update method
+		 * @todo Test the update method
 		 */
 		function test_update () {
 
