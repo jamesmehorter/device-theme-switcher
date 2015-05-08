@@ -1,6 +1,8 @@
 # Device Theme Switcher [![Build Status](https://travis-ci.org/jamesmehorter/device-theme-switcher.svg?branch=feature%2Funit-testing-development)](https://travis-ci.org/jamesmehorter/device-theme-switcher)
 
 ##### Version 3.0.0 (Released XX/XX/2015)
+##### Requires at least: WordPress 3.0
+##### Tested up to: WordPress 4.2.2
 
 [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/wiki/1-Screenshots) | [Features](https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ) | [Contributing](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Contributing) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/wiki/5-Changelog)
 
