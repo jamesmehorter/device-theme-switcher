@@ -18,13 +18,20 @@
         private static $_instance;
 
         /**
+         * Store the currently installed plugin version
+         * @var string Ex: '2.9.1'
+         */
+        public $installed_version = false ;
+
+        /**
          * Return the single instance of this class
          *
-         * @return object Instance of this class
+         * @param  bool   $force_new_instance Set to true to force a new instance of the class to be created
+         * @return object                     Instance of this class
          */
-        static function get_instance () {
+        static function get_instance ( $force_new_instance = false ) {
 
-            if ( ! isset( self::$_instance ) ) {
+            if ( ! isset( self::$_instance ) || $force_new_instance ) {
                 self::$_instance = new self();
             }
 
@@ -42,6 +49,9 @@
         public function __construct () {
             // Load our text domain
             load_plugin_textdomain( 'device-theme-switcher', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+
+            // Populate the internally-stored installed_version variable
+            $this->installed_version = $this->get_installed_version();
 
             // Are we in the admin?
             if ( is_admin() ) {
@@ -69,29 +79,38 @@
          * on the register_activation_hook() function.
          *
          * @internal  Called via register_activation_hook
-         * @uses      update_option, get_option, add_option
+         * @uses      is_admin
+         * @param     bool $force_new_instance Force DTS_Core singleton to build anew
          * @return    void
          */
-        static function activate () {
+        static function activate ( $force_new_instance = false ) {
 
             if ( is_admin() ) {
-                // Grab the single instace of this class
-                $dts_core = DTS_Core::get_instance();
 
-                // Do we need to run an update routine?
-                if ( $dts_core->does_need_update() ) {
+                // Grab the single instance of this class
+                $dts_core = DTS_Core::get_instance( $force_new_instance );
 
-                    // Yes, let's run the update
-                    $dts_core->update();
+                if ( ! $dts_core->installed_version ) {
+
+                    // Yes, we need to run the install routine
+                    $dts_core->install();
+
                 } else {
-                    // Check if an install is needed
-                    if ( $dts_core->need_install() ) {
 
-                        // Yes, we need to run the install routine
-                        $dts_core->install();
+                    if ( $dts_core->does_need_update() ) {
+
+                        // Yes, let's run the update
+                        $dts_core->update();
+
+                    } else {
+
+                        // plugin is installed and up-to-date already
+
                     }
                 }
+
             } // if is_admin
+
         } // function activate
 
 
@@ -109,24 +128,6 @@
 
         } // function deactivate
 
-        /**
-         * Do we need to run the fresh install routine?
-         *
-         * @param  null
-         * @return bool  truthy do we need to install?
-         */
-        public function need_install () {
-
-            // get_installed_version returns false when no version is set
-            // this is our indicator that we need to run the fresh install routine
-            if ( false === $this->get_installed_version() ) {
-                return true ;
-            } else {
-                return false ;
-            }
-
-        } // function need_install
-
 
         /**
          * Perform a fresh install of the plugin
@@ -135,13 +136,14 @@
          * @return null
          */
         public function install () {
+
             // Add the version to the database
-            add_option( 'dts_version', DTS_VERSION );
+            update_option( 'dts_version', DTS_VERSION );
 
             // Set an option to store the plugin cookie name
             // A cookie is stored in your visitors browser when they've
             //  access the website via a device and have since chosen to
-            add_option( 'dts_cookie_name', $this->build_cookie_name() );
+            update_option( 'dts_cookie_name', $this->build_cookie_name( get_bloginfo( 'sitename' ) ) );
 
             // When storing the cookie we set a lifespan for it as well.
             // Within the plugin settings admins can adjust this lifespan.
@@ -151,7 +153,7 @@
             //  back from the days when we used sessions and admins could adjust
             //  the session length. Though maybe this no longer makes sense and
             //  could be deprecated????
-            add_option( 'dts_cookie_lifespan', 0 );
+            update_option( 'dts_cookie_lifespan', 0 );
 
         } // function install
 
@@ -296,7 +298,7 @@
          * @param   null
          * @return  null
          */
-        function admin_enqueue_scripts () {
+        static function admin_enqueue_scripts () {
 
             // Enqueue our JavaScript
             wp_enqueue_script(
@@ -329,7 +331,7 @@
          * @param     null
          * @return    null
          */
-        public function register_widgets () {
+        static function register_widgets () {
 
             // Register the 'View Full Website' widget
             register_widget( 'DTS_View_Full_Website' );
@@ -381,9 +383,10 @@
          * @param  null
          * @return string the name of the cookie being used
          */
-        static public function build_cookie_name () {
+        static public function build_cookie_name ( $site_name = "" ) {
+
             // Start with the site name for the cookie name
-            $cookie_name = get_bloginfo( 'sitename' );
+            $cookie_name = $site_name;
 
             // Remove special characters
             $cookie_name = preg_replace( '/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name );
@@ -414,14 +417,19 @@
         public function get_installed_version () {
 
             // check for the dts_version option (New in Version 2.0)
-            $installed_version = get_option('dts_version');
+            $installed_version = get_option( 'dts_version' );
 
             // If there is no current version we'll just return false
-            if ( empty( $installed_version ) ) {
-                return false ;
-            } else {
+            if ( ! empty( $installed_version ) ) {
+
                 // return the currently installed plugin version
                 return $installed_version ;
+
+            } else {
+
+                // return false when there is no version installed
+                return false ;
+
             }
 
         } // function get_installed_version
@@ -434,20 +442,17 @@
          * @return bool  truthy do we need to update?
          */
         public function does_need_update () {
-
-            // get_installed_version returns an string version when a version has been set
-            $installed_version = $this->get_installed_version();
-
             // Is a version installed?
-            if ( false === $installed_version ) {
+            if ( false === $this->installed_version ) {
+
                 // No version has been installed
                 // Careful! This could mean one of two scenarios:
                 // Scenario 1) This is a fresh install with no version yet
-                // Scenario 2) This is an a pre version 2.0.0 install and an update to 2.0.0 is needed
+                // Scenario 2) This is an a pre version 2.0 install and an update to 2.0 is needed
                 //
-                // Determine if this is a pre 2.0.0 install
+                // Determine if this is a pre 2.0 install
                 // In the first iterations of this plugin,
-                // before 2.0.0 we used an option titled 'dts_device'
+                // before 2.0 we used an option titled 'dts_device'
                 // We can check for it's presence..
                 if ( false === get_option( 'dts_device' ) ) {
                     // No, this is not a pre 2.0.0 install,
@@ -459,7 +464,7 @@
                 }
             } else {
                 // Is the installed version less than the current version?
-                if ( version_compare( $installed_version, DTS_VERSION, '<' ) ) {
+                if ( version_compare( $this->installed_version, DTS_VERSION, '<' ) ) {
                     // Installed version is less than the current version
                     // Yes, an update is needed
                     return true ;
@@ -482,14 +487,11 @@
          * @uses  update_option
          */
         public function update () {
-            // Fetch the current plugin version
-            $installed_version = $this->get_installed_version();
-
             // If no version has been set already that means we're
             // updating from the version 1.x series when we did not
             // store the plugin version in the database
-            if ( false === $installed_version ) {
-                $installed_version = '1.0';
+            if ( false === $this->installed_version ) {
+                $this->installed_version = '1.0';
             }
 
             // Array of versions and update routines
@@ -522,7 +524,7 @@
                 foreach ( $plugin_versions as $version => $version_update_routine_filename ) {
 
                     // Is the current version lower than the
-                    if ( version_compare( $installed_version, $version, '<' ) ) {
+                    if ( version_compare( $this->installed_version, $version, '<' ) ) {
 
                         // Yes, an update is required
                         //
@@ -532,11 +534,11 @@
                             // Yes, this update has a routine we need to run
                             // we need only include the update routine
                             // The update file will run automatically
-                            include_once( DTS_PATH . 'updates/' . $version_update_routine_filename );
+                            include_once( DTS_PATH . 'includes/updates/' . $version_update_routine_filename );
                         }
 
                         // Update the current version to reflect the update
-                        $installed_version = $version;
+                        $this->installed_version = $version;
                     }
 
                 } // foreach
@@ -544,7 +546,7 @@
             } // if need update
 
             // Update the DB version to reflect the newly installed version of the plugin
-            update_option( 'dts_version', $installed_version );
+            update_option( 'dts_version', $this->installed_version );
 
         } // function update
 

@@ -201,7 +201,7 @@
 			// Ensure our dts_cookie_name option is set
 			$cookie_name = get_option( 'dts_cookie_name' ) ;
 			if ( empty( $cookie_name ) ) {
-				$cookie_name = DTS_Core::get_instance()->build_cookie_name();
+				$cookie_name = DTS_Core::build_cookie_name();
 				update_option( 'dts_cookie_name', $cookie_name );
 			}
 
@@ -488,7 +488,7 @@
 				array_unshift( $css_classes, 'dts-link' );
 
 				// Build the HTML link
-				$html_output = "<a href='$link_href' title='$link_text' class='" . implode( ' ', $css_classes ) . "'>$link_text</a>\n";
+				$html_output = "<a href='$link_href' title='$link_text' class='" . implode( ' ', $css_classes ) . "' rel='nofollow'>$link_text</a>\n";
 			}
 
 			if ( $echo ) {

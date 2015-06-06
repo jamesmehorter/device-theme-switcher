@@ -2,8 +2,8 @@
 Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
 Requires at least: 3.0
-Tested up to: 4.2-alpha
-Stable tag: 2.9.2
+Tested up to: 4.2.2
+Stable tag: 3.0.0
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, iPad, iPhone, Android, Blackberry, Tablet Theme, Different Themes, Device Theme
 Author URI: http://www.jamesmehorter.com/
 Plugin URI: https://github.com/jamesmehorter/device-theme-switcher
@@ -187,11 +187,19 @@ Tablet theme page.php
 
 == Changelog ==
 
-= Version 2.9.2 - Released 12/19/2013 =
-* HOTFIX - Completely removed the use of a singleton base class. It just doesn't work for PHP <= 5.2 which we still have to support unfortunately.
+= Version 3.0.0 - Released XX/XX/2015 =
+* FIX - Corrected an issue with the plugin update code which caused some user's to not receive the complete update routine.
+* FIX - Added rel="nofollow" to the device switcher <a> links which the plugin creates. Thanks ljmac for this! https://wordpress.org/support/topic/please-make-theme-switcher-link-no-follow?replies=2
+* IMPROVEMENT - Rewrote several aspects of the plugin to improve testability, which ultimately improve the codebase architecture and readability.
+* IMPROVEMENT - Introduced initial phpunit tests for the plugin.
+* IMPROVEMENT - Moved the massive Github readme into sections in a new Github wiki.
+* IMPROVEMENT - Implemented Travis on-the-fly testing integration for Github.
 
-= Version 2.9.1 - Released 12/18/2013 =
-* HOTFIX - Removed use of Late Static Binding which is a PHP 5.3 feature, though WordPress supports back to PHP 5.2.4. Thank you Craig S. for pointing this out!
+= Version 2.9.2 - Released 12/19/2014 =
+* FIX - Completely removed the use of a singleton base class. It just doesn't work for PHP <= 5.2 which we must support.
+
+= Version 2.9.1 - Released 12/18/2014 =
+* FIX - Removed use of Late Static Binding which is a PHP 5.3 feature, though WordPress supports back to PHP 5.2.4. Thank you Craig S. for pointing this out!
 
 = Version 2.9.0 - Released 12/18/2014 =
 * IMPROVRMENT - Rewrites/Modifications throughout the plugin code to improve overall stability, maintainability, and adherence to WordPress Coding Standards.
