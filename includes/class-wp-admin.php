@@ -34,12 +34,30 @@
 
         } // function get_instance
 
+
+        /**
+         * DTS_Admin constructor
+         */
+        public function __construct() {
+            // Create our plugin admin page under the 'Appearance' menu
+            add_action( 'admin_menu', array( $this, 'register_admin_page' ), 10, 0 );
+
+            // Check if we need to save any form data that was submitted
+            add_action( 'load-appearance_page_device-themes', array( $this, 'save_admin_page_settings' ), 10, 0 );
+
+            // Display a 'Settings' link with the plugin in the plugins list
+            add_filter( 'plugin_action_links', array( $this, 'plugins_page_settings_link' ), 10, 2 );
+
+            // Add admin scripts and styles used to display the admin settings view
+            add_action( 'admin_init', array( $this, 'enqueue_admin_scripts' ) );
+        }
+
         /**
          * Create the Appearance > Device Themes page
          *
-         * Called via admin_menu in dts_controller.php
+         * Called via admin_menu action
          */
-        public function admin_menu () {
+        public function register_admin_page () {
 
             // Create the admin menu page
             add_submenu_page(
@@ -51,7 +69,67 @@
                 array( $this, 'generate_admin_settings_page' )
             );
 
-        } // function admin_menu
+        } // function register_admin_page
+
+        /**
+         * Enqueue admin scripts
+         *
+         * @uses    wp_enquque_scipt
+         * @param   null
+         * @return  null
+         */
+        public function enqueue_admin_scripts() {
+
+            // Enqueue our JavaScript
+            wp_enqueue_script(
+                'device-theme-switcher-admin-scripts', // handle
+                DTS_URL . 'assets/js/device-theme-switcher-admin-scripts.min.js', // srouce
+                array( 'jquery' ), // dependencies
+                DTS_VERSION, // version
+                true // in footer
+            );
+
+            // Enqueue our Stylesheet
+            wp_enqueue_style(
+                'device-theme-switcher-admin-styles', //handle
+                DTS_URL . 'assets/css/device-theme-switcher-admin-styles.css', // source
+                array(), // dependencies
+                DTS_VERSION, //version
+                'all' // media
+            );
+
+        } // function enqueue_admin_scripts
+
+
+        /**
+         * Add a 'Settings' link to the plugin row in the WP-Admin > Plugins page
+         *
+         * This method is run statically in dts_controller.php
+         * on the 'plugin_action_links' hook
+         *
+         * @uses    admin_url
+         * @param   array $links   The current plugin links
+         * @param   string $file   The main plugin path/filename.php
+         * @return  array  $links  After adding in our own
+         */
+        public function plugins_page_settings_link( $links, $file ) {
+            if ( 'device-theme-switcher/dts_controller.php' == $file ) {
+
+                // Insert a new 'Settings' link which points to the
+                // Appearance > Device Themes page
+                $links['settings'] = sprintf(
+                    '<a href="%s" class="edit"> %s </a>',
+                    admin_url( 'themes.php?page=device-themes' ),
+                    __( 'Settings', 'device-theme-switcher' )
+                );
+
+            } // end if
+
+            // Return the links with our new 'Settings' link appended
+            return $links;
+
+        } // function plugins_page_settings_link
+
 
         /**
          * Generate the admin settings page
@@ -63,7 +141,7 @@
          * @param  null
          * @return null
          */
-        public function generate_admin_settings_page () {
+        public function generate_admin_settings_page() {
             global $dts;
 
             // Gather all of the currently installed theme names so they can be displayed in the <select> boxes below
@@ -357,6 +435,7 @@
             </div><?php
         } // generate_admin_settings_page
 
+
         /**
          * Save the plugin settings
          *
@@ -366,8 +445,8 @@
          * @uses    delete_option(), update_option(), add_option()
          * @return  null
          */
-        public function load () {
-            // Unfortunetly we can't use the settings api on a subpage, so we need to check for and update any options this plugin uses
+        public function save_admin_page_settings() {
+            // Unfortunately we can't use the settings api on a subpage, so we need to check for and update any options this plugin uses
             if ( $_POST ) {
                 if ( 'true' == $_POST['dts_settings_update'] ) {
 

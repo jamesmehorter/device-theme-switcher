@@ -255,19 +255,6 @@
                 // Grab the single instance of the admin class
                 $dts_admin = DTS_Admin::get_instance();
 
-                // Create our plugin admin page under the 'Appearance' menu
-                add_action( 'admin_menu', array( $dts_admin, 'admin_menu' ), 10, 0 );
-
-                // Check if we need to save any form data that was submitted
-                add_action( 'load-appearance_page_device-themes', array( $dts_admin, 'load' ), 10, 0 );
-
-                // Display a 'Settings' link with the plugin in the plugins list
-                add_filter( 'plugin_action_links', array( $this, 'device_theme_switcher_settings_link' ), 10, 2 );
-
-                // Add admin scripts and styles used to display the admin settings view
-                add_action( 'admin_init', array( $this, 'admin_enqueue_scripts' ) );
-
-            } else { // is_admin()
 
                 // Grab the single instance of the switcher class
                 // And make it available globally for use in themes/other plugins
@@ -290,37 +277,6 @@
 
         } // function hook_into_wordpress
 
-
-        /**
-         * Enqueue admin scripts
-         *
-         * @uses    wp_enquque_scipt
-         * @param   null
-         * @return  null
-         */
-        static function admin_enqueue_scripts () {
-
-            // Enqueue our JavaScript
-            wp_enqueue_script(
-                'device-theme-switcher-admin-scripts', // handle
-                DTS_URL . 'assets/js/device-theme-switcher-admin-scripts.min.js', // srouce
-                array( 'jquery' ), // dependencies
-                DTS_VERSION, // version
-                true // in footer
-            );
-
-            // Enqueue our Stylesheet
-            wp_enqueue_style(
-                'device-theme-switcher-admin-styles', //handle
-                DTS_URL . 'assets/css/device-theme-switcher-admin-styles.css', // source
-                array(), // dependencies
-                DTS_VERSION, //version
-                'all' // media
-            );
-
-        } // function admin_enqueue_scripts
-
-
         /**
          * Register our widgets
          *
@@ -340,36 +296,6 @@
             register_widget( 'DTS_Return_To_Mobile_Website' );
 
         } // function dts_register_widgets
-
-
-        /**
-         * Add a 'Settings' link to the plugin row in the WP-Admin > Plugins page
-         *
-         * This method is run statically in dts_controller.php
-         * on the 'plugin_action_links' hook
-         *
-         * @uses    admin_url
-         * @param   array $links   The current plugin links
-         * @param   string $file   The main plugin path/filename.php
-         * @return  array  $links  After adding in our own
-         */
-        static function device_theme_switcher_settings_link( $links, $file ) {
-            if ( 'device-theme-switcher/dts_controller.php' == $file ) {
-
-                // Insert a new 'Settings' link which points to the
-                // Appearance > Device Themes page
-                $links['settings'] = sprintf(
-                    '<a href="%s" class="edit"> %s </a>',
-                    admin_url( 'themes.php?page=device-themes' ),
-                    __( 'Settings', 'device-theme-switcher' )
-                );
-
-            } // end if
-
-            // Return the links with our new 'Settings' link appended
-            return $links;
-
-        } // function device_theme_switcher_settings_link
 
 
         /**
