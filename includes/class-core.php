@@ -102,7 +102,7 @@
                         $dts_core->do_update();
                     } else {
                         // plugin is installed and up-to-date already
-                }
+                    }
                 } else {
 
                     // Plugin has not yet been installed
@@ -442,7 +442,7 @@
          * This is determined the installed version and the version defined in the files match
          *
          * @param  null
-         * @return bool  truthy do we need to update?
+         * @return bool truthy do we need to update?
          */
         public function does_need_update () {
 
