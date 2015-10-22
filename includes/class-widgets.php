@@ -117,7 +117,7 @@
 		 * @param   null
 		 */
 		function __construct() {
-			
+
 			// Build an instance of the new widget
 			parent::__construct(
 				'dts_return_to_mobile_website',

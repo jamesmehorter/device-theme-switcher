@@ -64,7 +64,7 @@
                 }
             } // if is_admin
 
-            // Load our plugins includes
+            // Load our plugin's includes
             $this->load_includes();
 
             // Hook into WordPress
