@@ -10,7 +10,7 @@ Device Theme Switcher is a WordPress plugin which delivers one of your WordPress
 
 ## Installation
 
-Install and activate in your WordPress Dashboard 'Plugins > Add New' section by searching for 'Device Theme Switcher'.
+Install and activate in your WordPress Dashboard 'Plugins > Add New' section by searching for 'Device Theme Switcher' or [download from WordPress.org](https://wordpress.org/plugins/device-theme-switcher/).
 
 After activation you'll have a new menu: 'Appearance > Device Themes'--where you set which theme is given to which visitor device.
 
