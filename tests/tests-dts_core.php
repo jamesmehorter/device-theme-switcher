@@ -124,13 +124,36 @@
 		 */
 		function test_uninstall () {
 
-			// @todo should remove the following options
-            // 'dts_version'
-            // 'dts_handheld_theme'
-            // 'dts_tablet_theme'
-            // 'dts_low_support_theme'
-            // 'dts_cookie_name'
-            // 'dts_cookie_lifespan'
+			$dts_core = DTS_Core::get_instance( true );
+
+			// Add all the site options we set
+			// Test that they are properly removed
+			add_option( 'dts_version', 1 );
+			add_option( 'dts_cookie_name', 1 );
+			add_option( 'dts_cookie_lifespan', 1 );
+			add_option( 'dts_handheld_theme', 1 );
+			add_option( 'dts_tablet_theme', 1 );
+			add_option( 'dts_low_support_theme', 1 );
+			add_option( 'widget_dts_view_full_website', 1 );
+			add_option( 'widget_dts_return_to_mobile_website', 1 );
+
+			delete_option( 'dts_version' );
+			delete_option( 'dts_cookie_name' );
+			delete_option( 'dts_cookie_lifespan' );
+			delete_option( 'dts_handheld_theme' );
+			delete_option( 'dts_tablet_theme' );
+			delete_option( 'dts_low_support_theme' );
+			delete_option( 'widget_dts_view_full_website' );
+			delete_option( 'widget_dts_return_to_mobile_website' );
+
+			$this->assertFalse( get_option( 'dts_version' ) );
+			$this->assertFalse( get_option( 'dts_cookie_name' ) );
+			$this->assertFalse( get_option( 'dts_cookie_lifespan' ) );
+			$this->assertFalse( get_option( 'dts_handheld_theme' ) );
+			$this->assertFalse( get_option( 'dts_tablet_theme' ) );
+			$this->assertFalse( get_option( 'dts_low_support_theme' ) );
+			$this->assertFalse( get_option( 'widget_dts_view_full_website' ) );
+			$this->assertFalse( get_option( 'widget_dts_return_to_mobile_website' ) );
 
 		} // function test_uninstall
 
