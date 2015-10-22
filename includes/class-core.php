@@ -255,17 +255,12 @@
                 // Grab the single instance of the admin class
                 $dts_admin = DTS_Admin::get_instance();
 
+            } else {
 
                 // Grab the single instance of the switcher class
                 // And make it available globally for use in themes/other plugins
                 global $dts;
                 $dts = DTS_Switcher::get_instance();
-
-                // Hook into the template output function with a filter and change the template delivered if need be
-                add_filter( 'template', array( $dts, 'deliver_template' ), 10, 0 );
-
-                // Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
-                add_filter( 'stylesheet', array( $dts, 'deliver_stylesheet' ), 10, 0 );
 
             } // if is_admin()
 

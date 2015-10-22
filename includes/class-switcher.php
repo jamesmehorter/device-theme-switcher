@@ -47,6 +47,12 @@
 		 */
 		public function __construct() {
 
+			 // Hook into the template output function with a filter and change the template delivered if need be
+            add_filter( 'template', array( $this, 'deliver_template' ), 10, 0 );
+
+            // Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
+            add_filter( 'stylesheet', array( $this, 'deliver_stylesheet' ), 10, 0 );
+
 			// Retrieve the admin's saved device theme
 			$this->retrieve_saved_device_themes();
 
