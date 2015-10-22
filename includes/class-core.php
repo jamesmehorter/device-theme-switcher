@@ -300,26 +300,41 @@
          * the website and retain the full website theme. The following builds the name of the
          * cookie so that "My Magical Website" becomes 'my-magical-website-alternate-theme'
          *
+         * @internal Called statically and publicly
          * @uses   get_bloginfo
-         * @param  null
+         * @param  string $site_name The name of the site
+         * @param  boolean   $rebuild_cache Pass true to force cache rebuild of the cookie name
          * @return string the name of the cookie being used
          */
-        static public function build_cookie_name ( $site_name = "" ) {
+        static public function build_cookie_name( $site_name = "", $rebuild_cache = false ) {
 
-            // Start with the site name for the cookie name
-            $cookie_name = $site_name;
+            // Only proceed with a valid site name
+            if ( empty( $site_name ) )
+                return;
 
-            // Remove special characters
-            $cookie_name = preg_replace( '/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name );
+            // Attempt to use a cached version of the cookie name
+            $cookie_name = get_transient( 'dts-cookie-name' );
 
-            // Change spaces to hyphens
-            $cookie_name = str_replace( ' ', '-', $cookie_name );
+            if ( ! $cookie_name || $rebuild_cache ) {
 
-            // Lowercase everything
-            $cookie_name = strtolower( $cookie_name );
+                // Start with the site name for the cookie name
+                $cookie_name = $site_name;
 
-            // Append some identifying text
-            $cookie_name = $cookie_name . '-alternate-theme';
+                // Remove special characters
+                $cookie_name = preg_replace( '/[^a-zA-Z0-9_%\[().\]\\/-]/s', '', $cookie_name );
+
+                // Change spaces to hyphens
+                $cookie_name = str_replace( ' ', '-', $cookie_name );
+
+                // Lowercase everything
+                $cookie_name = strtolower( $cookie_name );
+
+                // Append some identifying text
+                $cookie_name = $cookie_name . '-alternate-theme';
+
+                // Store the cookie name in cache for quicker future access
+                set_transient( 'dts-cookie-name', $cookie_name );
+            }
 
             // Return the assembled cookie name
             return $cookie_name;
