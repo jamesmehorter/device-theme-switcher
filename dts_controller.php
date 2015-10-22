@@ -12,7 +12,7 @@
 	 */
 
 	/**
-	 * Copyright (c) 2014 James Mehorter (email : jamesmehorter@gmail.com)
+	 * Copyright (c) 2015 James Mehorter (email : jamesmehorter@gmail.com)
 	 *
 	 * This program is free software; you can redistribute it and/or modify
 	 * it under the terms of the GNU General Public License, version 2 or, at
