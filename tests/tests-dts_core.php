@@ -190,8 +190,13 @@
 		 */
 		function test_get_installed_version () {
 
-			// if there is a version in the DB that version should be returned
 			// if there is no version in the DB false should be returned
+			$this->assertFalse( DTS_Core::get_installed_version() );
+
+			// Tf there is a version in the DB that version should be returned
+			update_option( 'dts_version', '1.2.3' );
+
+			$this->assertEquals( '1.2.3', DTS_Core::get_installed_version() );
 
 		} // function test_get_installed_version
 

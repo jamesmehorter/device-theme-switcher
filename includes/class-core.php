@@ -414,7 +414,7 @@
          * @uses   get_option
          * @return string plugin version ex. '2.4.0'
          */
-        public function get_installed_version () {
+        public static function get_installed_version () {
 
             // check for the dts_version option (New in Version 2.0)
             $installed_version = get_option( 'dts_version' );
