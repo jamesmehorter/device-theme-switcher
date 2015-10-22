@@ -8,7 +8,7 @@
         oThis = $(this);
 
         // Slide the option settings panel open/close
-        $('.optional-settings').slideToggle(600, function(){
+        $('.optional-settings').slideToggle(250, function(){
             if ($(this).is(':visible')) {
                 oThis.text('Hide Optional Settings');
             } else {
@@ -19,8 +19,9 @@
 
     // Display & Hide the Hidden Help & Support
     $('.help-and-support-toggle').click(function(){
-        $('.help-and-support').slideToggle(600, function(){
+        $('.help-and-support').slideToggle(250, function(){
             // complete
         });
     });
+
 })(jQuery);
