@@ -167,15 +167,20 @@
 
 
 		/**
-		 * @todo Test the build_cookie_name method
+		 * Test the build_cookie_name method
 		 */
 		function test_build_cookie_name () {
 
-			// pass build_cookie_name a fake site name, ex: "James' Website"
-			// returned cookie name should contain three items when exploded on '-'
-			// the first item should equal the 'slugized' fake site name, ex: "jameswebsite"
-			// the last two should be 'alternate' and 'theme'
-			// e.g. 'jameswebsite-alternate-theme'
+			$dts_core = DTS_Core::get_instance( true );
+
+			// Pass build_cookie_name a fake site name, ex: "James' Website"
+			$cookie_name = $dts_core->build_cookie_name( "James' Website" );
+
+			// Returned cookie name should contain three items when exploded on '-'
+			//  the first item should equal the 'slugized' fake site name, ex: "jameswebsite"
+			//  the last two should be 'alternate' and 'theme'
+			//  e.g. 'jameswebsite-alternate-theme'
+			$this->assertEquals( $cookie_name, 'jameswebsite-alternate-theme' );
 
 		} // function test_build_cookie_name
 
