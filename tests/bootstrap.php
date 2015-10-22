@@ -15,7 +15,7 @@
 	/**
 	 * The path to the main file of the plugin to test.
 	 */
-	define( 'DEVICE_THEME_SWITCHER', dirname( __FILE__ ) . '/../dts_controller.php' );
+	define( 'TEST_PLUGIN_FILE', dirname( __FILE__ ) . '/../dts_controller.php' );
 
 	/**
 	 * The WordPress tests functions.
@@ -36,7 +36,7 @@
 	 */
 	function _manually_load_plugin() {
 
-	    require DEVICE_THEME_SWITCHER;
+	    require TEST_PLUGIN_FILE;
 
 	    // Make sure plugin is installed here ...
 	}
