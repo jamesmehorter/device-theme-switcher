@@ -60,13 +60,13 @@
 	include_once( 'includes/class-core.php' );
 
 	// Activation: Install any initial settings or run any update routines
-	register_activation_hook( __FILE__, array( 'DTS_Core', 'activate' ) );
+	register_activation_hook( __FILE__, array( 'DTS_Core', 'do_activation' ) );
 
 	// Deactivation: Run any special routines on deactivation
-	register_deactivation_hook( __FILE__, array( 'DTS_Core', 'deactivate' ) );
+	register_deactivation_hook( __FILE__, array( 'DTS_Core', 'do_deactivation' ) );
 
 	// Uninstall: Remove anything stored in the database
-	register_uninstall_hook( __FILE__, array( 'DTS_Core', 'uninstall' ) );
+	register_uninstall_hook( __FILE__, array( 'DTS_Core', 'do_uninstall' ) );
 
 	// Startup
 	//

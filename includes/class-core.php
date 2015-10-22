@@ -83,32 +83,32 @@
          * @param     bool $force_new_instance Force DTS_Core singleton to build anew
          * @return    void
          */
-        static function activate ( $force_new_instance = false ) {
+        static function do_activation ( $force_new_instance = false ) {
 
+            // Only install or update if we're in the admin
             if ( is_admin() ) {
 
                 // Grab the single instance of this class
                 $dts_core = DTS_Core::get_instance( $force_new_instance );
 
-                if ( ! $dts_core->installed_version ) {
+                // Is the plugin already installed?
+                // e.g. there is a dts_version option
+                if ( $dts_core->installed_version ) {
 
-                    // Yes, we need to run the install routine
-                    $dts_core->install();
-
-                } else {
-
+                    // Should we run any update routines?
                     if ( $dts_core->does_need_update() ) {
 
-                        // Yes, let's run the update
-                        $dts_core->update();
-
+                        // Yes, let's run whatever update is needed
+                        $dts_core->do_update();
                     } else {
-
                         // plugin is installed and up-to-date already
-
-                    }
                 }
+                } else {
 
+                    // Plugin has not yet been installed
+                    // We need to run the install routine
+                    $dts_core->do_install();
+                }
             } // if is_admin
 
         } // function activate
@@ -122,7 +122,7 @@
          *
          * @return void
          */
-        static function deactivate () {
+        static function do_deactivation () {
 
             // Do nothing on deactivation
 
@@ -135,7 +135,7 @@
          * @param  null
          * @return null
          */
-        public function install () {
+        public function do_install () {
 
             // Add the version to the database
             update_option( 'dts_version', DTS_VERSION );
@@ -167,7 +167,7 @@
          * @uses   delete_option()
          * @return void
          */
-        static function uninstall () {
+        static function do_uninstall () {
 
             //Remove the plugin's settings
             delete_option( 'dts_version' );
@@ -438,10 +438,16 @@
         /**
          * Do we need to run an update
          *
+         * Update routines run when the plugin has been updates
+         * This is determined the installed version and the version defined in the files match
+         *
          * @param  null
          * @return bool  truthy do we need to update?
          */
         public function does_need_update () {
+
+	        $needs_update = false;
+
             // Is a version installed?
             if ( false === $this->installed_version ) {
 
@@ -457,23 +463,23 @@
                 if ( false === get_option( 'dts_device' ) ) {
                     // No, this is not a pre 2.0.0 install,
                     // That means this is a clean fresh install, no update needed
-                    return false ;
                 } else {
                     // The pre 2.0.0 option exists, we do need to update
-                    return true ;
+	                $needs_update = true ;
                 }
             } else {
                 // Is the installed version less than the current version?
                 if ( version_compare( $this->installed_version, DTS_VERSION, '<' ) ) {
                     // Installed version is less than the current version
                     // Yes, an update is needed
-                    return true ;
+	                $needs_update = true ;
                 } else {
                     // Installed and current version match
                     // No update required
-                    return false ;
                 }
             }
+
+	        return $needs_update;
         } // function need update
 
 
@@ -486,7 +492,7 @@
          *
          * @uses  update_option
          */
-        public function update () {
+        public function do_update () {
             // If no version has been set already that means we're
             // updating from the version 1.x series when we did not
             // store the plugin version in the database
