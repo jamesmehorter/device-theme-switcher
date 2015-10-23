@@ -175,11 +175,13 @@
 
             //Remove the plugin's settings
             delete_option( 'dts_version' );
-            delete_option( 'dts_handheld_theme' );
-            delete_option( 'dts_tablet_theme' );
-            delete_option( 'dts_low_support_theme' );
-            delete_option( 'dts_cookie_name' );
-            delete_option( 'dts_cookie_lifespan' );
+			delete_option( 'dts_cookie_name' );
+			delete_option( 'dts_cookie_lifespan' );
+			delete_option( 'dts_handheld_theme' );
+			delete_option( 'dts_tablet_theme' );
+			delete_option( 'dts_low_support_theme' );
+			delete_option( 'widget_dts_view_full_website' );
+			delete_option( 'widget_dts_return_to_mobile_website' );
 
         } // function uninstall
 
