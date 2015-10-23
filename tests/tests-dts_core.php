@@ -12,7 +12,7 @@
 		 * Reproduce conditions to test the following
 		 * DTS_Core class methods:
 		 *
-		 * activate
+		 * do_activation
 		 * does_need_install
 		 * install
 		 * uninstall
@@ -24,7 +24,7 @@
 		 */
 
 		/**
-		 * Test the activate method's install functionality
+		 * Test the do_activation method's install functionality
 		 *
 		 * Activation should install when no install is present
 		 *
@@ -35,10 +35,10 @@
 			if ( ! defined( 'WP_ADMIN' ) ) define( 'WP_ADMIN', true );
 
 			// Run the plugin activation routine
-			// The activate method is typically called statically via register_activation_hook
+			// The do_activation method is typically called statically via register_activation_hook
 			// so we'll also call it statically
 			// sending true argument to force a new instance of our singleton class to be created
-			DTS_Core::activate( true );
+			DTS_Core::do_activation( true );
 
 			// Test that the 'dts_version' option was installed accurately
 			$current_plugin_version = DTS_VERSION ;
@@ -57,7 +57,7 @@
 
 
 		/**
-		 * Test the activate method's update functionality
+		 * Test the self::do_activation() method's update functionality
 		 *
 		 * Activation should update when an update is available
 		 *
@@ -78,10 +78,10 @@
             update_option( 'dts_version', $installed_version );
 
 			// Run the plugin activation routine
-			// The activate method is typically called statically via register_activation_hook
+			// The self::do_activation() method is typically called statically via register_activation_hook
 			// so we'll also call it statically
 			// sending true argument to force a new instance of our singleton class to be created
-			DTS_Core::activate( true );
+			DTS_Core::do_activation( true );
 
 			// Fetch the plugin version to verify that it was updated
 			$installed_version = get_option( 'dts_version' );
