@@ -91,6 +91,29 @@
 
 
 		/**
+		 * Test the does_need_update routine
+		 *
+		 * Should assert true if we do need an update
+		 * Should assert return false if we do not need an update
+		 */
+		function test_does_need_update () {
+
+			$dts_core = DTS_Core::get_instance( true );
+
+			// Should assert true if we do need an update
+			// Manually set the version lower then test our function
+			update_option( 'dts_version', '2.0.0' );
+			$this->assertTrue( $dts_core->does_need_update() );
+
+			// Should assert return false if we do not need an update
+			// Manually set the version equal to the current then test our function
+			update_option( 'dts_version', DTS_VERSION );
+			$this->assertFalse( $dts_core->does_need_update() );
+
+		} // function test_does_need_update
+
+		
+		/**
 		 * Test typical runtime execution update, which should occur
 		 * whenever an admin loads an admin page
 		 *
@@ -102,7 +125,7 @@
 		 *
 		 * @return void
 		 */
-		function test_runtime_update () {
+		function test_do_update () {
 
 			// Make WP believe we're in site.com/wp-admin/
 			if ( ! defined( 'WP_ADMIN' ) ) define( 'WP_ADMIN', true );
@@ -122,7 +145,7 @@
 		/**
 		 * Test the uninstall method
 		 */
-		function test_uninstall () {
+		function test_do_uninstall () {
 
 			$dts_core = DTS_Core::get_instance( true );
 
@@ -137,14 +160,7 @@
 			add_option( 'widget_dts_view_full_website', 1 );
 			add_option( 'widget_dts_return_to_mobile_website', 1 );
 
-			delete_option( 'dts_version' );
-			delete_option( 'dts_cookie_name' );
-			delete_option( 'dts_cookie_lifespan' );
-			delete_option( 'dts_handheld_theme' );
-			delete_option( 'dts_tablet_theme' );
-			delete_option( 'dts_low_support_theme' );
-			delete_option( 'widget_dts_view_full_website' );
-			delete_option( 'widget_dts_return_to_mobile_website' );
+			$dts_core->do_uninstall();
 
 			$this->assertFalse( get_option( 'dts_version' ) );
 			$this->assertFalse( get_option( 'dts_cookie_name' ) );
@@ -200,36 +216,6 @@
 
 		} // function test_get_installed_version
 
-
-		/**
-		 * Test the does_need_update routine
-		 *
-		 * Should assert true if we do need an update
-		 * Should assert return false if we do not need an update
-		 */
-		function test_does_need_update () {
-
-			$dts_core = DTS_Core::get_instance( true );
-
-			// Should assert true if we do need an update
-			// Manually set the version lower then test our function
-			update_option( 'dts_version', '2.0.0' );
-			$this->assertTrue( $dts_core->does_need_update() );
-
-			// Should assert return false if we do not need an update
-			// Manually set the version equal to the current then test our function
-			update_option( 'dts_version', DTS_VERSION );
-			$this->assertFalse( $dts_core->does_need_update() );
-
-		} // function test_does_need_update
-
-
-		/**
-		 * @todo Test the update method
-		 */
-		function test_update () {
-
-		} // function test_update
 
 	} // class DTS_Core_Test_Cases
 
