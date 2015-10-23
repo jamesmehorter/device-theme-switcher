@@ -112,7 +112,7 @@
 
 		} // function test_does_need_update
 
-		
+
 		/**
 		 * Test typical runtime execution update, which should occur
 		 * whenever an admin loads an admin page

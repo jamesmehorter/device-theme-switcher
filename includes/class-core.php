@@ -60,7 +60,7 @@
                 if ( $this->does_need_update() ) {
 
                     // Yes, let's perform the update
-                    $this->update();
+                    $this->do_update();
                 }
             } // if is_admin
 
