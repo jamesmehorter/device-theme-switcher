@@ -103,11 +103,15 @@
 			// Should assert true if we do need an update
 			// Manually set the version lower then test our function
 			update_option( 'dts_version', '2.0.0' );
+            $dts_core->installed_version = $dts_core->get_installed_version();
+
 			$this->assertTrue( $dts_core->does_need_update() );
 
 			// Should assert return false if we do not need an update
 			// Manually set the version equal to the current then test our function
 			update_option( 'dts_version', DTS_VERSION );
+			$dts_core->installed_version = $dts_core->get_installed_version();
+
 			$this->assertFalse( $dts_core->does_need_update() );
 
 		} // function test_does_need_update
