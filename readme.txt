@@ -192,6 +192,7 @@ Tablet theme page.php
 * FIX - Added rel="nofollow" to the device switcher <a> links which the plugin creates. Thanks ljmac for this! https://wordpress.org/support/topic/please-make-theme-switcher-link-no-follow?replies=2
 * FIX - Corrected a PHP recursion found by Jonathan McLean (https://github.com/jmclean)
 * IMPROVEMENT - Rewrote several aspects of the plugin to improve testability, which ultimately improves the codebase architecture and readability.
+* IMPROVEMENT - Updated to the latest [MobileESP version](https://github.com/ahand/mobileesp)
 * IMPROVEMENT - Introduced initial phpunit tests for the plugin.
 * IMPROVEMENT - Moved the massive Github readme into sections in a new Github wiki.
 * IMPROVEMENT - Implemented Travis on-the-fly testing integration for Github.
