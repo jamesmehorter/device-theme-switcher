@@ -13,17 +13,15 @@
 		 * Construct our new widget
 		 *
 		 * @param   null
-		 * @return  null
 		 */
-		function DTS_View_Full_Website() {
-			// Set the new widget css class and description
-			$widget_ops = array(
-				'classname'   => 'dts_view_full_website',
-				'description' => 'Add a link for mobile users'
-			);
+		function __construct() {
 
 			// Build an instance of the new widget
-			$this->WP_Widget('dts_view_full_website', 'View Full Website', $widget_ops);
+			parent::__construct(
+				'dts_view_full_website',
+				__( 'View Full Website', 'device-theme-switcher' ),
+				array( 'description' => __( 'Add a link for mobile users', 'device-theme-switcher' ), )
+			);
 
 		} // DTS_View_Full_Website
 
@@ -117,17 +115,16 @@
 		 * Construct our new widget
 		 *
 		 * @param   null
-		 * @return  null
 		 */
-		function DTS_Return_To_Mobile_Website () {
-			// Set the new widget css class and description
-			$widget_ops = array(
-				'classname'   => 'dts_return_to_mobile_website',
-				'description' => 'Add a link for mobile users to return to the mobile website'
-			);
+		function __construct() {
 
 			// Build an instance of the new widget
-			$this->WP_Widget('dts_return_to_mobile_website', 'Return to Mobile Website', $widget_ops);
+			parent::__construct(
+				'dts_return_to_mobile_website',
+				__( 'Return to Mobile Website', 'device-theme-switcher' ),
+				array( 'description' => __( 'Add a link for mobile users to return to the mobile website', 'device-theme-switcher' ), )
+			);
+
 		} // function DTS_Return_To_Mobile_Website
 
 
@@ -138,7 +135,7 @@
 		 * @param  object $instance The widget instance
 		 * @return null
 		 */
-		function widget ( $args, $instance ) {
+		function widget( $args, $instance ) {
 			extract( $args, EXTR_SKIP );
 
 			if ( empty( $instance['link_text'] ) ) {
@@ -164,7 +161,7 @@
 		 * @param  array $old_instance The instance of the new widget data
 		 * @return array               The new widget data
 		 */
-		function update ( $new_instance, $old_instance ) {
+		function update( $new_instance, $old_instance ) {
 			$instance = $old_instance;
 			$instance['link_text'] = strip_tags($new_instance['link_text']);
 			return $instance;
@@ -176,8 +173,7 @@
 		 * @param  $array $instance The widget data
 		 * @return null
 		 */
-		function form ( $instance ) {
-
+		function form( $instance ) {
 
 			//Output admin widget options form
 			$instance 	= wp_parse_args( (array) $instance, array( 'link_text' => '' ) );

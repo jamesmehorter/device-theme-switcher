@@ -3,7 +3,7 @@
 	 * Plugin Name: Device Theme Switcher
 	 * Plugin URI:  https://github.com/jamesmehorter/device-theme-switcher/
 	 * Description: Set a separate theme for handheld and tablet devices under Appearance > Device Themes
-	 * Version:     2.9.2
+	 * Version:     3.0.0
 	 * Author:      James Mehorter | jamesmehorter@gmail.com
 	 * Author URI:  http://www.jamesmehorter.com
 	 * License:     GPLv2+
@@ -12,7 +12,7 @@
 	 */
 
 	/**
-	 * Copyright (c) 2014 James Mehorter (email : jamesmehorter@gmail.com)
+	 * Copyright (c) 2015 James Mehorter (email : jamesmehorter@gmail.com)
 	 *
 	 * This program is free software; you can redistribute it and/or modify
 	 * it under the terms of the GNU General Public License, version 2 or, at
@@ -35,16 +35,9 @@
 	/**
      * DTS_VERSION constant for use anywhere in WordPress
      */
-    define( 'DTS_VERSION', '2.9.2' );
+    define( 'DTS_VERSION', '3.0.0' );
     define( 'DTS_URL',     plugin_dir_url( __FILE__ ) );
 	define( 'DTS_PATH',    dirname( __FILE__ ) . '/' );
-
-    /**
-     * Create one globally-accessible access point for the DTS_Switcher class
-     *
-     * @see  class-core.php initilization
-     */
-    global $dts ;
 
 	/**
 	 *
@@ -60,13 +53,13 @@
 	include_once( 'includes/class-core.php' );
 
 	// Activation: Install any initial settings or run any update routines
-	register_activation_hook( __FILE__, array( 'DTS_Core', 'activate' ) );
+	register_activation_hook( __FILE__, array( 'DTS_Core', 'do_activation' ) );
 
 	// Deactivation: Run any special routines on deactivation
-	register_deactivation_hook( __FILE__, array( 'DTS_Core', 'deactivate' ) );
+	register_deactivation_hook( __FILE__, array( 'DTS_Core', 'do_deactivation' ) );
 
 	// Uninstall: Remove anything stored in the database
-	register_uninstall_hook( __FILE__, array( 'DTS_Core', 'uninstall' ) );
+	register_uninstall_hook( __FILE__, array( 'DTS_Core', 'do_uninstall' ) );
 
 	// Startup
 	//

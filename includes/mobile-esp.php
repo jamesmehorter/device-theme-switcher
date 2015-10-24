@@ -1,47 +1,67 @@
 <?php
 
 /* *******************************************
-// Copyright 2010-2013, Anthony Hand
+// Copyright 2010-2015, Anthony Hand
 //
-// File version 2013.08.01 (August 1, 2013)
-// Updates:
-// - Updated DetectMobileQuick(). Moved the 'Exclude Tablets' logic to the top of the method to fix a logic bug.
 //
-// File version 2013.07.13 (July 13, 2013)
+// File version 2015.05.13 (May 13, 2015)
 // Updates:
-// - Added support for Tizen: variable and DetectTizen().
-// - Added support for Meego: variable and DetectMeego().
-// - Added support for Windows Phone 8: variable and DetectWindowsPhone8().
-// - Added a generic Windows Phone method: DetectWindowsPhone().
-// - Added support for BlackBerry 10 OS: variable and DetectBlackBerry10Phone().
-// - Added support for PlayStation Vita handheld: variable and DetectGamingHandheld().
-// - Updated DetectTierIphone(). Added Tizen; updated the Windows Phone, BB10, and PS Vita support. 
-// - Updated DetectWindowsMobile(). Uses generic DetectWindowsPhone() method rather than WP7.
-// - Updated DetectSmartphone(). Uses the IsTierIphone variable.
-// - Updated DetectSonyMylo() with more efficient code.
-// - Removed DetectGarminNuvifone() from DetectTierIphone(). How many are left in market in 2013? It is detected as a RichCSS Tier device.
-// - Removed the deviceXoom variable. It was unused.
-// - Added detection support for the Obigo mobile browser to DetectMobileQuick().
+//	- Moved MobileESP to GitHub. https://github.com/ahand/mobileesp
+//	- Opera Mobile/Mini browser has the same UA string on multiple platforms and doesn't differentiate phone vs. tablet.
+//		- Removed DetectOperaAndroidPhone(). This method is no longer reliable.
+//		- Removed DetectOperaAndroidTablet(). This method is no longer reliable.
+//	- Added support for Windows Phone 10: variable and DetectWindowsPhone10()
+//	- Updated DetectWindowsPhone() to include WP10.
+//	- Added support for Firefox OS.
+//		- A variable plus DetectFirefoxOS(), DetectFirefoxOSPhone(), DetectFirefoxOSTablet()
+//		- NOTE: Firefox doesn't add UA tokens to definitively identify Firefox OS vs. their browsers on other mobile platforms.
+//	- Added support for Sailfish OS. Not enough info to add a tablet detection method at this time.
+//		- A variable plus DetectSailfish(), DetectSailfishPhone()
+//	- Added support for Ubuntu Mobile OS.
+//		- DetectUbuntu(), DetectUbuntuPhone(), DetectUbuntuTablet()
+//	- Added support for 2 smart TV OSes. They lack browsers but do have WebViews for use by HTML apps.
+//		- One variable for Samsung Tizen TVs, plus DetectTizenTV()
+//		- One variable for LG WebOS TVs, plus DetectWebOSTV()
+//	- Updated DetectTizen(). Now tests for “mobile” to disambiguate from Samsung Smart TVs
+//	- Removed variables for obsolete devices: deviceHtcFlyer, deviceXoom.
+//	- Updated DetectAndroid(). No longer has a special test case for the HTC Flyer tablet.
+//	- Updated DetectAndroidPhone().
+//		- Updated internal detection code for Android.
+//		- No longer has a special test case for the HTC Flyer tablet.
+//		- Checks against DetectOperaMobile() on Android and reports here if relevant.
+//	- Updated DetectAndroidTablet().
+//		- No longer has a special test case for the HTC Flyer tablet.
+//		- Checks against DetectOperaMobile() on Android to exclude it from here.
+//	- DetectMeego(): Changed definition for this method. Now detects any Meego OS device, not just phones.
+//	- DetectMeegoPhone(): NEW. For Meego phones. Ought to detect Opera browsers on Meego, as well.
+//	- DetectTierIphone(): Added support for phones running Sailfish, Ubuntu and Firefox Mobile.
+//	- DetectTierTablet(): Added support for tablets running Ubuntu and Firefox Mobile.
+//	- DetectSmartphone(): Added support for Meego phones.
+//	- Reorganized DetectMobileQuick(). Moved the following to DetectMobileLong():
+//		- DetectDangerHiptop(), DetectMaemoTablet(), DetectSonyMylo(), DetectArchos()
+//	- Removed the variable for Obigo, an embedded browser. The browser is on old devices.
+//		- Couldn’t find info on current Obigo embedded browser user agent strings.
+//
 //
 //
 // LICENSE INFORMATION
-// Licensed under the Apache License, Version 2.0 (the "License"); 
-// you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at 
-//        http://www.apache.org/licenses/LICENSE-2.0 
-// Unless required by applicable law or agreed to in writing, 
-// software distributed under the License is distributed on an 
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
-// either express or implied. See the License for the specific 
-// language governing permissions and limitations under the License. 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//        http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+// either express or implied. See the License for the specific
+// language governing permissions and limitations under the License.
 //
 //
 // ABOUT THIS PROJECT
 //   Project Owner: Anthony Hand
 //   Email: anthony.hand@gmail.com
 //   Web Site: http://www.mobileesp.com
-//   Source Files: http://code.google.com/p/mobileesp/
-//   
+//   Source Files: https://github.com/ahand/mobileesp
+//
 //   Versions of this code are available for:
 //      PHP, JavaScript, Java, ASP.NET (C#), and Ruby
 //
@@ -52,7 +72,7 @@
 
 //**************************
 // The uagent_info class encapsulates information about
-//   a browser's connection to your web site. 
+//   a browser's connection to your web site.
 //   You can use it to find out whether the browser asking for
 //   your site's content is probably running on a mobile device.
 //   The methods were written so you can be as granular as you want.
@@ -82,7 +102,6 @@ class uagent_info
 
    //Initialize some initial smartphone string variables.
    var $engineWebKit = 'webkit';
-
    var $deviceIphone = 'iphone';
    var $deviceIpod = 'ipod';
    var $deviceIpad = 'ipad';
@@ -90,17 +109,17 @@ class uagent_info
 
    var $deviceAndroid = 'android';
    var $deviceGoogleTV = 'googletv';
-   var $deviceHtcFlyer = 'htc_flyer'; //HTC Flyer
-   
-   var $deviceWinPhone7 = 'windows phone os 7'; 
-   var $deviceWinPhone8 = 'windows phone 8'; 
+
+   var $deviceWinPhone7 = 'windows phone os 7';
+   var $deviceWinPhone8 = 'windows phone 8';
+   var $deviceWinPhone10 = 'windows phone 10';
    var $deviceWinMob = 'windows ce';
-   var $deviceWindows = 'windows'; 
+   var $deviceWindows = 'windows';
    var $deviceIeMob = 'iemobile';
    var $devicePpc = 'ppc'; //Stands for PocketPC
    var $enginePie = 'wm5 pie'; //An old Windows Mobile
-   
-   var $deviceBB = 'blackberry';   
+
+   var $deviceBB = 'blackberry';
    var $deviceBB10 = 'bb10'; //For the new BB 10 OS
    var $vndRIM = 'vnd.rim'; //Detectable when BB devices emulate IE or Firefox
    var $deviceBBStorm = 'blackberry95';  //Storm 1 and 2
@@ -111,31 +130,35 @@ class uagent_info
    var $deviceBBCurveTouch = 'blackberry 938'; //Curve Touch
    var $deviceBBTorch = 'blackberry 98'; //Torch
    var $deviceBBPlaybook = 'playbook'; //PlayBook tablet
-   
+
    var $deviceSymbian = 'symbian';
    var $deviceS60 = 'series60';
    var $deviceS70 = 'series70';
    var $deviceS80 = 'series80';
    var $deviceS90 = 'series90';
-   
+
    var $devicePalm = 'palm';
-   var $deviceWebOS = 'webos'; //For Palm's line of WebOS devices
+   var $deviceWebOS = 'webos'; //For Palm devices
+   var $deviceWebOStv = 'web0s'; //For LG TVs
    var $deviceWebOShp = 'hpwos'; //For HP's line of WebOS devices
-   var $engineBlazer = 'blazer'; //Old Palm browser
-   var $engineXiino = 'xiino'; //Another old Palm
-   
+
    var $deviceNuvifone = 'nuvifone'; //Garmin Nuvifone
    var $deviceBada = 'bada'; //Samsung's Bada OS
    var $deviceTizen = 'tizen'; //Tizen OS
    var $deviceMeego = 'meego'; //Meego OS
+   var $deviceSailfish = 'sailfish'; //Sailfish OS
+   var $deviceUbuntu = 'ubuntu'; //Ubuntu Mobile OS
 
    var $deviceKindle = 'kindle'; //Amazon Kindle, eInk one
    var $engineSilk = 'silk-accelerated'; //Amazon's accelerated Silk browser for Kindle Fire
-   
+
+   var $engineBlazer = 'blazer'; //Old Palm browser
+   var $engineXiino = 'xiino'; //Another old Palm
+
    //Initialize variables for mobile-specific content.
    var $vndwap = 'vnd.wap';
-   var $wml = 'wml';   
-   
+   var $wml = 'wml';
+
    //Initialize variables for other random devices and mobile browsers.
    var $deviceTablet = 'tablet'; //Generic term for slate and tablet devices
    var $deviceBrew = 'brew';
@@ -148,7 +171,8 @@ class uagent_info
    var $deviceWii = 'wii';
    var $deviceXbox = 'xbox';
    var $deviceArchos = 'archos';
-   
+
+   var $engineFirefox = 'firefox'; //For Firefox OS
    var $engineOpera = 'opera'; //Popular browser
    var $engineNetfront = 'netfront'; //Common embedded OS browser
    var $engineUpBrowser = 'up.browser'; //common on some phones
@@ -156,25 +180,28 @@ class uagent_info
    var $deviceMidp = 'midp'; //a mobile Java technology
    var $uplink = 'up.link';
    var $engineTelecaQ = 'teleca q'; //a modern feature phone browser
-   var $engineObigo = 'obigo'; //W 10 is a modern feature phone browser
-   
+
    var $devicePda = 'pda'; //some devices report themselves as PDAs
    var $mini = 'mini';  //Some mobile browsers put 'mini' in their names.
    var $mobile = 'mobile'; //Some mobile browsers put 'mobile' in their user agent strings.
    var $mobi = 'mobi'; //Some mobile browsers put 'mobi' in their user agent strings.
-   
+
+   //Smart TV strings
+   var $smartTV1 = 'smart-tv'; //Samsung Tizen smart TVs
+   var $smartTV2 = 'smarttv'; //LG WebOS smart TVs
+
    //Use Maemo, Tablet, and Linux to test for Nokia's Internet Tablets.
    var $maemo = 'maemo';
    var $linux = 'linux';
    var $qtembedded = 'qt embedded'; //for Sony Mylo and others
    var $mylocom2 = 'com2'; //for Sony Mylo also
-   
+
    //In some UserAgents, the only clue is the manufacturer.
    var $manuSonyEricsson = "sonyericsson";
    var $manuericsson = "ericsson";
    var $manuSamsung1 = "sec-sgh";
    var $manuSony = "sony";
-   var $manuHtc = "htc";
+   var $manuHtc = "htc"; //Popular Android and WinMo manufacturer
 
    //In some UserAgents, the only clue is the operator.
    var $svcDocomo = "docomo";
@@ -189,21 +216,21 @@ class uagent_info
    //The constructor. Allows the latest PHP (5.0+) to locate a constructor object and initialize the object.
    function __construct()
    {
-    $this->uagent_info();
+	 $this->uagent_info();
    }
 
 
    //**************************
    //The object initializer. Initializes several default variables.
    function uagent_info()
-   { 
-    $this->useragent = isset($_SERVER['HTTP_USER_AGENT'])?strtolower($_SERVER['HTTP_USER_AGENT']):'';
-    $this->httpaccept = isset($_SERVER['HTTP_ACCEPT'])?strtolower($_SERVER['HTTP_ACCEPT']):'';
-      
-    //Let's initialize some values to save cycles later.
-    $this->InitDeviceScan();
+   {
+	 $this->useragent = isset($_SERVER['HTTP_USER_AGENT'])?strtolower($_SERVER['HTTP_USER_AGENT']):'';
+	 $this->httpaccept = isset($_SERVER['HTTP_ACCEPT'])?strtolower($_SERVER['HTTP_ACCEPT']):'';
+
+	 //Let's initialize some values to save cycles later.
+	 $this->InitDeviceScan();
    }
-   
+
    //**************************
    // Initialize Key Stored Values.
    function InitDeviceScan()
@@ -214,35 +241,39 @@ class uagent_info
         $this->isIphone = $this->DetectIphone();
         $this->isAndroid = $this->DetectAndroid();
         $this->isAndroidPhone = $this->DetectAndroidPhone();
-        
+
         //These tiers are the most useful for web development
         global $isMobilePhone, $isTierTablet, $isTierIphone;
         $this->isMobilePhone = $this->DetectMobileQuick();
         $this->isTierIphone = $this->DetectTierIphone();
         $this->isTierTablet = $this->DetectTierTablet();
-        
+
         //Optional: Comment these out if you NEVER use them.
         global $isTierRichCss, $isTierGenericMobile;
         $this->isTierRichCss = $this->DetectTierRichCss();
         $this->isTierGenericMobile = $this->DetectTierOtherPhones();
-        
+
         $this->initCompleted = $this->true;
    }
 
    //**************************
    //Returns the contents of the User Agent value, in lower case.
    function Get_Uagent()
-   { 
+   {
        return $this->useragent;
    }
 
    //**************************
    //Returns the contents of the HTTP Accept value, in lower case.
    function Get_HttpAccept()
-   { 
+   {
        return $this->httpaccept;
    }
-   
+
+
+	//*****************************
+	// Start device detection
+	//*****************************
 
    //**************************
    // Detects if the current device is an iPhone.
@@ -251,7 +282,7 @@ class uagent_info
       if ($this->initCompleted == $this->true ||
           $this->isIphone == $this->true)
          return $this->isIphone;
-      
+
       if (stripos($this->useragent, $this->deviceIphone) > -1)
       {
          //The iPad and iPod Touch say they're an iPhone. So let's disambiguate.
@@ -260,10 +291,10 @@ class uagent_info
             return $this->false;
          //Yay! It's an iPhone!
          else
-            return $this->true; 
+            return $this->true;
       }
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -271,20 +302,20 @@ class uagent_info
    function DetectIpod()
    {
       if (stripos($this->useragent, $this->deviceIpod) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current device is an iPad tablet.
    function DetectIpad()
    {
       if (stripos($this->useragent, $this->deviceIpad) > -1 &&
           $this->DetectWebkit() == $this->true)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -294,9 +325,9 @@ class uagent_info
        //We repeat the searches here because some iPods may report themselves as an iPhone, which would be okay.
       if ($this->DetectIphone() == $this->true ||
              $this->DetectIpod() == $this->true)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -305,7 +336,7 @@ class uagent_info
    {
       if (($this->DetectIphoneOrIpod() == $this->true) ||
         ($this->DetectIpad() == $this->true))
-         return $this->true; 
+         return $this->true;
       else
          return $this->false;
    }
@@ -322,12 +353,9 @@ class uagent_info
 
       if ((stripos($this->useragent, $this->deviceAndroid) > -1)
           || ($this->DetectGoogleTV() == $this->true))
-         return $this->true; 
-      //Special check for the HTC Flyer 7" tablet
-      if ((stripos($this->useragent, $this->deviceHtcFlyer) > -1))
-         return $this->true; 
-      else
-         return $this->false; 
+         return $this->true;
+
+      return $this->false;
    }
 
    //**************************
@@ -341,19 +369,19 @@ class uagent_info
           $this->isAndroidPhone == $this->true)
          return $this->isAndroidPhone;
 
-      if (($this->DetectAndroid() == $this->true) &&
-      (stripos($this->useragent, $this->mobile) > -1))
+      //First, let's make sure we're on an Android device.
+      if ($this->DetectAndroid() == $this->false)
+         return $this->false;
+
+	  //If it's Android and has 'mobile' in it, Google says it's a phone.
+      if (stripos($this->useragent, $this->mobile) > -1)
          return $this->true;
-      
-      //Special check for Android phones with Opera Mobile. They should report here.
-      if (($this->DetectOperaAndroidPhone() == $this->true))
-         return $this->true; 
-      //Special check for the HTC Flyer 7" tablet. It should report here.
-      if ((stripos($this->useragent, $this->deviceHtcFlyer) > -1))
+
+      //Special check for Android devices with Opera Mobile/Mini. They should report here.
+      if (($this->DetectOperaMobile() == $this->true))
          return $this->true;
-      
-      else
-         return $this->false; 
+
+      return $this->false;
    }
 
    //**************************
@@ -363,20 +391,17 @@ class uagent_info
    {
       //First, let's make sure we're on an Android device.
       if ($this->DetectAndroid() == $this->false)
-         return $this->false; 
+         return $this->false;
 
-      //Special check for Opera Android Phones. They should NOT report here.
+      //Special check for Android devices with Opera Mobile/Mini. They should NOT report here.
       if ($this->DetectOperaMobile() == $this->true)
-         return $this->false; 
-      //Special check for the HTC Flyer 7" tablet. It should NOT report here.
-      if ((stripos($this->useragent, $this->deviceHtcFlyer) > -1))
-         return $this->false; 
-         
+         return $this->false;
+
       //Otherwise, if it's Android and does NOT have 'mobile' in it, Google says it's a tablet.
       if (stripos($this->useragent, $this->mobile) > -1)
          return $this->false;
       else
-         return $this->true; 
+         return $this->true;
    }
 
    //**************************
@@ -385,10 +410,10 @@ class uagent_info
    function DetectAndroidWebKit()
    {
       if (($this->DetectAndroid() == $this->true) &&
-      ($this->DetectWebkit() == $this->true))
-         return $this->true; 
+		($this->DetectWebkit() == $this->true))
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -396,9 +421,9 @@ class uagent_info
    function DetectGoogleTV()
    {
       if (stripos($this->useragent, $this->deviceGoogleTV) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -410,72 +435,83 @@ class uagent_info
          return $this->isWebkit;
 
       if (stripos($this->useragent, $this->engineWebKit) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
 
    //**************************
-   // Detects if the current browser is EITHER a 
-   // Windows Phone 7.x OR 8 device.
+   // Detects if the current browser is a
+   // Windows Phone 7, 8, or 10 device.
    function DetectWindowsPhone()
    {
       if (($this->DetectWindowsPhone7() == $this->true)
-         || ($this->DetectWindowsPhone8() == $this->true))
-         return $this->true; 
+			|| ($this->DetectWindowsPhone8() == $this->true)
+			|| ($this->DetectWindowsPhone10() == $this->true))
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
-   // Detects a Windows Phone 7.x device (in mobile browsing mode).
+   // Detects a Windows Phone 7 device (in mobile browsing mode).
    function DetectWindowsPhone7()
    {
       if (stripos($this->useragent, $this->deviceWinPhone7) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects a Windows Phone 8 device (in mobile browsing mode).
    function DetectWindowsPhone8()
    {
       if (stripos($this->useragent, $this->deviceWinPhone8) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
+   }
+
+   //**************************
+   // Detects a Windows Phone 10 device (in mobile browsing mode).
+   function DetectWindowsPhone10()
+   {
+      if (stripos($this->useragent, $this->deviceWinPhone10) > -1)
+         return $this->true;
+      else
+         return $this->false;
    }
 
    //**************************
    // Detects if the current browser is a Windows Mobile device.
-   // Excludes Windows Phone 7 and later devices. 
+   // Excludes Windows Phone 7 and later devices.
    // Focuses on Windows Mobile 6.xx and earlier.
    function DetectWindowsMobile()
    {
       if ($this->DetectWindowsPhone() == $this->true)
          return $this->false;
-      
-      //Most devices use 'Windows CE', but some report 'iemobile' 
-      //  and some older ones report as 'PIE' for Pocket IE. 
+
+      //Most devices use 'Windows CE', but some report 'iemobile'
+      //  and some older ones report as 'PIE' for Pocket IE.
       if (stripos($this->useragent, $this->deviceWinMob) > -1 ||
           stripos($this->useragent, $this->deviceIeMob) > -1 ||
           stripos($this->useragent, $this->enginePie) > -1)
-         return $this->true; 
+         return $this->true;
       //Test for Windows Mobile PPC but not old Macintosh PowerPC.
-     if (stripos($this->useragent, $this->devicePpc) > -1
-        && !(stripos($this->useragent, $this->deviceMacPpc) > 1))
-         return $this->true; 
+	  if (stripos($this->useragent, $this->devicePpc) > -1
+		  && !(stripos($this->useragent, $this->deviceMacPpc) > 1))
+         return $this->true;
       //Test for certain Windwos Mobile-based HTC devices.
       if (stripos($this->useragent, $this->manuHtc) > -1 &&
           stripos($this->useragent, $this->deviceWindows) > -1)
-         return $this->true; 
+         return $this->true;
       if ($this->DetectWapWml() == $this->true &&
-          stripos($this->useragent, $this->deviceWindows) > -1) 
-         return $this->true; 
+          stripos($this->useragent, $this->deviceWindows) > -1)
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -486,12 +522,12 @@ class uagent_info
        if ((stripos($this->useragent, $this->deviceBB) > -1) ||
           (stripos($this->httpaccept, $this->vndRIM) > -1))
          return $this->true;
-      if ($this->DetectBlackBerry10Phone() == $this->true) 
-         return $this->true;       
+      if ($this->DetectBlackBerry10Phone() == $this->true)
+         return $this->true;
        else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current browser is a BlackBerry 10 OS phone.
    // Excludes tablets.
@@ -499,20 +535,20 @@ class uagent_info
    {
        if ((stripos($this->useragent, $this->deviceBB10) > -1) &&
           (stripos($this->useragent, $this->mobile) > -1))
-         return $this->true; 
+         return $this->true;
        else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current browser is on a BlackBerry tablet device.
    //    Examples: PlayBook
    function DetectBlackBerryTablet()
    {
       if ((stripos($this->useragent, $this->deviceBBPlaybook) > -1))
-         return $this->true; 
+         return $this->true;
       else
-        return $this->false; 
+        return $this->false;
    }
 
    //**************************
@@ -522,26 +558,26 @@ class uagent_info
    function DetectBlackBerryWebKit()
    {
       if (($this->DetectBlackBerry() == $this->true) &&
-      ($this->DetectWebkit() == $this->true))
-         return $this->true; 
+		($this->DetectWebkit() == $this->true))
+         return $this->true;
       else
-        return $this->false; 
+        return $this->false;
    }
 
    //**************************
    // Detects if the current browser is a BlackBerry Touch phone device with
    //    a large screen, such as the Storm, Torch, and Bold Touch. Excludes the Playbook.
    function DetectBlackBerryTouch()
-   {  
+   {
        if ((stripos($this->useragent, $this->deviceBBStorm) > -1) ||
-      (stripos($this->useragent, $this->deviceBBTorch) > -1) ||
-      (stripos($this->useragent, $this->deviceBBBoldTouch) > -1) ||
-      (stripos($this->useragent, $this->deviceBBCurveTouch) > -1))
-         return $this->true; 
+		(stripos($this->useragent, $this->deviceBBTorch) > -1) ||
+		(stripos($this->useragent, $this->deviceBBBoldTouch) > -1) ||
+		(stripos($this->useragent, $this->deviceBBCurveTouch) > -1))
+         return $this->true;
        else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current browser is a BlackBerry OS 5 device AND
    //    has a more capable recent browser. Excludes the Playbook.
@@ -551,7 +587,7 @@ class uagent_info
    {
       //Disambiguate for BlackBerry OS 6 or 7 (WebKit) browser
       if ($this->DetectBlackBerryWebKit() == $this->true)
-         return $this->false; 
+         return $this->false;
       if ($this->DetectBlackBerry() == $this->true)
       {
           if (($this->DetectBlackBerryTouch() == $this->true) ||
@@ -559,18 +595,18 @@ class uagent_info
             stripos($this->useragent, $this->deviceBBTour) > -1 ||
             stripos($this->useragent, $this->deviceBBCurve) > -1)
           {
-             return $this->true; 
+             return $this->true;
           }
           else
-            return $this->false; 
+            return $this->false;
       }
       else
-        return $this->false; 
+        return $this->false;
    }
 
    //**************************
    // Detects if the current browser is a BlackBerry device AND
-   //    has an older, less capable browser. 
+   //    has an older, less capable browser.
    //    Examples: Pearl, 8800, Curve1.
    function DetectBlackBerryLow()
    {
@@ -578,13 +614,13 @@ class uagent_info
       {
           //Assume that if it's not in the High tier, then it's Low.
           if (($this->DetectBlackBerryHigh() == $this->true) ||
-         ($this->DetectBlackBerryWebKit() == $this->true))
-             return $this->false; 
+			($this->DetectBlackBerryWebKit() == $this->true))
+             return $this->false;
           else
-            return $this->true; 
+            return $this->true;
       }
       else
-        return $this->false; 
+        return $this->false;
    }
 
 
@@ -601,26 +637,26 @@ class uagent_info
            return $this->true;
         }
         else
-           return $this->false; 
+           return $this->false;
       }
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current device is any Symbian OS-based device,
-   //   including older S60, Series 70, Series 80, Series 90, and UIQ, 
+   //   including older S60, Series 70, Series 80, Series 90, and UIQ,
    //   or other browsers running on these devices.
    function DetectSymbianOS()
    {
-       if (stripos($this->useragent, $this->deviceSymbian) > -1 || 
+       if (stripos($this->useragent, $this->deviceSymbian) > -1 ||
            stripos($this->useragent, $this->deviceS60) > -1 ||
-           stripos($this->useragent, $this->deviceS70) > -1 || 
+           stripos($this->useragent, $this->deviceS70) > -1 ||
            stripos($this->useragent, $this->deviceS80) > -1 ||
            stripos($this->useragent, $this->deviceS90) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
 
@@ -628,17 +664,19 @@ class uagent_info
    // Detects if the current browser is on a PalmOS device.
    function DetectPalmOS()
    {
-      //Make sure it's not WebOS first
-      if ($this->DetectPalmWebOS() == $this->true)
-         return $this->false;
-
       //Most devices nowadays report as 'Palm', but some older ones reported as Blazer or Xiino.
       if (stripos($this->useragent, $this->devicePalm) > -1 ||
           stripos($this->useragent, $this->engineBlazer) > -1 ||
           stripos($this->useragent, $this->engineXiino) > -1)
-            return $this->true; 
+      {
+         //Make sure it's not WebOS first
+         if ($this->DetectPalmWebOS() == $this->true)
+            return $this->false;
+         else
+            return $this->true;
+      }
       else
-         return $this->false; 
+         return $this->false;
    }
 
 
@@ -648,9 +686,9 @@ class uagent_info
    function DetectPalmWebOS()
    {
       if (stripos($this->useragent, $this->deviceWebOS) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -658,77 +696,57 @@ class uagent_info
    function DetectWebOSTablet()
    {
       if ((stripos($this->useragent, $this->deviceWebOShp) > -1)
-         && (stripos($this->useragent, $this->deviceTablet) > -1))
-         return $this->true; 
+			&& (stripos($this->useragent, $this->deviceTablet) > -1))
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
+   //**************************
+   // Detects if the current browser is on a WebOS smart TV.
+   function DetectWebOSTV()
+   {
+      if ((stripos($this->useragent, $this->deviceWebOStv) > -1)
+			&& (stripos($this->useragent, $this->smartTV2) > -1))
+         return $this->true;
+      else
+         return $this->false;
+   }
 
 
    //**************************
    // Detects if the current browser is Opera Mobile or Mini.
    function DetectOperaMobile()
    {
-      if (stripos($this->useragent, $this->engineOpera) > -1)
-      {
-         if ((stripos($this->useragent, $this->mini) > -1) ||
-          (stripos($this->useragent, $this->mobi) > -1))
-            return $this->true; 
-         else
-            return $this->false; 
-      }
-      else
-         return $this->false; 
-   }
-
-   //**************************
-   // Detects if the current browser is Opera Mobile
-   // running on an Android phone.
-   function DetectOperaAndroidPhone()
-   {
       if ((stripos($this->useragent, $this->engineOpera) > -1) &&
-        (stripos($this->useragent, $this->deviceAndroid) > -1) &&
-      (stripos($this->useragent, $this->mobi) > -1))
-         return $this->true; 
-      else
-         return $this->false; 
-   }
+      ((stripos($this->useragent, $this->mini) > -1) ||
+          (stripos($this->useragent, $this->mobi) > -1)))
+            return $this->true;
 
-   //**************************
-   // Detects if the current browser is Opera Mobile
-   // running on an Android tablet.  
-   function DetectOperaAndroidTablet()
-   {
-      if ((stripos($this->useragent, $this->engineOpera) > -1) &&
-        (stripos($this->useragent, $this->deviceAndroid) > -1) &&
-      (stripos($this->useragent, $this->deviceTablet) > -1))
-         return $this->true; 
-      else
-         return $this->false; 
+      return $this->false;
    }
 
    //**************************
    // Detects if the current device is an Amazon Kindle (eInk devices only).
-   // Note: For the Kindle Fire, use the normal Android methods. 
+   // Note: For the Kindle Fire, use the normal Android methods.
    function DetectKindle()
    {
       if (stripos($this->useragent, $this->deviceKindle) > -1 &&
           $this->DetectAndroid() == $this->false)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current Amazon device has turned on the Silk accelerated browsing feature.
    // Note: Typically used by the the Kindle Fire.
    function DetectAmazonSilk()
    {
       if (stripos($this->useragent, $this->engineSilk) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -736,29 +754,41 @@ class uagent_info
    function DetectGarminNuvifone()
    {
       if (stripos($this->useragent, $this->deviceNuvifone) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
-   // Detects a device running the Bada smartphone OS from Samsung.
+   // Detects a device running the Bada OS from Samsung.
    function DetectBada()
    {
       if (stripos($this->useragent, $this->deviceBada) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
    // Detects a device running the Tizen smartphone OS.
    function DetectTizen()
    {
-      if (stripos($this->useragent, $this->deviceTizen) > -1)
-         return $this->true; 
+      if ((stripos($this->useragent, $this->deviceTizen) > -1)
+			&& (stripos($this->useragent, $this->mobile) > -1))
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
+   }
+
+   //**************************
+   // Detects if the current browser is on a Tizen smart TV.
+   function DetectTizenTV()
+   {
+      if ((stripos($this->useragent, $this->deviceTizen) > -1)
+			&& (stripos($this->useragent, $this->smartTV1) > -1))
+         return $this->true;
+      else
+         return $this->false;
    }
 
    //**************************
@@ -766,20 +796,130 @@ class uagent_info
    function DetectMeego()
    {
       if (stripos($this->useragent, $this->deviceMeego) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
+   //**************************
+   // Detects a phone running the Meego OS.
+   function DetectMeegoPhone()
+   {
+      if ((stripos($this->useragent, $this->deviceMeego) > -1)
+			&& (stripos($this->useragent, $this->mobi) > -1))
+         return $this->true;
+      else
+         return $this->false;
+   }
+
+   //**************************
+   // Detects a mobile device (probably) running the Firefox OS.
+   function DetectFirefoxOS()
+   {
+      if (($this->DetectFirefoxOSPhone() == $this->true)
+		|| ($this->DetectFirefoxOSTablet() == $this->true))
+         return $this->true;
+      else
+         return $this->false;
+   }
+
+   //**************************
+   // Detects a phone (probably) running the Firefox OS.
+   function DetectFirefoxOSPhone()
+   {
+   	  //First, let's make sure we're NOT on another major mobile OS.
+   	  if ($this->DetectIos() == $this->true
+   	  	|| $this->DetectAndroid() == $this->true
+   	  	|| $this->DetectSailfish() == $this->true)
+         return $this->false;
+
+      if ((stripos($this->useragent, $this->engineFirefox) > -1) &&
+		(stripos($this->useragent, $this->mobile) > -1))
+         return $this->true;
+
+      return $this->false;
+   }
+
+   //**************************
+   // Detects a tablet (probably) running the Firefox OS.
+   function DetectFirefoxOSTablet()
+   {
+   	  //First, let's make sure we're NOT on another major mobile OS.
+   	  if ($this->DetectIos() == $this->true
+   	  	|| $this->DetectAndroid() == $this->true
+   	  	|| $this->DetectSailfish() == $this->true)
+         return $this->false;
+
+      if ((stripos($this->useragent, $this->engineFirefox) > -1) &&
+		(stripos($this->useragent, $this->deviceTablet) > -1))
+         return $this->true;
+
+      return $this->false;
+   }
+
+   //**************************
+   // Detects a device running the Sailfish OS.
+   function DetectSailfish()
+   {
+      if (stripos($this->useragent, $this->deviceSailfish) > -1)
+         return $this->true;
+      else
+         return $this->false;
+   }
+
+   //**************************
+   // Detects a phone running the Sailfish OS.
+   function DetectSailfishPhone()
+   {
+      if (($this->DetectSailfish() == $this->true) &&
+		(stripos($this->useragent, $this->mobile) > -1))
+         return $this->true;
+
+      return $this->false;
+   }
+
+   //**************************
+   // Detects a mobile device running the Ubuntu Mobile OS.
+   function DetectUbuntu()
+   {
+      if (($this->DetectUbuntuPhone() == $this->true)
+		|| ($this->DetectUbuntuTablet() == $this->true))
+         return $this->true;
+      else
+         return $this->false;
+   }
+
+   //**************************
+   // Detects a phone running the Ubuntu Mobile OS.
+   function DetectUbuntuPhone()
+   {
+      if ((stripos($this->useragent, $this->deviceUbuntu) > -1) &&
+		(stripos($this->useragent, $this->mobile) > -1))
+         return $this->true;
+
+      return $this->false;
+   }
+
+   //**************************
+   // Detects a tablet running the Ubuntu Mobile OS.
+   function DetectUbuntuTablet()
+   {
+      if ((stripos($this->useragent, $this->deviceUbuntu) > -1) &&
+		(stripos($this->useragent, $this->deviceTablet) > -1))
+         return $this->true;
+
+      return $this->false;
+   }
+
    //**************************
    // Detects the Danger Hiptop device.
    function DetectDangerHiptop()
    {
       if (stripos($this->useragent, $this->deviceDanger) > -1 ||
           stripos($this->useragent, $this->deviceHiptop) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -789,25 +929,25 @@ class uagent_info
       if ((stripos($this->useragent, $this->manuSony) > -1) &&
          ((stripos($this->useragent, $this->qtembedded) > -1) ||
           (stripos($this->useragent, $this->mylocom2) > -1)))
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current device is on one of the Maemo-based Nokia Internet Tablets.
    function DetectMaemoTablet()
    {
       if (stripos($this->useragent, $this->maemo) > -1)
-         return $this->true; 
-      //For Nokia N810, must be Linux + Tablet, or else it could be something else. 
+         return $this->true;
+      //For Nokia N810, must be Linux + Tablet, or else it could be something else.
       if ((stripos($this->useragent, $this->linux) > -1)
-      && (stripos($this->useragent, $this->deviceTablet) > -1) 
-      && ($this->DetectWebOSTablet() == $this->false)
-      && ($this->DetectAndroid() == $this->false))
-         return $this->true; 
+		&& (stripos($this->useragent, $this->deviceTablet) > -1)
+		&& ($this->DetectWebOSTablet() == $this->false)
+		&& ($this->DetectAndroid() == $this->false))
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -815,9 +955,9 @@ class uagent_info
    function DetectArchos()
    {
       if (stripos($this->useragent, $this->deviceArchos) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -825,22 +965,24 @@ class uagent_info
    // Includes many handheld consoles.
    function DetectGameConsole()
    {
-      if (($this->DetectSonyPlaystation() == $this->true) ||
-       ($this->DetectNintendo() == $this->true) ||
-       ($this->DetectXbox() == $this->true))
-         return $this->true; 
+      if ($this->DetectSonyPlaystation() == $this->true)
+         return $this->true;
+      else if ($this->DetectNintendo() == $this->true)
+         return $this->true;
+      else if ($this->DetectXbox() == $this->true)
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current device is a Sony Playstation.
    function DetectSonyPlaystation()
    {
       if (stripos($this->useragent, $this->devicePlaystation) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -850,21 +992,21 @@ class uagent_info
    {
       if ((stripos($this->useragent, $this->devicePlaystation) > -1) &&
          (stripos($this->useragent, $this->devicePlaystationVita) > -1))
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
    // Detects if the current device is a Nintendo game device.
    function DetectNintendo()
    {
-      if (stripos($this->useragent, $this->deviceNintendo) > -1 || 
+      if (stripos($this->useragent, $this->deviceNintendo) > -1 ||
            stripos($this->useragent, $this->deviceWii) > -1 ||
            stripos($this->useragent, $this->deviceNintendoDs) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -872,9 +1014,9 @@ class uagent_info
    function DetectXbox()
    {
       if (stripos($this->useragent, $this->deviceXbox) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -882,31 +1024,31 @@ class uagent_info
    function DetectBrewDevice()
    {
        if (stripos($this->useragent, $this->deviceBrew) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects whether the device supports WAP or WML.
    function DetectWapWml()
    {
        if (stripos($this->httpaccept, $this->vndwap) > -1 ||
            stripos($this->httpaccept, $this->wml) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // Detects if the current device supports MIDP, a mobile Java technology.
    function DetectMidpCapable()
    {
-       if (stripos($this->useragent, $this->deviceMidp) > -1 || 
+       if (stripos($this->useragent, $this->deviceMidp) > -1 ||
            stripos($this->httpaccept, $this->deviceMidp) > -1)
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
 
@@ -914,22 +1056,23 @@ class uagent_info
   //*****************************
   // Device Classes
   //*****************************
-   
+
    //**************************
    // Check to see whether the device is *any* 'smartphone'.
-   //   Note: It's better to use DetectTierIphone() for modern touchscreen devices. 
+   //   Note: It's better to use DetectTierIphone() for modern touchscreen devices.
    function DetectSmartphone()
    {
       //Exclude duplicates from TierIphone
       if (($this->DetectTierIphone() == $this->true)
-      || ($this->DetectS60OssBrowser() == $this->true)
-      || ($this->DetectSymbianOS() == $this->true) 
-      || ($this->DetectWindowsMobile() == $this->true)
-      || ($this->DetectBlackBerry() == $this->true)
-      || ($this->DetectPalmWebOS() == $this->true))
-         return $this->true; 
+		|| ($this->DetectS60OssBrowser() == $this->true)
+		|| ($this->DetectSymbianOS() == $this->true)
+		|| ($this->DetectWindowsMobile() == $this->true)
+		|| ($this->DetectBlackBerry() == $this->true)
+		|| ($this->DetectMeegoPhone() == $this->true)
+		|| ($this->DetectPalmWebOS() == $this->true))
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -938,86 +1081,78 @@ class uagent_info
    //   as well as smartphone-class devices. Excludes Apple iPads and other modern tablets.
    function DetectMobileQuick()
    {
-      //Let's exclude tablets
-      if ($this->isTierTablet == $this->true) 
-         return $this->false;
-      
       if ($this->initCompleted == $this->true ||
           $this->isMobilePhone == $this->true)
          return $this->isMobilePhone;
 
+      //Let's exclude tablets
+      if ($this->isTierTablet == $this->true)
+         return $this->false;
+
       //Most mobile browsing is done on smartphones
-      if ($this->DetectSmartphone() == $this->true) 
+      if ($this->DetectSmartphone() == $this->true)
          return $this->true;
 
-       if (stripos($this->useragent, $this->mobile) > -1)
-         return $this->true; 
-
-      if (($this->DetectWapWml() == $this->true) 
-         || ($this->DetectBrewDevice() == $this->true) 
-         || ($this->DetectOperaMobile() == $this->true))
+      //Catch-all for many mobile devices
+      if (stripos($this->useragent, $this->mobile) > -1)
          return $this->true;
-         
-      if ((stripos($this->useragent, $this->engineObigo) > -1)
-         || (stripos($this->useragent, $this->engineNetfront) > -1)
-         || (stripos($this->useragent, $this->engineUpBrowser) > -1)
-         || (stripos($this->useragent, $this->engineOpenWeb) > -1))
-         return $this->true; 
-         
-      if (($this->DetectDangerHiptop() == $this->true) 
-         || ($this->DetectMidpCapable() == $this->true) 
-         || ($this->DetectMaemoTablet() == $this->true) 
-         || ($this->DetectArchos() == $this->true))
-         return $this->true; 
 
-       if ((stripos($this->useragent, $this->devicePda) > -1) &&
-       !(stripos($this->useragent, $this->disUpdate) > -1))
+      if ($this->DetectOperaMobile() == $this->true)
          return $this->true;
-      
+
       //We also look for Kindle devices
       if ($this->DetectKindle() == $this->true ||
-         $this->DetectAmazonSilk() == $this->true) 
+         $this->DetectAmazonSilk() == $this->true)
          return $this->true;
 
-      else
-         return $this->false; 
+      if (($this->DetectWapWml() == $this->true)
+      		|| ($this->DetectMidpCapable() == $this->true)
+			|| ($this->DetectBrewDevice() == $this->true))
+         return $this->true;
+
+      if ((stripos($this->useragent, $this->engineNetfront) > -1)
+			|| (stripos($this->useragent, $this->engineUpBrowser) > -1))
+         return $this->true;
+
+      return $this->false;
    }
-  
+
    //**************************
    // The longer and more thorough way to detect for a mobile device.
    //   Will probably detect most feature phones,
-   //   smartphone-class devices, Internet Tablets, 
+   //   smartphone-class devices, Internet Tablets,
    //   Internet-enabled game consoles, etc.
    //   This ought to catch a lot of the more obscure and older devices, also --
    //   but no promises on thoroughness!
    function DetectMobileLong()
    {
-      if ($this->DetectMobileQuick() == $this->true) 
-         return $this->true; 
-      if ($this->DetectGameConsole() == $this->true) 
-         return $this->true; 
-      if ($this->DetectSonyMylo() == $this->true) 
-         return $this->true; 
+      if ($this->DetectMobileQuick() == $this->true)
+         return $this->true;
+      if ($this->DetectGameConsole() == $this->true)
+         return $this->true;
 
-       //Detect older phones from certain manufacturers and operators. 
-       if (stripos($this->useragent, $this->uplink) > -1)
-         return $this->true; 
-       if (stripos($this->useragent, $this->manuSonyEricsson) > -1)
-         return $this->true; 
-       if (stripos($this->useragent, $this->manuericsson) > -1)
-         return $this->true; 
-       if (stripos($this->useragent, $this->manuSamsung1) > -1)
-         return $this->true; 
+      if (($this->DetectDangerHiptop() == $this->true)
+			|| ($this->DetectMaemoTablet() == $this->true)
+			|| ($this->DetectSonyMylo() == $this->true)
+			|| ($this->DetectArchos() == $this->true))
+         return $this->true;
 
-       if (stripos($this->useragent, $this->svcDocomo) > -1)
-         return $this->true; 
-       if (stripos($this->useragent, $this->svcKddi) > -1)
-         return $this->true; 
-       if (stripos($this->useragent, $this->svcVodafone) > -1)
-         return $this->true; 
+       if ((stripos($this->useragent, $this->devicePda) > -1) &&
+		 !(stripos($this->useragent, $this->disUpdate) > -1))
+         return $this->true;
 
-      else
-         return $this->false; 
+       //Detect older phones from certain manufacturers and operators.
+       if ((stripos($this->useragent, $this->uplink) > -1)
+			|| (stripos($this->useragent, $this->engineOpenWeb) > -1)
+       		|| (stripos($this->useragent, $this->manuSamsung1) > -1)
+       		|| (stripos($this->useragent, $this->manuSonyEricsson) > -1)
+       		|| (stripos($this->useragent, $this->manuericsson) > -1)
+       		|| (stripos($this->useragent, $this->svcDocomo) > -1)
+       		|| (stripos($this->useragent, $this->svcKddi) > -1)
+       		|| (stripos($this->useragent, $this->svcVodafone) > -1))
+         return $this->true;
+
+      return $this->false;
    }
 
 
@@ -1036,21 +1171,23 @@ class uagent_info
           $this->isTierTablet == $this->true)
          return $this->isTierTablet;
 
-      if (($this->DetectIpad() == $this->true) 
-         || ($this->DetectAndroidTablet() == $this->true) 
-         || ($this->DetectBlackBerryTablet() == $this->true) 
+      if (($this->DetectIpad() == $this->true)
+         || ($this->DetectAndroidTablet() == $this->true)
+         || ($this->DetectBlackBerryTablet() == $this->true)
+         || ($this->DetectFirefoxOSTablet() == $this->true)
+         || ($this->DetectUbuntuTablet() == $this->true)
          || ($this->DetectWebOSTablet() == $this->true))
-         return $this->true; 
+         return $this->true;
       else
-         return $this->false; 
+         return $this->false;
    }
 
 
    //**************************
    // The quick way to detect for a tier of devices.
-   //   This method detects for devices which can 
+   //   This method detects for devices which can
    //   display iPhone-optimized web content.
-   //   Includes iPhone, iPod Touch, Android, Windows Phone 7 and 8, BB10, WebOS, Playstation Vita, etc.
+   //   Includes iPhone, iPod Touch, Android, Windows Phone, BB10, Playstation Vita, etc.
    function DetectTierIphone()
    {
       if ($this->initCompleted == $this->true ||
@@ -1058,28 +1195,31 @@ class uagent_info
          return $this->isTierIphone;
 
       if (($this->DetectIphoneOrIpod() == $this->true)
-         || ($this->DetectAndroidPhone() == $this->true)
-         || ($this->DetectWindowsPhone() == $this->true)
-         || ($this->DetectBlackBerry10Phone() == $this->true)
-         || ($this->DetectPalmWebOS() == $this->true)
-         || ($this->DetectBada() == $this->true)
-         || ($this->DetectTizen() == $this->true)
-         || ($this->DetectGamingHandheld() == $this->true))
-         return $this->true; 
-      
+			|| ($this->DetectAndroidPhone() == $this->true)
+			|| ($this->DetectWindowsPhone() == $this->true)
+			|| ($this->DetectBlackBerry10Phone() == $this->true)
+			|| ($this->DetectPalmWebOS() == $this->true)
+			|| ($this->DetectBada() == $this->true)
+			|| ($this->DetectTizen() == $this->true)
+			|| ($this->DetectFirefoxOSPhone() == $this->true)
+			|| ($this->DetectSailfishPhone() == $this->true)
+			|| ($this->DetectUbuntuPhone() == $this->true)
+			|| ($this->DetectGamingHandheld() == $this->true))
+         return $this->true;
+
       //Note: BB10 phone is in the previous paragraph
       if (($this->DetectBlackBerryWebKit() == $this->true) &&
-      ($this->DetectBlackBerryTouch() == $this->true))
+		($this->DetectBlackBerryTouch() == $this->true))
          return $this->true;
-      
+
       else
-         return $this->false; 
+         return $this->false;
    }
-   
+
    //**************************
    // The quick way to detect for a tier of devices.
-   //   This method detects for devices which are likely to be capable 
-   //   of viewing CSS content optimized for the iPhone, 
+   //   This method detects for devices which are likely to be capable
+   //   of viewing CSS content optimized for the iPhone,
    //   but may not necessarily support JavaScript.
    //   Excludes all iPhone Tier devices.
    function DetectTierRichCss()
@@ -1088,35 +1228,35 @@ class uagent_info
           $this->isTierRichCss == $this->true)
          return $this->isTierRichCss;
 
-      if ($this->DetectMobileQuick() == $this->true) 
+      if ($this->DetectMobileQuick() == $this->true)
       {
         //Exclude iPhone Tier and e-Ink Kindle devices
         if (($this->DetectTierIphone() == $this->true) ||
             ($this->DetectKindle() == $this->true))
            return $this->false;
-           
+
         //The following devices are explicitly ok.
         if ($this->DetectWebkit() == $this->true) //Any WebKit
            return $this->true;
         if ($this->DetectS60OssBrowser() == $this->true)
            return $this->true;
-           
+
         //Note: 'High' BlackBerry devices ONLY
         if ($this->DetectBlackBerryHigh() == $this->true)
            return $this->true;
-        
-        //Older Windows 'Mobile' isn't good enough for iPhone Tier. 
+
+        //Older Windows 'Mobile' isn't good enough for iPhone Tier.
         if ($this->DetectWindowsMobile() == $this->true)
            return $this->true;
         if (stripos($this->useragent, $this->engineTelecaQ) > -1)
            return $this->true;
-         
+
         //default
         else
            return $this->false;
       }
       else
-         return $this->false; 
+         return $this->false;
    }
 
    //**************************
@@ -1129,10 +1269,10 @@ class uagent_info
           $this->isTierGenericMobile == $this->true)
          return $this->isTierGenericMobile;
 
-      //Exclude devices in the other 2 categories 
+      //Exclude devices in the other 2 categories
       if (($this->DetectMobileLong() == $this->true)
-      && ($this->DetectTierIphone() == $this->false)
-      && ($this->DetectTierRichCss() == $this->false))
+		&& ($this->DetectTierIphone() == $this->false)
+		&& ($this->DetectTierRichCss() == $this->false))
            return $this->true;
       else
          return $this->false; 

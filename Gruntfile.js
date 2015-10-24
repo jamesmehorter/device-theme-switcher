@@ -12,8 +12,7 @@ module.exports = function(grunt) {
 		jshint: {
 			all: [
 				'Gruntfile.js',
-				'assets/js/src/**/*.js',
-				'assets/js/test/**/*.js'
+				'assets/js/src/**/*.js'
 			],
 			options: {
 				curly:   true,
@@ -49,20 +48,13 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		compass: {
-			dist: {
+		sass:   {
+			all: {
+				files: {
+					'assets/css/device-theme-switcher-admin-styles.css': 'assets/css/sass/device-theme-switcher-admin-styles.scss'
+				},
 				options: {
-					environment             : 'production',
-					sassDir                 : 'assets/css/sass',
-					cssDir                  : 'assets/css',
-					imagesDir               : "assets/images/src/",
-					generatedImagesDir      : "assets/images/sprites/",
-					httpGeneratedImagesPath : "../../assets/images/sprites/"
-				},
-				development: {
-					outputStyle: 'expanded'
-				},
-				production: {
+					update: true,
 					outputStyle: 'compressed'
 				}
 			}
@@ -75,27 +67,27 @@ module.exports = function(grunt) {
 		},
 		pot: {
 			options:{
-				text_domain: 'device-theme-switcher', //Your text domain. Produces my-text-domain.pot
-				dest: 'languages/', //directory to place the pot file
+				text_domain: 'device-theme-switcher',
+				'package_name': 'device-theme-switcher',
+				dest: 'languages/',
 				keywords: [ //WordPress localisation functions
-					'__:1',
-					'_e:1',
-					'_x:1,2c',
-					'esc_html__:1',
-					'esc_html_e:1',
-					'esc_html_x:1,2c',
-					'esc_attr__:1',
-					'esc_attr_e:1',
-					'esc_attr_x:1,2c',
-					'_ex:1,2c',
-					'_n:1,2',
-					'_nx:1,2,4c',
-					'_n_noop:1,2',
-					'_nx_noop:1,2,3c'
+					'__',
+					'_e',
+					'_x',
+					'_n',
+					'_ex',
+					'_nx',
+					'esc_attr__',
+					'esc_attr_e',
+					'esc_attr_x',
+					'esc_html__',
+					'esc_html_e',
+					'esc_html_x',
+					'_nx_noop'
 				]
 			},
 			files:{
-				src:  [ '**/*.php', '!**/node_modules/**' ], //Parse all php files
+				src:  [ '**/*.php', '!**/node_modules/**' ], //Parse all php files not in node_modules
 				expand: true
 			}
 		},
@@ -126,16 +118,16 @@ module.exports = function(grunt) {
 			}
 		},
 		watch:  {
-			sass: {
+			css: {
 				files: ['assets/css/sass/*.scss'],
-				tasks: ['compass'],
+				tasks: ['sass'],
 				options: {
 					debounceDelay: 500
 				}
 			},
 			scripts: {
 				files: ['assets/js/source/**/*.js', 'assets/js/vendor/**/*.js'],
-				tasks: ['concat', 'uglify'],
+				tasks: ['jshint', 'uglify'],
 				options: {
 					debounceDelay: 500
 				}
@@ -144,7 +136,7 @@ module.exports = function(grunt) {
 	});
 
 	// Default task.
-	grunt.registerTask('default', ['jshint', 'uglify', 'compass', 'po2mo', 'pot', 'checktextdomain']);
+	grunt.registerTask('default', ['jshint', 'uglify', 'sass', 'po2mo', 'pot', 'checktextdomain']);
 
 	grunt.util.linefeed = '\n';
 };

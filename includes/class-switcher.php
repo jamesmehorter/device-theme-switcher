@@ -47,6 +47,12 @@
 		 */
 		public function __construct() {
 
+			 // Hook into the template output function with a filter and change the template delivered if need be
+            add_filter( 'template', array( $this, 'deliver_template' ), 10, 0 );
+
+            // Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
+            add_filter( 'stylesheet', array( $this, 'deliver_stylesheet' ), 10, 0 );
+
 			// Retrieve the admin's saved device theme
 			$this->retrieve_saved_device_themes();
 
@@ -201,7 +207,7 @@
 			// Ensure our dts_cookie_name option is set
 			$cookie_name = get_option( 'dts_cookie_name' ) ;
 			if ( empty( $cookie_name ) ) {
-				$cookie_name = DTS_Core::get_instance()->build_cookie_name();
+				$cookie_name = DTS_Core::build_cookie_name();
 				update_option( 'dts_cookie_name', $cookie_name );
 			}
 
@@ -488,7 +494,7 @@
 				array_unshift( $css_classes, 'dts-link' );
 
 				// Build the HTML link
-				$html_output = "<a href='$link_href' title='$link_text' class='" . implode( ' ', $css_classes ) . "'>$link_text</a>\n";
+				$html_output = "<a href='$link_href' title='$link_text' class='" . implode( ' ', $css_classes ) . "' rel='nofollow'>$link_text</a>\n";
 			}
 
 			if ( $echo ) {
