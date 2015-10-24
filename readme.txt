@@ -187,7 +187,7 @@ Tablet theme page.php
 
 == Changelog ==
 
-= Version 3.0.0 - Released XX/XX/2015 =
+= Version 3.0.0 - Released 10/23/2015 =
 * New banner and icon! :)
 * FIX - Corrected an issue with the plugin update code which caused some user's to not receive the complete update routine.
 * FIX - Added rel="nofollow" to the device switcher <a> links which the plugin creates. Thanks ljmac for this! https://wordpress.org/support/topic/please-make-theme-switcher-link-no-follow?replies=2

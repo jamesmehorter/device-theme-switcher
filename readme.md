@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/jamesmehorter/device-theme-switcher/develop/assets/images/banner-1544x500.png" width="100%" alt="banner-graphic">
 
-##### Version 3.0.0 (Released XX/XX/2015)
+##### Version 3.0.0 (Released 10/23/2015)
 ##### Requires at least: WordPress 3.0
 ##### Tested up to: WordPress 4.3.1
 
