@@ -40,13 +40,6 @@
 	define( 'DTS_PATH',    dirname( __FILE__ ) . '/' );
 
     /**
-     * Create one globally-accessible access point for the DTS_Switcher class
-     *
-     * @see  class-core.php initilization
-     */
-    global $dts ;
-
-	/**
 	 *
 	 * Load the plugin core routines
 	 *
