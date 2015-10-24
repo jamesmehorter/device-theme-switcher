@@ -72,6 +72,120 @@
 
         } // function __construct
 
+
+	    /**
+         * Load all the files the plugin will need
+         *
+         * @see    self::__construct
+         * @return null
+         */
+        public function load_includes () {
+
+            /**
+             * Load the plugin admin features
+             *
+             * The admin features include the display of the status output in the Dashboard
+             * 'Right Now' widget. They also create an admin page at Appearance > Device Themes
+             * for the website admin to save the plugin settings
+             */
+            // include the wp-admin class
+            include_once( 'class-wp-admin.php' );
+
+             /**
+             * Load the plugin theme switching functionality
+             *
+             * The theme switching utilizes the MobileESP library to detect
+             * the browser User Agent and determine if it's a 'handheld' or 'tablet'.
+             * This plugin then taps into the WordPress template and stylesheet hooks
+             * to deliver the alternately set themes in Appearance > Device Themes
+             */
+            // We only want to tap into the theme filters if a frontend page or an ajax request is being requested
+
+            // Include our external device theme switcher class library
+            include_once( 'class-switcher.php' );
+
+            // Load support for legacy GET variables used in version 1.0.0
+            include_once( 'legacy/legacy-get-support.php' );
+
+            // Include the template tags developers can access in their themes
+            include_once( 'template-tags.php' );
+
+            // Load support for legacy classes, methods, functions, and variables
+            include_once( 'legacy/legacy-structural-support.php' );
+
+            /**
+             * Load in the plugin widgets
+             *
+             * The widgets create an option for capable users to place 'View Full Website'
+             * and 'Return to Mobile Website' links in their theme sidebars.
+             */
+            // Load the widget class
+            include_once( 'class-widgets.php' );
+
+            /**
+             * Load the plugin shortcodes
+             *
+             * The shortcodes allow capable users to place 'View Full Website' and
+             * 'Return to Mobile Website' links in their posts / pages. Register the
+             * [device-theme-switcher] shortcode and Include our external shortcodes class library
+             */
+            // load the shortodes class
+            include_once( 'class-shortcodes.php' );
+
+        } // function load_includes
+
+
+        /**
+         * Hook into WordPress
+         *
+         * @return null
+         */
+        public function hook_into_wordpress () {
+
+            // Only run the following in the admin, the REAL admin--not admin ajax
+            if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
+
+                // Grab the single instance of the admin class
+                $dts_admin = DTS_Admin::get_instance();
+
+            } else {
+
+                // Grab the single instance of the switcher class
+                // And make it available globally for use in themes/other plugins
+                global $dts;
+                $dts = DTS_Switcher::get_instance();
+
+            } // if is_admin()
+
+            // Load the plugin widgets
+            add_action( 'widgets_init', array( $this, 'register_widgets' ), 10, 0 );
+
+            // Add our shortcodes
+            DTS_Shortcode::get_instance()->add_shortcodes();
+
+        } // function hook_into_wordpress
+
+        /**
+         * Register our widgets
+         *
+         * For displaying 'View Full Website' and 'Return to mobile website' links
+         *
+         * @internal  widgets_init action hook
+         * @uses      register_widget()
+         * @param     null
+         * @return    null
+         */
+        static function register_widgets () {
+
+            // Register the 'View Full Website' widget
+            register_widget( 'DTS_View_Full_Website' );
+
+            // Register the 'Return to Mobile Website' widget
+            register_widget( 'DTS_Return_To_Mobile_Website' );
+
+        } // function dts_register_widgets
+
+
         /**
          * Plugin Activation
          *
@@ -317,119 +431,6 @@
             update_option( 'dts_version', $this->installed_version );
 
         } // function update
-
-
-        /**
-         * Load all the files the plugin will need
-         *
-         * @see    self::__construct
-         * @return null
-         */
-        public function load_includes () {
-
-            /**
-             * Load the plugin admin features
-             *
-             * The admin features include the display of the status output in the Dashboard
-             * 'Right Now' widget. They also create an admin page at Appearance > Device Themes
-             * for the website admin to save the plugin settings
-             */
-            // include the wp-admin class
-            include_once( 'class-wp-admin.php' );
-
-             /**
-             * Load the plugin theme switching functionality
-             *
-             * The theme switching utilizes the MobileESP library to detect
-             * the browser User Agent and determine if it's a 'handheld' or 'tablet'.
-             * This plugin then taps into the WordPress template and stylesheet hooks
-             * to deliver the alternately set themes in Appearance > Device Themes
-             */
-            // We only want to tap into the theme filters if a frontend page or an ajax request is being requested
-
-            // Include our external device theme switcher class library
-            include_once( 'class-switcher.php' );
-
-            // Load support for legacy GET variables used in version 1.0.0
-            include_once( 'legacy/legacy-get-support.php' );
-
-            // Include the template tags developers can access in their themes
-            include_once( 'template-tags.php' );
-
-            // Load support for legacy classes, methods, functions, and variables
-            include_once( 'legacy/legacy-structural-support.php' );
-
-            /**
-             * Load in the plugin widgets
-             *
-             * The widgets create an option for capable users to place 'View Full Website'
-             * and 'Return to Mobile Website' links in their theme sidebars.
-             */
-            // Load the widget class
-            include_once( 'class-widgets.php' );
-
-            /**
-             * Load the plugin shortcodes
-             *
-             * The shortcodes allow capable users to place 'View Full Website' and
-             * 'Return to Mobile Website' links in their posts / pages. Register the
-             * [device-theme-switcher] shortcode and Include our external shortcodes class library
-             */
-            // load the shortodes class
-            include_once( 'class-shortcodes.php' );
-
-        } // function load_includes
-
-
-        /**
-         * Hook into WordPress
-         *
-         * @return null
-         */
-        public function hook_into_wordpress () {
-
-            // Only run the following in the admin, the REAL admin--not admin ajax
-            if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-
-                // Grab the single instance of the admin class
-                $dts_admin = DTS_Admin::get_instance();
-
-            } else {
-
-                // Grab the single instance of the switcher class
-                // And make it available globally for use in themes/other plugins
-                global $dts;
-                $dts = DTS_Switcher::get_instance();
-
-            } // if is_admin()
-
-            // Load the plugin widgets
-            add_action( 'widgets_init', array( $this, 'register_widgets' ), 10, 0 );
-
-            // Add our shortcodes
-            DTS_Shortcode::get_instance()->add_shortcodes();
-
-        } // function hook_into_wordpress
-
-        /**
-         * Register our widgets
-         *
-         * For displaying 'View Full Website' and 'Return to mobile website' links
-         *
-         * @internal  widgets_init action hook
-         * @uses      register_widget()
-         * @param     null
-         * @return    null
-         */
-        static function register_widgets () {
-
-            // Register the 'View Full Website' widget
-            register_widget( 'DTS_View_Full_Website' );
-
-            // Register the 'Return to Mobile Website' widget
-            register_widget( 'DTS_Return_To_Mobile_Website' );
-
-        } // function dts_register_widgets
 
 
 	    /**
