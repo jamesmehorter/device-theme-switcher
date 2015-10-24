@@ -4,7 +4,7 @@
 
 ##### Version 3.0.0 (Released XX/XX/2015)
 ##### Requires at least: WordPress 3.0
-##### Tested up to: WordPress 4.2.2
+##### Tested up to: WordPress 4.3.1
 
 [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/wiki/1-Screenshots) | [Features](https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ) | [Contributing](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Contributing) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/wiki/5-Changelog)
 
