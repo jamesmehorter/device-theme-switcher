@@ -33,7 +33,6 @@
 		 * @return null
 		 */
 		function widget ( $args, $instance ) {
-			extract( $args, EXTR_SKIP );
 
 			if ( empty( $instance['link_text'] ) ) {
 				$link_text =  ' ';
@@ -41,11 +40,11 @@
 				$link_text = apply_filters( 'dts_widget_to_full_website_link_text', $instance['link_text'] );
 			}
 
-			echo $before_widget;
+			echo $args['before_widget'];
 
 			DTS_Switcher::build_html_link( 'active', $link_text, array(), true );
 
-			echo $after_widget;
+			echo $args['after_widget'];
 
 		} // function widget
 
@@ -132,7 +131,6 @@
 		 * @return null
 		 */
 		function widget( $args, $instance ) {
-			extract( $args, EXTR_SKIP );
 
 			if ( empty( $instance['link_text'] ) ) {
 				$link_text =  ' ';
@@ -140,10 +138,11 @@
 				$link_text = apply_filters( 'dts_widget_to_device_website_link_text', $instance['link_text'] );
 			}
 
-			echo $after_widget;
+			echo $args['before_widget'];
 
 		    DTS_Switcher::build_html_link( 'device', $link_text, array(), true );
 
+			echo $args['after_widget'];
 
 		} // function widget
 
