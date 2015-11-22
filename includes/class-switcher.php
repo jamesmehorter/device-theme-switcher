@@ -37,7 +37,7 @@
         } // function get_instance
 
 		/**
-		 * Here we use the contructor more like the main controller
+		 * Here we use the constructor more like the main controller
 		 * Below the three main facets of theme delivery occur;
 		 * 1) Grab the saved theme preferences from the DB
 		 * 2) Detect the device the current user is using
@@ -269,7 +269,7 @@
 								false
 							);
 
-							// Return the requested
+							// Update our internal reference to which theme was requested
 							$this->theme_override = $requested_theme;
 
 						} // end if
@@ -340,7 +340,7 @@
 		 *
 		 * All the logic prior to this sets a few variables, the actual delivery is here..
 		 *
-		 * @internal     Called via 'template' filter setup in DTS_Core->hook_into_wordpress()
+		 * @internal     Called via 'template' filter setup in DTS_Core hook_into_wordpress()
 		 * @return array WordPress expected array containing the theme 'name', 'template', and 'stylesheet'
 		 */
 		static function deliver_stylesheet(){

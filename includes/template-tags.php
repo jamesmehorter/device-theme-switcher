@@ -3,7 +3,7 @@
     defined( 'ABSPATH' ) OR exit;
     
     /**
-     * Tempalte Tag: Generate a link to the full website
+     * Template Tag: Generate a link to the full website
      *
      * This is a wrapper function for DTS_Switcher::build_html_link()
      *
@@ -24,7 +24,7 @@
     } // link_to_full_website
 
     /**
-     * Tempalte Tag: Generate a link to return to the device theme
+     * Template Tag: Generate a link to return to the device theme
      *
      * This is a wrapper function for DTS_Switcher::build_html_link()
      *
