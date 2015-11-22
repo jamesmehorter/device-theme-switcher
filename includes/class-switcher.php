@@ -413,7 +413,7 @@
 		 * return it for use as a string.
 		 * @return  string  HTML Anchor Link
 		 */
-		public static function build_html_link ( $link_type = 'active', $link_text = "View Full Website", $css_classes = array(), $echo = true ) {
+		public static function build_html_link ( $link_type = 'active', $link_text = "View Full Website", $css_classes = array(), $echo = false ) {
 
 			// Grab the single instance of our dts switcher for use below
 			$dts = DTS_Switcher::get_instance();
