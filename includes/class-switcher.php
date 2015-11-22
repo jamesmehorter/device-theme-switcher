@@ -515,5 +515,13 @@
 
 	} // Class DTS_Switcher
 
+	/**
+	 * Accessor function to get the DTS_Switcher singleton instance
+	 *
+	 * @return object
+	 */
+	function get_dts_switcher() {
+		return DTS_Switcher::get_instance();
+	}
 
 	// EOF
