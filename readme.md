@@ -1,6 +1,6 @@
-# Device Theme Switcher [![Build Status](https://travis-ci.org/jamesmehorter/device-theme-switcher.svg?branch=master)](https://travis-ci.org/jamesmehorter/device-theme-switcher)
+# Device Theme Switcher [![Build Status](https://travis-ci.org/jamesmehorter/device-theme-switcher.svg?branch=develop)](https://travis-ci.org/jamesmehorter/device-theme-switcher)
 
-<img src="https://raw.githubusercontent.com/jamesmehorter/device-theme-switcher/master/assets/images/banner-1544x500.png" width="100%" alt="banner-graphic">
+<img src="https://raw.githubusercontent.com/jamesmehorter/device-theme-switcher/develop/assets/images/banner-1544x500.png" width="100%" alt="banner-graphic">
 
 ##### Version 3.0.0 (Released 10/23/2015)
 ##### Requires at least: WordPress 3.0
