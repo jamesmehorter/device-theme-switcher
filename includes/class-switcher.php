@@ -494,7 +494,13 @@
 				array_unshift( $css_classes, 'dts-link' );
 
 				// Build the HTML link
-				$html_output = "<a href='$link_href' title='$link_text' class='" . implode( ' ', $css_classes ) . "' rel='nofollow'>$link_text</a>\n";
+				$html_output = sprintf(
+					"<a href='%s' title='%s' class='%s' rel='nofollow'>%s</a>",
+					esc_url( $link_href ),
+					esc_attr( $link_text ),
+					esc_attr( implode( ' ', $css_classes ) ),
+					esc_html( $link_text )
+				);
 			}
 
 			if ( $echo ) {
