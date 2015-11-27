@@ -1,14 +1,12 @@
 # Device Theme Switcher [![Build Status](https://travis-ci.org/jamesmehorter/device-theme-switcher.svg?branch=develop)](https://travis-ci.org/jamesmehorter/device-theme-switcher)
 
-<img src="https://raw.githubusercontent.com/jamesmehorter/device-theme-switcher/develop/assets/images/banner-1544x500.png" width="100%" alt="banner-graphic">
+Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme in 'Appearance > Themes'.
+
+[Screenshots](https://github.com/jamesmehorter/device-theme-switcher/wiki/1-Screenshots) | [Features](https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ) | [Contributing](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Contributing) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/wiki/5-Changelog)
 
 ##### Version 3.0.0 (Released 10/23/2015)
 ##### Requires at least: WordPress 3.0
 ##### Tested up to: WordPress 4.3.1
-
-[Screenshots](https://github.com/jamesmehorter/device-theme-switcher/wiki/1-Screenshots) | [Features](https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ) | [Contributing](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Contributing) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/wiki/5-Changelog)
-
-Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme in 'Appearance > Themes'.
 
 ## Installation
 
