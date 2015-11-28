@@ -2,8 +2,8 @@
 Plugin Name: Device Theme Switcher
 Contributors: jamesmehorter
 Requires at least: 3.0
-Tested up to: 4.3.1
-Stable tag: 3.0.0
+Tested up to: 4.4
+Stable tag: 3.0.1
 Tags: Theme, Switch, Change, Mobile, Mobile Theme, Handheld, Tablet, iPad, iPhone, Android, Blackberry, Tablet Theme, Different Themes, Device Theme
 Author URI: http://www.jamesmehorter.com/
 Plugin URI: https://github.com/jamesmehorter/device-theme-switcher/wiki

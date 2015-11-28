@@ -1,8 +1,8 @@
 {
   "name": "device-theme-switcher",
   "title": "Device Theme Switcher",
-  "version": "3.0.0",
   "description": "Assign separate themes for handheld and tablet devices under Appearance > Device Themes",
+  "version": "3.0.1",
   "homepage": "https://github.com/jamesmehorter/device-theme-switcher/wiki",
   "author": {
     "name": "James Mehorter",
