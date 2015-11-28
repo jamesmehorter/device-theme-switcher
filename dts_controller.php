@@ -1,9 +1,9 @@
 <?php
 	/**
 	 * Plugin Name: Device Theme Switcher
-	 * Plugin URI:  https://github.com/jamesmehorter/device-theme-switcher/
-	 * Description: Set a separate theme for handheld and tablet devices under Appearance > Device Themes
 	 * Version:     3.0.0
+	 * Plugin URI:  https://github.com/jamesmehorter/device-theme-switcher/wiki
+	 * Description: Assign separate themes for handheld and tablet devices under Appearance > Device Themes
 	 * Author:      James Mehorter | jamesmehorter@gmail.com
 	 * Author URI:  http://www.jamesmehorter.com
 	 * License:     GPLv2+

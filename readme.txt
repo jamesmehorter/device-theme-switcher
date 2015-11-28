@@ -16,7 +16,7 @@ Assign separate themes for handheld and tablet devices under Appearance > Device
 
 Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme in 'Appearance > Themes'.
 
-[Features](https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ) | [Contributing](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Contributing)
+[Features](https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Changelog)| [Contributing](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Contributing)
 
 == Screenshots ==
 
@@ -33,7 +33,7 @@ After activation you'll have a new menu: 'Appearance > Device Themes'--where you
 
 == Credits ==
 
-This plugin is powered by the MobileESP PHP library created by Anthony Hand (http://blog.mobileesp.com/).
+This plugin's device detection is powered by the MobileESP PHP library created by Anthony Hand (http://blog.mobileesp.com/).
 
 This plugin is based on the concepts provided by Jonas Vorwerk's (http://www.jonasvorwerk.com/) Mobile theme switcher plugin, and Jeremy Arntz's (http://www.jeremyarntz.com/) Mobile Theme Switcher plugin.
 
