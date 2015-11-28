@@ -1,4 +1,4 @@
-# Device Theme Switcher [![Build Status](https://travis-ci.org/jamesmehorter/device-theme-switcher.svg?branch=develop)](https://travis-ci.org/jamesmehorter/device-theme-switcher)
+# Device Theme Switcher [![Build Status](https://travis-ci.org/jamesmehorter/device-theme-switcher.svg?branch=master)](https://travis-ci.org/jamesmehorter/device-theme-switcher)
 
 Device Theme Switcher is a WordPress plugin which delivers one of your WordPress themes to handheld visitors and another theme to tablet visitors. Computer visitors are given the active theme in 'Appearance > Themes'.
 
