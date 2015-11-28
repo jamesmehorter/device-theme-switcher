@@ -33,7 +33,6 @@
 		 * @return null
 		 */
 		function widget ( $args, $instance ) {
-			extract( $args, EXTR_SKIP );
 
 			if ( empty( $instance['link_text'] ) ) {
 				$link_text =  ' ';
@@ -41,15 +40,11 @@
 				$link_text = apply_filters( 'dts_widget_to_full_website_link_text', $instance['link_text'] );
 			}
 
-			echo $before_widget;
+			echo $args['before_widget'];
 
-			//Globals the $dts variable created on load
-			//Use the DTS_Switcher::build_html_link() method
-	        //This variable is created in /dts-controller.php around line 70
-	        global $dts;
-	        return $dts->build_html_link( 'active', $link_text, array(), true );
+			DTS_Switcher::build_html_link( 'active', $link_text, array(), true );
 
-			echo $after_widget;
+			echo $args['after_widget'];
 
 		} // function widget
 
@@ -136,7 +131,6 @@
 		 * @return null
 		 */
 		function widget( $args, $instance ) {
-			extract( $args, EXTR_SKIP );
 
 			if ( empty( $instance['link_text'] ) ) {
 				$link_text =  ' ';
@@ -144,12 +138,11 @@
 				$link_text = apply_filters( 'dts_widget_to_device_website_link_text', $instance['link_text'] );
 			}
 
-			//Globals the $dts variable created on load
-			//Use the DTS_Switcher::build_html_link() metho
-		    //This variable is created in /dts-controller.php around line 70
-		    global $dts;
-		    return $dts->build_html_link( 'device', $link_text, array(), true );
-			echo $after_widget;
+			echo $args['before_widget'];
+
+		    DTS_Switcher::build_html_link( 'device', $link_text, array(), true );
+
+			echo $args['after_widget'];
 
 		} // function widget
 

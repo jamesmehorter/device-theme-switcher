@@ -3,7 +3,7 @@
     defined( 'ABSPATH' ) OR exit;
     
     /**
-     * Tempalte Tag: Generate a link to the full website
+     * Template Tag: Generate a link to the full website
      *
      * This is a wrapper function for DTS_Switcher::build_html_link()
      *
@@ -15,16 +15,13 @@
      * @return string  HTML anchor link to the full website
      */
     function link_to_full_website( $link_text = "View Full Website", $css_classes = array(), $echo = true ) {
-        
-        // Globals the $dts variable created on load
-        // This variable is created in /dts-controller.php around line 70
-        global $dts;
-        return $dts->build_html_link( 'active', $link_text, $css_classes, $echo );
+
+        DTS_Switcher::build_html_link( 'active', $link_text, $css_classes, $echo );
 
     } // link_to_full_website
 
     /**
-     * Tempalte Tag: Generate a link to return to the device theme
+     * Template Tag: Generate a link to return to the device theme
      *
      * This is a wrapper function for DTS_Switcher::build_html_link()
      *
@@ -36,11 +33,8 @@
      * @return string  HTML anchor link to the device website
      */
     function link_back_to_device( $link_text = "Return to Mobile Website", $css_classes = array(), $echo = true ) {
-        
-        // Globals the $dts variable created on load
-        // This variable is created in /dts-controller.php around line 70
-        global $dts;
-        return $dts->build_html_link( 'device', $link_text, $css_classes, $echo );
+
+        DTS_Switcher::build_html_link( 'device', $link_text, $css_classes, $echo );
 
     } // link_back_to_device
 

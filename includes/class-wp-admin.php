@@ -346,10 +346,16 @@
                                         esc_html_e( 'Support Forum', 'device-theme-switcher' ); ?>
                                 </a> |
                                 <a
-                                    href="http://wordpress.org/plugins/device-theme-switcher/faq/"
+                                    href="https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ"
                                     title="Device Theme Switcher FAQ"
                                     target="_blank"><?php
                                         esc_html_e( 'FAQ', 'device-theme-switcher' ); ?>
+                                </a> |
+                                <a
+                                    href="https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features"
+                                    title="Device Theme Switcher Features"
+                                    target="_blank"><?php
+                                        esc_html_e( 'Features', 'device-theme-switcher' ); ?>
                                 </a>
                             </td>
                         </tr><tr>
