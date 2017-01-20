@@ -138,8 +138,12 @@
 				'tablet-android'
 			);
 
+			#CLOUDFRONT SUPPORT
+			if ( isset($_SERVER['HTTP_CLOUDFRONT_IS_MOBILE_VIEWER']) && $_SERVER['HTTP_CLOUDFRONT_IS_MOBILE_VIEWER'] == 'true' ) { $device = 'handheld'; }
+			elseif ( isset($_SERVER['HTTP_CLOUDFRONT_IS_TABLET_VIEWER']) && $_SERVER['HTTP_CLOUDFRONT_IS_TABLET_VIEWER'] == 'true' ) { $device = 'tablet'; }
+
 			// Determine if the HTTP X UA server variable is present
-			if ( isset( $_SERVER['HTTP_X_UA_DEVICE'] ) ) {
+			elseif ( isset( $_SERVER['HTTP_X_UA_DEVICE'] ) ) {
 
 				// if it is, determine which device type is being used
 				if ( in_array( $_SERVER['HTTP_X_UA_DEVICE'], $http_xua_handheld_devices ) ) {
