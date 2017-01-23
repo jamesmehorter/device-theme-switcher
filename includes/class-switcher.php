@@ -148,7 +148,8 @@
 				$device = 'tablet';
 			}
 			elseif ( !empty($_SERVER['HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER']) && $_SERVER['HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER'] === 'true' ) {
-				break;
+				# do nothing - do not return
+				1;
 			}
 
 			// Determine if the HTTP X UA server variable is present
