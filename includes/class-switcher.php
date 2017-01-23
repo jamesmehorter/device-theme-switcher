@@ -16,25 +16,25 @@
 	class DTS_Switcher {
 
 		/**
-		 * Internally stored reference to the single instance of this class
-		 * @var object
-		 */
-		private static $_instance;
+         * Internally stored reference to the single instance of this class
+         * @var object
+         */
+        private static $_instance;
 
-		/**
-		 * Return the single instance of this class
-		 *
-		 * @return object Instance of this class
-		 */
-		static function get_instance () {
+        /**
+         * Return the single instance of this class
+         *
+         * @return object Instance of this class
+         */
+        static function get_instance () {
 
-			if ( ! isset( self::$_instance ) ) {
-				self::$_instance = new self();
-			}
+            if ( ! isset( self::$_instance ) ) {
+                self::$_instance = new self();
+            }
 
-			return self::$_instance;
+            return self::$_instance;
 
-		} // function get_instance
+        } // function get_instance
 
 		/**
 		 * Here we use the constructor more like the main controller
@@ -48,10 +48,10 @@
 		public function __construct() {
 
 			 // Hook into the template output function with a filter and change the template delivered if need be
-			add_filter( 'template', array( $this, 'deliver_template' ), 10, 0 );
+            add_filter( 'template', array( $this, 'deliver_template' ), 10, 0 );
 
-			// Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
-			add_filter( 'stylesheet', array( $this, 'deliver_stylesheet' ), 10, 0 );
+            // Hook into the stylesheet output function with a filter and change the stylesheet delivered if need be
+            add_filter( 'stylesheet', array( $this, 'deliver_stylesheet' ), 10, 0 );
 
 			// Retrieve the admin's saved device theme
 			$this->retrieve_saved_device_themes();
@@ -79,18 +79,18 @@
 		 */
 		public function retrieve_saved_device_themes () {
 
-			// The theme option is a url encoded string containing 3 values for name, template, and stylesheet
-			// See the ->active_theme array below for an idea of what is within each
-			parse_str( get_option( 'dts_handheld_theme' ), $this->handheld_theme );
-			parse_str( get_option( 'dts_tablet_theme' ), $this->tablet_theme );
-			parse_str( get_option( 'dts_low_support_theme' ), $this->low_support_theme );
+		    // The theme option is a url encoded string containing 3 values for name, template, and stylesheet
+		    // See the ->active_theme array below for an idea of what is within each
+		    parse_str( get_option( 'dts_handheld_theme' ), $this->handheld_theme );
+		    parse_str( get_option( 'dts_tablet_theme' ), $this->tablet_theme );
+		    parse_str( get_option( 'dts_low_support_theme' ), $this->low_support_theme );
 
-			// Retrieve the current active theme
-			$this->active_theme = array(
+		    // Retrieve the current active theme
+		    $this->active_theme = array(
 				'name'       => get_option( 'current_theme' ),
 				'template'   => get_option( 'template' ),
 				'stylesheet' => get_option( 'stylesheet' )
-			);
+		   	);
 
 		} // function retrieve_saved_device_themes
 
@@ -127,11 +127,11 @@
 			// Check for Varnish Device Detect: https://github.com/varnish/varnish-devicedetect/
 			// Thanks to Tim Broder for this addition! https://github.com/broderboy | http://timbroder.com/
 			$http_xua_handheld_devices = array(
-				'mobile-iphone',
-				'mobile-android',
-				'mobile-firefoxos',
-				'mobile-smartphone',
-				'mobile-generic'
+			 	'mobile-iphone',
+			 	'mobile-android',
+			 	'mobile-firefoxos',
+			 	'mobile-smartphone',
+			 	'mobile-generic'
 			);
 			$http_xua_tablet_devices = array(
 				'tablet-ipad',
@@ -385,13 +385,13 @@
 
 			// Update the active theme setting
 			// (so that other plugins can modify pre_option_template or pre_option_stylesheet)
-			$dts->active_theme = array(
+		    $dts->active_theme = array(
 				'name'       => get_option( 'current_theme' ),
 				'template'   => get_option( 'template' ),
 				'stylesheet' => get_option( 'stylesheet' )
-			);
+		   	);
 
-			// If a theme override has been requested, return that theme's template directory
+		   	// If a theme override has been requested, return that theme's template directory
 			if ( ! empty( $dts->{$dts->theme_override . "_theme"} ) ) {
 
 				//
