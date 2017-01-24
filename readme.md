@@ -4,9 +4,9 @@ Device Theme Switcher is a WordPress plugin which delivers one of your WordPress
 
 [Screenshots](https://github.com/jamesmehorter/device-theme-switcher/wiki/1-Screenshots) | [Features](https://github.com/jamesmehorter/device-theme-switcher/wiki/2-Features) | [FAQ](https://github.com/jamesmehorter/device-theme-switcher/wiki/3-FAQ) | [Contributing](https://github.com/jamesmehorter/device-theme-switcher/wiki/4-Contributing) | [Changelog](https://github.com/jamesmehorter/device-theme-switcher/wiki/5-Changelog)
 
-**Version 3.0.1** (Released 11/27/2015)
+**Version 3.0.2** (Released 01/23/2017)
 **Requires at least:** WordPress 3.0
-**Tested up to:** WordPress 4.4
+**Tested up to:** WordPress 4.7.1
 
 ## Installation
 
@@ -20,4 +20,4 @@ This plugin is powered by the [MobileESP PHP library created by Anthony Hand](ht
 
 This plugin is based on the [concepts provided by Jonas Vorwerk's Mobile theme switcher plugin](http://www.jonasvorwerk.com/) , and [Jeremy Arntz's Mobile Theme Switcher plugin](http://www.jeremyarntz.com/).
 
-Copyright (C) 2011-2015 James Mehorter
+Copyright (C) 2011-2017 James Mehorter
