@@ -138,8 +138,22 @@
 				'tablet-android'
 			);
 
+			## CLOUDFRONT SUPPORT - CHECKS SPECIFIC SIGNIFYING CDN HEADERS
+			## FIRST BEFORE DROPPING THRU TO CURRENT METHODS
+			## Verfied as "string" var_dump(): ["HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER"]=> string(4) "true"
+			if ( !empty($_SERVER['HTTP_CLOUDFRONT_IS_MOBILE_VIEWER']) && $_SERVER['HTTP_CLOUDFRONT_IS_MOBILE_VIEWER'] === 'true' ) {
+				$device = 'handheld';
+			}
+			elseif ( !empty($_SERVER['HTTP_CLOUDFRONT_IS_TABLET_VIEWER']) && $_SERVER['HTTP_CLOUDFRONT_IS_TABLET_VIEWER'] === 'true' ) {
+				$device = 'tablet';
+			}
+			elseif ( !empty($_SERVER['HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER']) && $_SERVER['HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER'] === 'true' ) {
+				# do nothing - do not return
+				1;
+			}
+
 			// Determine if the HTTP X UA server variable is present
-			if ( isset( $_SERVER['HTTP_X_UA_DEVICE'] ) ) {
+			elseif ( isset( $_SERVER['HTTP_X_UA_DEVICE'] ) ) {
 
 				// if it is, determine which device type is being used
 				if ( in_array( $_SERVER['HTTP_X_UA_DEVICE'], $http_xua_handheld_devices ) ) {
